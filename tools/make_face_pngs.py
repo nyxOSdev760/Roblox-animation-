@@ -84,10 +84,20 @@ def to_square_decal(rgba: Image.Image) -> Image.Image:
     return decal
 
 
+def trim_dark_bars(im: Image.Image) -> Image.Image:
+    """Cut off black letterbox/pillarbox bars around a light face image."""
+    grey = np.asarray(im.convert("L")).astype(float)
+    cols = np.flatnonzero(grey.mean(axis=0) > 60)
+    rows = np.flatnonzero(grey.mean(axis=1) > 60)
+    # Step in a few px past the bar edge so no dark seam is left.
+    pad = 3
+    return im.crop((cols[0] + pad, rows[0] + pad, cols[-1] - pad + 1, rows[-1] - pad + 1))
+
+
 def main() -> None:
     OUT.mkdir(exist_ok=True)
     for src in sorted(FACES.glob("*.jpg")):
-        im = Image.open(src).convert("RGB")
+        im = trim_dark_bars(Image.open(src).convert("RGB"))
         im = im.resize((im.width * UPSCALE, im.height * UPSCALE), Image.LANCZOS)
         im = im.filter(ImageFilter.GaussianBlur(UPSCALE * 0.35))  # smooth out JPEG blocks
         rgba = remove_background(np.asarray(im).astype(float))
