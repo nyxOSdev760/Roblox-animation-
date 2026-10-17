@@ -12,6 +12,7 @@ FACES = Path(__file__).resolve().parent.parent / "assets" / "faces"
 OUT = FACES / "png"
 SIZE = 512          # output decal size in px
 FILL = 0.78         # how much of the decal width/height the face features may take
+SOURCE_SIDE = 480   # sources are resized so their long side is this many px first
 UPSCALE = 4         # work at a higher resolution so edges come out smooth
 NOISE_FLOOR = 0.07  # JPEG noise in the background below this opacity is dropped
 OPACITY_BOOST = 2.2 # makes solid colours (pink blush, tongue) fully opaque
@@ -60,16 +61,21 @@ def remove_background(rgb: np.ndarray) -> np.ndarray:
     lim = np.where(diff > 0, 255.0 - bg, bg)
     alpha = np.max(np.abs(diff) / np.maximum(lim, 1), axis=-1)
 
-    alpha = np.clip((alpha - NOISE_FLOOR) / (1 - NOISE_FLOOR), 0, 1)
-    alpha = np.clip(alpha * OPACITY_BOOST, 0, 1)
+    raw = np.clip((alpha - NOISE_FLOOR) / (1 - NOISE_FLOOR), 0, 1)
+    alpha = np.clip(raw * OPACITY_BOOST, 0, 1)
 
     enclosed = ~outside_mask(alpha > 0.5, GAP_CLOSE * UPSCALE) & (alpha <= 0.5)
     enclosed = drop_specks(enclosed, MIN_ENCLOSED * UPSCALE)
     alpha = np.where(enclosed, 1.0, alpha)
 
-    # Un-mix the background out of semi-transparent edge pixels.
-    safe = np.maximum(alpha, 1e-3)[..., None]
-    color = np.clip(bg + diff / safe, 0, 255)
+    # Un-mix the background out of semi-transparent edge pixels. Grey edges of black ink
+    # are un-mixed with the true alpha so they come out black (no grey halo); coloured
+    # areas use the boosted alpha so pink blush stays pink instead of turning red.
+    chroma = np.clip((rgb.max(axis=-1) - rgb.min(axis=-1)) / 255 * 5, 0, 1)[..., None]
+    ink = np.clip(bg + diff / np.maximum(raw, 1e-3)[..., None], 0, 255)
+    paint = np.clip(bg + diff / np.maximum(alpha, 1e-3)[..., None], 0, 255)
+    color = chroma * paint + (1 - chroma) * ink
+    color = np.where(enclosed[..., None], rgb, color)
     return np.dstack([color, alpha * 255]).astype(np.uint8)
 
 
@@ -98,6 +104,8 @@ def main() -> None:
     OUT.mkdir(exist_ok=True)
     for src in sorted(FACES.glob("*.jpg")):
         im = trim_dark_bars(Image.open(src).convert("RGB"))
+        # Same working size for every source, so big images don't make the flood fill crawl.
+        im = im.resize((round(im.width * SOURCE_SIDE / max(im.size)), round(im.height * SOURCE_SIDE / max(im.size))), Image.LANCZOS)
         im = im.resize((im.width * UPSCALE, im.height * UPSCALE), Image.LANCZOS)
         im = im.filter(ImageFilter.GaussianBlur(UPSCALE * 0.35))  # smooth out JPEG blocks
         rgba = remove_background(np.asarray(im).astype(float))
