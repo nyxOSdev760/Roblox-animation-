@@ -1,143 +1,177 @@
-// Blocky R6-style Roblox character: head, torso, two arms, two legs, each on its own joint.
+// Roblox R6 character built from the real rig: Roblox's classic head mesh and plain
+// block limbs, with joints placed where R6's Motor6Ds put them.
 //
-// Units are studs. The character's origin is its hip joint (2 studs above the feet when
-// standing) and it faces +z. Its right side is -x.
+// Units are studs. The character faces +z (Roblox characters face -z; everything here is
+// rotated 180 degrees about y), so its right side is -x. The root is the torso centre
+// (the HumanoidRootPart), 3 studs above the ground when standing.
+//
+// Poses are plain objects of Euler angles in DEGREES:
+//   { root: { pos: [x, y, z], rot: [pitch, yaw, roll] }, neck, rArm, lArm, rLeg, lLeg }
+// Joint angles are [x, y, z]. x > 0 swings a limb backwards (and tips the head/torso
+// forward); z raises an arm sideways (rArm z < 0 and lArm z > 0 raise them outward).
 import * as THREE from 'three';
-import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { robloxMaterial } from './roblox.js';
 
-export const COLORS = {
-  brightYellow: 0xf5cd30,
-  brightBlue: 0x0d69ac,
-  brightGreen: 0xa4bd47,
-  black: 0x1b1d22,
-  darkGrey: 0x3a3d45,
-  brightRed: 0xc4281c,
-  white: 0xf2f3f3,
-};
+const D = Math.PI / 180;
 
-const HEAD_R = 0.62;
-const HEAD_H = 0.6; // half height
+// Head part is 2x1x1 with a SpecialMesh (MeshType Head) at scale 1.25; head.mesh spans
+// ±0.6, so the classic head ends up ~1.25 studs each way.
+const HEAD_SCALE = 1.25 / 1.2;
 
-function plastic(color) {
-  return new THREE.MeshStandardMaterial({ color, roughness: 0.5, metalness: 0 });
-}
+let headGeometry = null;
 
-// Roblox's classic head: a cylinder with rounded top and bottom edges.
-function headGeometry() {
-  const k = 0.17; // edge rounding
-  const pts = [new THREE.Vector2(0, -HEAD_H)];
-  for (let i = 0; i <= 10; i++) {
-    const a = -Math.PI / 2 + (i / 10) * (Math.PI / 2);
-    pts.push(new THREE.Vector2(HEAD_R - k + k * Math.cos(a), -HEAD_H + k + k * Math.sin(a)));
+/** Build the classic head geometry from head.mesh (converted to JSON by tools/rbx_mesh.py). */
+export async function loadHeadMesh(url = '/animation/assets/rbx/meshes/head.json') {
+  const m = await (await fetch(url)).json();
+  const n = m.positions.length / 3;
+  const pos = new Float32Array(n * 3);
+  const nor = new Float32Array(n * 3);
+  const uv = new Float32Array(n * 2);
+  for (let i = 0; i < n; i++) {
+    // Roblox front is -z: rotate 180 degrees about y to face +z.
+    pos[3 * i] = -m.positions[3 * i] * HEAD_SCALE;
+    pos[3 * i + 1] = m.positions[3 * i + 1] * HEAD_SCALE;
+    pos[3 * i + 2] = -m.positions[3 * i + 2] * HEAD_SCALE;
+    nor[3 * i] = -m.normals[3 * i];
+    nor[3 * i + 1] = m.normals[3 * i + 1];
+    nor[3 * i + 2] = -m.normals[3 * i + 2];
+    // The mesh's UVs are the face decal projection (v points down in Roblox).
+    uv[2 * i] = m.uvs[2 * i];
+    uv[2 * i + 1] = 1 - m.uvs[2 * i + 1];
   }
-  for (let i = 0; i <= 10; i++) {
-    const a = (i / 10) * (Math.PI / 2);
-    pts.push(new THREE.Vector2(HEAD_R - k + k * Math.cos(a), HEAD_H - k + k * Math.sin(a)));
-  }
-  pts.push(new THREE.Vector2(0, HEAD_H));
-  return new THREE.LatheGeometry(pts, 64);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setAttribute('normal', new THREE.BufferAttribute(nor, 3));
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  g.setIndex(m.indices);
+  headGeometry = g;
+  return g;
 }
 
-// The face decal wraps around the front of the head like it does in Roblox.
-function faceGeometry() {
-  const h = 0.98;
-  const arc = h / HEAD_R; // square decal: arc length == height
-  return new THREE.CylinderGeometry(HEAD_R + 0.004, HEAD_R + 0.004, h, 32, 1, true, -arc / 2, arc);
-}
-
-function part(geometry, material) {
-  const mesh = new THREE.Mesh(geometry, material);
+function block(material, sx, sy, sz) {
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), material);
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   return mesh;
 }
 
-function joint(parent, x, y, z) {
+function pivot(parent, x, y, z) {
   const g = new THREE.Group();
   g.position.set(x, y, z);
   parent.add(g);
   return g;
 }
 
-function baseballCap(color) {
-  const cap = new THREE.Group();
-  const mat = plastic(color);
-  const dome = part(new THREE.SphereGeometry(HEAD_R + 0.06, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), mat);
-  dome.scale.y = 0.62;
-  dome.position.y = 2 * HEAD_H - 0.28;
-  const brim = part(new THREE.CylinderGeometry(0.5, 0.5, 0.06, 32, 1, false, -Math.PI / 2, Math.PI), mat);
-  brim.position.set(0, 2 * HEAD_H - 0.26, HEAD_R - 0.05);
-  brim.scale.z = 1.25;
-  cap.add(dome, brim);
-  return cap;
+/** A canvas texture for clothing on one face of a body part. draw(ctx, w, h). */
+export function clothingTexture(w, h, draw) {
+  const c = document.createElement('canvas');
+  c.width = w;
+  c.height = h;
+  draw(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = 8;
+  return t;
 }
 
 /**
  * @param {object} o
- * @param {{head:number, torso:number, leftArm:number, rightArm:number, leftLeg:number, rightLeg:number}} o.colors
- * @param {Record<string, THREE.Texture>} o.faces  face textures by name
- * @param {string} o.face  starting face
- * @param {number} [o.cap]  colour of a baseball cap, if any
+ * @param {object} o.assets      from loadRobloxAssets
+ * @param {object} o.colors      { head, torso, rArm, lArm, rLeg, lLeg } BrickColor hex values
+ * @param {object} o.faces       face textures by name
+ * @param {string} o.face        starting face
+ * @param {THREE.Texture} [o.shirtFront]  texture drawn on the torso front
+ * @param {(neck: THREE.Group, assets: object) => void} [o.accessories]  adds hats etc. to the head
  */
-export function createR6({ colors, faces, face, cap }) {
-  const root = new THREE.Group(); // position (at hip height) + facing
-  const body = new THREE.Group(); // tumbles around the hips
-  root.add(body);
+export function createR6({ assets, colors, faces, face, shirtFront, accessories }) {
+  const plastic = (c) => robloxMaterial(assets, c, 'Plastic');
 
-  const torso = part(new RoundedBoxGeometry(2, 2, 1, 3, 0.06), plastic(colors.torso));
-  torso.position.y = 1;
-  body.add(torso);
+  const root = new THREE.Group();
+  root.rotation.order = 'YXZ';
 
-  const neck = joint(body, 0, 2, 0);
-  const head = part(headGeometry(), plastic(colors.head));
-  head.position.y = HEAD_H;
+  let torsoMat = plastic(colors.torso);
+  if (shirtFront) {
+    const front = robloxMaterial(assets, 0xffffff, 'Plastic', { map: shirtFront });
+    torsoMat = [torsoMat, torsoMat, torsoMat, torsoMat, front, torsoMat];
+  }
+  root.add(block(torsoMat, 2, 2, 1));
+
+  const neck = pivot(root, 0, 1, 0);
+  const head = new THREE.Mesh(headGeometry, plastic(colors.head));
+  head.position.y = 0.5;
+  head.castShadow = head.receiveShadow = true;
   neck.add(head);
-
   const faceMat = new THREE.MeshStandardMaterial({
     map: faces[face],
     transparent: true,
     roughness: 0.5,
     depthWrite: false,
     polygonOffset: true,
-    polygonOffsetFactor: -2,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -4,
   });
-  const faceMesh = new THREE.Mesh(faceGeometry(), faceMat);
-  faceMesh.position.y = HEAD_H;
+  const faceMesh = new THREE.Mesh(headGeometry, faceMat);
+  faceMesh.position.y = 0.5;
   neck.add(faceMesh);
+  accessories?.(neck, assets);
 
-  if (cap !== undefined) neck.add(baseballCap(cap));
-
-  const limb = () => new RoundedBoxGeometry(1, 2, 1, 3, 0.06);
-  const rightShoulder = joint(body, -1.5, 1.5, 0);
-  const leftShoulder = joint(body, 1.5, 1.5, 0);
-  const rightHip = joint(body, -0.5, 0, 0);
-  const leftHip = joint(body, 0.5, 0, 0);
-  for (const [j, c, y] of [
-    [rightShoulder, colors.rightArm, -0.5],
-    [leftShoulder, colors.leftArm, -0.5],
-    [rightHip, colors.rightLeg, -1],
-    [leftHip, colors.leftLeg, -1],
+  const rArm = pivot(root, -1, 0.5, 0);
+  const lArm = pivot(root, 1, 0.5, 0);
+  const rLeg = pivot(root, -1, -1, 0);
+  const lLeg = pivot(root, 1, -1, 0);
+  for (const [j, c, x, y] of [
+    [rArm, colors.rArm, -0.5, -0.5],
+    [lArm, colors.lArm, 0.5, -0.5],
+    [rLeg, colors.rLeg, 0.5, -1],
+    [lLeg, colors.lLeg, -0.5, -1],
   ]) {
-    const m = part(limb(), plastic(c));
-    m.position.y = y;
+    const m = block(plastic(c), 1, 2, 1);
+    m.position.set(x, y, 0);
     j.add(m);
   }
 
+  const joints = { neck, rArm, lArm, rLeg, lLeg };
   return {
     root,
-    body,
-    neck,
-    rightShoulder,
-    leftShoulder,
-    rightHip,
-    leftHip,
+    joints,
     setFace(name) {
       faceMat.map = faces[name];
     },
-    /** Zero every joint so each frame can pose from scratch. */
-    resetPose() {
-      for (const j of [body, neck, rightShoulder, leftShoulder, rightHip, leftHip]) j.rotation.set(0, 0, 0);
-      body.position.set(0, 0, 0);
+    /** Apply a pose (degrees). Missing joints are reset to 0. */
+    pose(p) {
+      root.position.set(...p.root.pos);
+      root.rotation.set(p.root.rot[0] * D, p.root.rot[1] * D, p.root.rot[2] * D);
+      for (const [name, j] of Object.entries(joints)) {
+        const a = p[name] ?? [0, 0, 0];
+        j.rotation.set(a[0] * D, a[1] * D, a[2] * D);
+      }
     },
+    /** World position of a point given in head space (e.g. an eye). */
+    headPoint(x, y, z, target = new THREE.Vector3()) {
+      neck.updateWorldMatrix(true, false);
+      return target.set(x, y, z).applyMatrix4(neck.matrixWorld);
+    },
+  };
+}
+
+/** Classic baseball cap accessory. */
+export function cap(color, brimColor = color) {
+  return (neck, assets) => {
+    const top = 0.5 + 0.625;
+    const crown = new THREE.Mesh(
+      new THREE.SphereGeometry(0.66, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2),
+      robloxMaterial(assets, color, 'Plastic'),
+    );
+    crown.scale.y = 0.55;
+    crown.position.y = top - 0.24;
+    const band = new THREE.Mesh(new THREE.CylinderGeometry(0.66, 0.66, 0.18, 32, 1, true), robloxMaterial(assets, color, 'Plastic', { side: THREE.DoubleSide }));
+    band.position.y = top - 0.31;
+    const brim = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.07, 0.62), robloxMaterial(assets, brimColor, 'Plastic'));
+    brim.position.set(0, top - 0.36, 0.78);
+    brim.rotation.x = 0.12;
+    for (const m of [crown, band, brim]) {
+      m.castShadow = true;
+      neck.add(m);
+    }
   };
 }

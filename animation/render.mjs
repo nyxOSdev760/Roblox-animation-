@@ -86,12 +86,15 @@ server.close();
 
 // --- ffmpeg: frames + sound cues -> mp4 ---------------------------------------------------
 function synth(kind, dir) {
-  // A short low "thump" for hits and landings.
+  // thud: low thump for landings. punch: harder, brighter hit. whoosh: a swing.
   const file = join(dir, `${kind}.wav`);
-  const expr = {
-    thud: '0.9*sin(2*PI*(55+140*exp(-t*28))*t)*exp(-t*11)+0.25*(random(0)*2-1)*exp(-t*45)',
-  }[kind];
-  execFileSync('ffmpeg', ['-y', '-v', 'error', '-f', 'lavfi', '-i', `aevalsrc=${expr}:s=44100:d=0.45`, file]);
+  const sounds = {
+    thud: { expr: '0.9*sin(2*PI*(55+140*exp(-t*28))*t)*exp(-t*11)+0.25*(random(0)*2-1)*exp(-t*45)', d: 0.45 },
+    punch: { expr: '0.95*sin(2*PI*(70+260*exp(-t*40))*t)*exp(-t*14)+0.6*(random(0)*2-1)*exp(-t*60)', d: 0.4 },
+    whoosh: { expr: '0.6*(random(0)*2-1)*sin(PI*t/0.16)', d: 0.16, filter: 'bandpass=f=1400:w=1800' },
+  };
+  const s = sounds[kind];
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-f', 'lavfi', '-i', `aevalsrc=${s.expr}:s=44100:d=${s.d}`, ...(s.filter ? ['-af', s.filter] : []), file]);
   return file;
 }
 
