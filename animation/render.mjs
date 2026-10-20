@@ -90,7 +90,11 @@ async function renderFrames() {
       await writeFile(join(work, `${String(i).padStart(5, '0')}.png`), await frameAt(i / meta.fps));
       if (i % 15 === 0) console.log(`frame ${i}/${count}  (${((Date.now() - started) / 1000).toFixed(0)}s)`);
     }
-    encode(['-framerate', String(meta.fps), '-i', join(work, '%05d.png')], out, ['-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p']);
+    // Main profile, level 4.0 and a capped bitrate so phone players handle it (sound included).
+    encode(['-framerate', String(meta.fps), '-i', join(work, '%05d.png')], out, [
+      '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-profile:v', 'main', '-level', '4.0',
+      '-maxrate', '8M', '-bufsize', '16M', '-pix_fmt', 'yuv420p',
+    ]);
     await rm(work, { recursive: true, force: true });
     console.log('wrote', out);
   }
@@ -119,7 +123,7 @@ function encode(videoInput, dest, videoCodec) {
     '-filter_complex', filters.join(';'),
     '-map', '0:v', '-map', '[aout]',
     ...videoCodec,
-    '-c:a', 'aac', '-b:a', '192k',
+    '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2',
     '-movflags', '+faststart',
     dest,
   ], { stdio: 'inherit' });
