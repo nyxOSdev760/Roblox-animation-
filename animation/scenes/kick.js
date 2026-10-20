@@ -16,14 +16,26 @@ export const meta = {
   width: 1080,
   height: 1920,
   faces: ['happy', 'crying', 'troll'],
-  // Real-time sound cues: file in assets/sfx or a synthesized effect.
+  // Real-time sound cues (files in assets/sfx; see render.mjs).
   audio: [
+    { file: 'synth/ambience.wav', at: 0, volume: 0.32, dur: 5.5, fade: 0.4 },
     { file: 'hi-rblx-se.mp3', at: 0.2, volume: 1.0 },
-    { synth: 'whoosh', at: 1.47, volume: 0.8 },
-    { synth: 'punch', at: 1.57, volume: 1.0 },
-    { file: 'work-at-a-pizza-place-scream.mp3', at: 1.6, volume: 0.95 },
-    { synth: 'thud', at: 2.5, volume: 0.9 },
+    // Sneaking: a rising pizzicato pluck on each tiptoe step (the troll's foot plants).
+    { file: 'synth/pluck_A3.wav', at: 0.11, volume: 0.5 },
+    { file: 'synth/pluck_Bb3.wav', at: 0.33, volume: 0.5 },
+    { file: 'synth/pluck_B3.wav', at: 0.54, volume: 0.55 },
+    { file: 'synth/pluck_C4.wav', at: 0.76, volume: 0.55 },
+    { file: 'synth/pluck_Db4.wav', at: 0.98, volume: 0.6 },
+    { file: 'synth/slide_up.wav', at: 1.2, volume: 0.32 },
+    { file: 'synth/whoosh.wav', at: 1.46, volume: 0.7 },
+    { file: 'synth/punch.wav', at: 1.57, volume: 1.0 },
+    { file: 'roblox/ouch.wav', at: 1.58, volume: 0.9 },
+    { file: 'synth/whoosh_long.wav', at: 1.7, volume: 0.45 },
+    { file: 'work-at-a-pizza-place-scream.mp3', at: 1.8, volume: 0.85, dur: 0.75, fade: 0.15 },
+    { file: 'roblox/action_jump_land.wav', at: 2.5, volume: 0.9 },
+    { file: 'synth/thud.wav', at: 2.5, volume: 0.95 },
     { file: 'hahaha-rblx-se.mp3', at: 2.64, volume: 1.0 },
+    { file: 'roblox/action_get_up.wav', at: 3.15, volume: 0.7 },
     { file: 'roblox-crying-work-at-pizza-place.mp3', at: 3.32, volume: 1.0 },
   ],
 };
