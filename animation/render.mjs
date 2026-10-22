@@ -61,7 +61,9 @@ async function renderFrames() {
     }
   });
   await new Promise((ok) => server.listen(0, '127.0.0.1', ok));
-  const url = `http://127.0.0.1:${server.address().port}/animation/index.html?scene=${name}&frame=1&scale=${scale}`;
+  // --items a,b,c is passed through to scenes that take a list (e.g. wardrobe).
+  const items = opt('--items') ? `&items=${encodeURIComponent(opt('--items'))}` : '';
+  const url = `http://127.0.0.1:${server.address().port}/animation/index.html?scene=${name}&frame=1&scale=${scale}${items}`;
 
   const browser = await chromium.launch({
     args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],

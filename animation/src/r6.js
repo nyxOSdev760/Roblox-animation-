@@ -11,12 +11,13 @@
 // forward); z raises an arm sideways (rArm z < 0 and lArm z > 0 raise them outward).
 import * as THREE from 'three';
 import { robloxMaterial } from './roblox.js';
+import { accessory } from './accessories.js';
 
 const D = Math.PI / 180;
 
-// Head part is 2x1x1 with a SpecialMesh (MeshType Head) at scale 1.25; head.mesh spans
-// ±0.6, so the classic head ends up ~1.25 studs each way.
-const HEAD_SCALE = 1.25 / 1.2;
+// head.mesh is already in studs: it spans ±0.6, which is where R6's FaceFrontAttachment
+// (z = -0.6) and HairAttachment (y = 0.6) sit, so accessories fit it unscaled.
+const HEAD_SCALE = 1;
 
 let headGeometry = null;
 
@@ -78,12 +79,14 @@ export function clothingTexture(w, h, draw) {
  * @param {object} o
  * @param {object} o.assets      from loadRobloxAssets
  * @param {object} o.colors      { head, torso, rArm, lArm, rLeg, lLeg } BrickColor hex values
- * @param {object} o.faces       face textures by name
- * @param {string} o.face        starting face
+ * @param {object} [o.faces]     face decal textures by name
+ * @param {string} o.face        starting face: a decal name from `faces`, or the slug of a
+ *                               loaded UGC face accessory (see accessories.js)
  * @param {THREE.Texture} [o.shirtFront]  texture drawn on the torso front
- * @param {(neck: THREE.Group, assets: object) => void} [o.accessories]  adds hats etc. to the head
+ * @param {Array<string | ((neck: THREE.Group, assets: object) => void)>} [o.accessories]
+ *        accessory slugs (hair, hats) or functions that add things to the head
  */
-export function createR6({ assets, colors, faces, face, shirtFront, accessories }) {
+export function createR6({ assets, colors, faces = {}, face, shirtFront, accessories = [] }) {
   const plastic = (c) => robloxMaterial(assets, c, 'Plastic');
 
   const root = new THREE.Group();
@@ -102,7 +105,7 @@ export function createR6({ assets, colors, faces, face, shirtFront, accessories 
   head.castShadow = head.receiveShadow = true;
   neck.add(head);
   const faceMat = new THREE.MeshStandardMaterial({
-    map: faces[face],
+    map: null,
     transparent: true,
     roughness: 0.5,
     depthWrite: false,
@@ -113,7 +116,22 @@ export function createR6({ assets, colors, faces, face, shirtFront, accessories 
   const faceMesh = new THREE.Mesh(headGeometry, faceMat);
   faceMesh.position.y = 0.5;
   neck.add(faceMesh);
-  accessories?.(neck, assets);
+  for (const a of [accessories].flat()) (typeof a === 'string' ? accessory(a) : a)(neck, assets);
+
+  // Face: a decal texture on the head and/or UGC face accessory meshes. Pass one name or a
+  // list to layer pieces, e.g. ['crying', 'face-addon-anger-vein'] or
+  // ['face-eyes-shocked', 'face-mouth-small-frown']. Accessory pieces are attached the first
+  // time they're used and then just shown/hidden.
+  const faceAccessories = {};
+  function setFace(name) {
+    const names = [name].flat();
+    const decal = names.find((n) => n in faces);
+    faceMesh.visible = decal !== undefined;
+    if (decal !== undefined) faceMat.map = faces[decal];
+    for (const n of names) if (!(n in faces)) faceAccessories[n] ??= accessory(n)(neck, assets);
+    for (const [slug, mesh] of Object.entries(faceAccessories)) mesh.visible = names.includes(slug);
+  }
+  setFace(face);
 
   const rArm = pivot(root, -1, 0.5, 0);
   const lArm = pivot(root, 1, 0.5, 0);
@@ -134,9 +152,7 @@ export function createR6({ assets, colors, faces, face, shirtFront, accessories 
   return {
     root,
     joints,
-    setFace(name) {
-      faceMat.map = faces[name];
-    },
+    setFace,
     /** Apply a pose (degrees). Missing joints are reset to 0. */
     pose(p) {
       root.position.set(...p.root.pos);
