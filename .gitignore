@@ -1,3 +1,4 @@
 node_modules/
 tools/.cache/
 __pycache__/
+assets/voice/*/lines/
