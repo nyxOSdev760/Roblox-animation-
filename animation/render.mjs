@@ -165,7 +165,7 @@ function encode(videoInput, dest, videoCodec) {
     filters.push(`${chain},adelay=${ms}|${ms}[a${i}]`);
   });
   const mix = meta.audio.map((_, i) => `[a${i}]`).join('');
-  filters.push(`${mix}amix=inputs=${meta.audio.length}:normalize=0,alimiter=limit=0.95,apad,atrim=0:${count / meta.fps}[aout]`);
+  filters.push(`${mix}amix=inputs=${meta.audio.length}:normalize=0,alimiter=limit=0.95,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,apad,atrim=0:${count / meta.fps}[aout]`);
   execFileSync('ffmpeg', [
     '-y', '-v', 'error',
     ...inputs,
