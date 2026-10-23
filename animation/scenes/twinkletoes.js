@@ -790,7 +790,7 @@ export function setup({ scene, camera, assets, faces, sun }) {
     sunOn('square', 0, 0);
     put('me', 'square', 1.6, -2.6, { yaw: 180, size: meSize(t), pose: POSES.idle(lt), face: 'suspicious' });
     A.me.hold('mic');
-    cam('square', [0.2, 0.9, -4.6], [1.6, 0.35, -2.6], 52);
+    cam('square', [4.4, 1.3, -1.4], [1.6, 0.5, -2.6], 50);
   });
 
   // 49 — "I got taller. It worked."
@@ -992,7 +992,7 @@ export function setup({ scene, camera, assets, faces, sun }) {
       y = 0;
     }
     put('crane', 'square', x, z, { y: y - drop * 2, yaw: u2 > 0 ? -125 : -90, size: craneSize(t), pose: POSES.scurry(lt), face: ['crying', 'face-addon-blush'] });
-    cam('square', [-16, 3.6, 9], [x, lerp(3.4, 0.4, Math.max(hop, u2 > 0 ? 1 : 0)), z], 40);
+    cam('square', [-38, 3.6, -5], [x, lerp(3.4, 0.4, Math.max(hop, u2 > 0 ? 1 : 0)), z], 40);
   });
 
   // 66 — "My mom was five foot six again."
