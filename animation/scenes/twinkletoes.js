@@ -90,8 +90,8 @@ export const meta = {
 
 // ---- sound -------------------------------------------------------------------------------
 const sfx = (file, at, volume = 0.8, extra = {}) => meta.audio.push({ file, at, volume, ...extra });
-// Narrator voice raised 6 semitones for a high-pitched kid voice (timing unchanged).
-sfx('../voice/twinkletoes/narration.flac', 0, 1.0, { pitch: 6 });
+// Narrator: Fish Audio voice "roblox rant" (add { pitch: N } to raise it N semitones).
+sfx('../voice/twinkletoes/narration.flac', 0, 1.0);
 sfx('synth/music_loop.wav', 0, 0.16, { loop: true, dur: END, fade: 2 });
 const SHRINK = 'synth/bloop_down.wav';
 const GROW = 'synth/bloop_up.wav';
