@@ -10,8 +10,9 @@
 //   node render.mjs story --parts --only 3,4 -> re-render just those parts
 //   node render.mjs story --final            -> join the parts and mix the sound -> out/story.mp4
 //
-// Sound cues (meta.audio) are { file, at, volume, dur?, fade? }: file is relative to
-// assets/sfx, at is the start time in seconds, dur trims the sound and fade fades it out.
+// Sound cues (meta.audio) are { file, at, volume, dur?, fade?, loop?, pitch? }: file is
+// relative to assets/sfx, at is the start time in seconds, dur trims the sound, fade fades
+// it out, loop repeats it and pitch shifts it by semitones without changing its timing.
 import { createServer } from 'node:http';
 import { readFile, mkdir, rm, rename, writeFile, access } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
@@ -160,6 +161,8 @@ function encode(videoInput, dest, videoCodec) {
     const ms = Math.round(cue.at * 1000);
     let chain = `[${i + 1}:a]aresample=44100,aformat=channel_layouts=stereo,volume=${cue.volume}`;
     if (cue.loop) chain = `[${i + 1}:a]aloop=loop=-1:size=2e9,aresample=44100,aformat=channel_layouts=stereo,volume=${cue.volume}`;
+    // pitch: semitones up (+) or down (-); the timing stays the same.
+    if (cue.pitch) chain += `,rubberband=pitch=${2 ** (cue.pitch / 12)}:formant=shifted:pitchq=quality`;
     if (cue.dur) chain += `,atrim=0:${cue.dur}`;
     if (cue.fade) chain += `,afade=t=out:st=${(cue.dur ?? 0) - cue.fade}:d=${cue.fade}`;
     filters.push(`${chain},adelay=${ms}|${ms}[a${i}]`);

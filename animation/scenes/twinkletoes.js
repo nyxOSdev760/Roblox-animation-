@@ -90,7 +90,8 @@ export const meta = {
 
 // ---- sound -------------------------------------------------------------------------------
 const sfx = (file, at, volume = 0.8, extra = {}) => meta.audio.push({ file, at, volume, ...extra });
-sfx('../voice/twinkletoes/narration.flac', 0, 1.0);
+// Narrator voice raised 6 semitones for a high-pitched kid voice (timing unchanged).
+sfx('../voice/twinkletoes/narration.flac', 0, 1.0, { pitch: 6 });
 sfx('synth/music_loop.wav', 0, 0.16, { loop: true, dur: END, fade: 2 });
 const SHRINK = 'synth/bloop_down.wav';
 const GROW = 'synth/bloop_up.wav';
