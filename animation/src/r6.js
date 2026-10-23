@@ -12,6 +12,7 @@
 import * as THREE from 'three';
 import { robloxMaterial } from './roblox.js';
 import { accessory } from './accessories.js';
+import { clothedBox, clothedTexture } from './clothing.js';
 
 const D = Math.PI / 180;
 
@@ -83,21 +84,34 @@ export function clothingTexture(w, h, draw) {
  * @param {string} o.face        starting face: a decal name from `faces`, or the slug of a
  *                               loaded UGC face accessory (see accessories.js)
  * @param {THREE.Texture} [o.shirtFront]  texture drawn on the torso front
+ * @param {string} [o.shirt]     classic Shirt template slug (see clothing.js)
+ * @param {string} [o.pants]     classic Pants template slug
  * @param {Array<string | ((neck: THREE.Group, assets: object) => void)>} [o.accessories]
  *        accessory slugs (hair, hats) or functions that add things to the head
  */
-export function createR6({ assets, colors, faces = {}, face, shirtFront, accessories = [] }) {
+export function createR6({ assets, colors, faces = {}, face, shirtFront, shirt, pants, accessories = [] }) {
   const plastic = (c) => robloxMaterial(assets, c, 'Plastic');
+  const clothed = Boolean(shirt || pants);
+  // A body part: plain plastic, or the colour with classic clothing composited on top.
+  const bodyPart = (part, color, sx, sy, sz) => {
+    if (!clothed) return block(plastic(color), sx, sy, sz);
+    const layers = { pants: part === 'rArm' || part === 'lArm' ? null : pants, shirt: part === 'rLeg' || part === 'lLeg' ? null : shirt };
+    const mat = new THREE.MeshStandardMaterial({ map: clothedTexture(color, layers), roughness: 0.55, envMapIntensity: 0.5 });
+    const mesh = new THREE.Mesh(clothedBox(part, sx, sy, sz), mat);
+    mesh.castShadow = mesh.receiveShadow = true;
+    return mesh;
+  };
 
   const root = new THREE.Group();
   root.rotation.order = 'YXZ';
 
-  let torsoMat = plastic(colors.torso);
-  if (shirtFront) {
+  if (shirtFront && !clothed) {
+    const torsoMat = plastic(colors.torso);
     const front = robloxMaterial(assets, 0xffffff, 'Plastic', { map: shirtFront });
-    torsoMat = [torsoMat, torsoMat, torsoMat, torsoMat, front, torsoMat];
+    root.add(block([torsoMat, torsoMat, torsoMat, torsoMat, front, torsoMat], 2, 2, 1));
+  } else {
+    root.add(bodyPart('torso', colors.torso, 2, 2, 1));
   }
-  root.add(block(torsoMat, 2, 2, 1));
 
   const neck = pivot(root, 0, 1, 0);
   const head = new THREE.Mesh(headGeometry, plastic(colors.head));
@@ -137,13 +151,13 @@ export function createR6({ assets, colors, faces = {}, face, shirtFront, accesso
   const lArm = pivot(root, 1, 0.5, 0);
   const rLeg = pivot(root, -1, -1, 0);
   const lLeg = pivot(root, 1, -1, 0);
-  for (const [j, c, x, y] of [
-    [rArm, colors.rArm, -0.5, -0.5],
-    [lArm, colors.lArm, 0.5, -0.5],
-    [rLeg, colors.rLeg, 0.5, -1],
-    [lLeg, colors.lLeg, -0.5, -1],
+  for (const [j, part, c, x, y] of [
+    [rArm, 'rArm', colors.rArm, -0.5, -0.5],
+    [lArm, 'lArm', colors.lArm, 0.5, -0.5],
+    [rLeg, 'rLeg', colors.rLeg, 0.5, -1],
+    [lLeg, 'lLeg', colors.lLeg, -0.5, -1],
   ]) {
-    const m = block(plastic(c), 1, 2, 1);
+    const m = bodyPart(part, c, 1, 2, 1);
     m.position.set(x, y, 0);
     j.add(m);
   }

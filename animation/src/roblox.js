@@ -35,6 +35,13 @@ export const BRICK = {
   lightStoneGrey: 0xe5e4df,
   brickYellow: 0xd7c59a,
   darkOrange: 0xa05f35,
+  pink: 0xff98dc,
+  hotPink: 0xff66cc,
+  royalPurple: 0x6225d1,
+  deepBlue: 0x2154b9,
+  navyBlue: 0x002060,
+  oliveGreen: 0x828a5d,
+  lilac: 0xa75edb,
 };
 
 // How many studs one texture repeat covers, per material.
@@ -159,18 +166,18 @@ export function wedge(assets, size, pos, color, material = 'Plastic', rotY = 0) 
  * Returns the sun so a scene can move its shadow camera to follow the action.
  */
 export function robloxLighting(scene, renderer, assets) {
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = THREE.NeutralToneMapping; // keeps BrickColors true (ACES pushes Bright yellow toward lime)
   renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   scene.background = assets.sky;
   scene.environment = assets.env;
-  scene.environmentIntensity = 0.6;
+  scene.environmentIntensity = 0.12; // Roblox ambient is neutral grey, not sky blue
   scene.fog = new THREE.Fog(0xbfdcf2, 120, 600);
 
-  scene.add(new THREE.HemisphereLight(0xcfe3ff, 0x8a8a80, 0.55));
-  const sun = new THREE.DirectionalLight(0xfff1dc, 2.6);
+  scene.add(new THREE.HemisphereLight(0xf4f2ee, 0xa8a196, 1.35));
+  const sun = new THREE.DirectionalLight(0xfff4e6, 2.3);
   sun.position.set(30, 60, 40);
   sun.castShadow = true;
   sun.shadow.mapSize.set(4096, 4096);

@@ -29,7 +29,8 @@ from rbx_mesh import read_mesh  # noqa: E402
 REPO = Path(__file__).resolve().parent.parent
 OUT = REPO / "animation" / "assets" / "rbx" / "accessories"
 CACHE = Path(os.environ.get("RBX_CACHE", REPO / "tools" / ".cache"))
-SUBCATEGORIES = {"hair": (18, 20), "face": (11, 21), "hat": (11, 54)}
+SUBCATEGORIES = {"hair": (18, 20), "face": (11, 21), "hat": (11, 54), "shirt": (3, 56), "pants": (3, 57)}
+CLOTHING = REPO / "animation" / "assets" / "rbx" / "clothing"
 TEXTURE_MAX = 512
 
 # Attachments on the classic R6 head, relative to the head's centre (Roblox space).
@@ -267,6 +268,23 @@ def build(aid, slug, kind, key=False):
     return model
 
 
+def clothing(aid, slug):
+    """Download a classic Shirt or Pants template (585x559) to assets/rbx/clothing/<slug>.png."""
+    insts = load(fetch(aid))
+    for i in insts:
+        for prop in ("ShirtTemplate", "PantsTemplate"):
+            tid = asset_id(i.props.get(prop, ""))
+            if tid:
+                CLOTHING.mkdir(parents=True, exist_ok=True)
+                im = Image.open(io.BytesIO(fetch(tid))).convert("RGBA")
+                if im.size != (585, 559):
+                    im = im.resize((585, 559), Image.LANCZOS)
+                im.save(CLOTHING / f"{slug}.png")
+                print(f"clothing {slug}: {prop} {tid}")
+                return
+    raise RuntimeError("no ShirtTemplate/PantsTemplate in asset")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     sp = ap.add_subparsers(dest="cmd", required=True)
@@ -284,6 +302,9 @@ def main() -> None:
     b.add_argument("slug")
     b.add_argument("--kind", default="hair")
     b.add_argument("--key", action="store_true", help="make a face mask's skin colour transparent")
+    c = sp.add_parser("clothing")
+    c.add_argument("asset", type=int)
+    c.add_argument("slug")
     a = ap.parse_args()
     if a.cmd == "search":
         items = search(a.sub, a.keyword, a.pages, a.sort)
@@ -291,6 +312,8 @@ def main() -> None:
         print(len(items), "items ->", a.out)
     elif a.cmd == "sheet":
         sheet(json.loads(Path(a.list).read_text()), a.png)
+    elif a.cmd == "clothing":
+        clothing(a.asset, a.slug)
     else:
         build(a.asset, a.slug, a.kind, a.key)
 

@@ -45,7 +45,7 @@ export function accessory(slug) {
     if (!a) throw new Error(`accessory ${slug} not loaded (add it to meta.accessories)`);
     const mesh = new THREE.Mesh(a.geometry, a.material);
     mesh.position.y = 0.5; // head centre sits 0.5 above the neck joint
-    mesh.castShadow = a.kind !== 'face';
+    mesh.castShadow = false; // hair shadows darken the whole face at this sun angle
     mesh.receiveShadow = true;
     if (a.kind === 'face') mesh.renderOrder = 1;
     neck.add(mesh);

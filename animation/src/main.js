@@ -5,11 +5,23 @@ import { createRenderer, loadTextures } from './world.js';
 import { loadRobloxAssets, robloxLighting } from './roblox.js';
 import { loadHeadMesh } from './r6.js';
 import { loadAccessories } from './accessories.js';
+import { loadClothing } from './clothing.js';
 
 const params = new URLSearchParams(location.search);
 const name = params.get('scene') || 'kick';
 const scale = Number(params.get('scale') || 1);
 const { meta, setup } = await import(`../scenes/${name}.js`);
+
+// Roblox's fonts: Fredoka One for signs and screens, Montserrat Black for captions.
+await Promise.all(
+  [
+    ['Fredoka One', 'FredokaOne-Regular.ttf'],
+    ['Montserrat Black', 'Montserrat-Black.ttf'],
+  ].map(async ([family, file]) => {
+    const f = new FontFace(family, `url(/animation/assets/fonts/${file})`);
+    document.fonts.add(await f.load());
+  }),
+);
 
 const width = Math.round(meta.width * scale);
 const height = Math.round(meta.height * scale);
@@ -21,6 +33,7 @@ const [assets, faces] = await Promise.all([
   loadTextures(Object.fromEntries((meta.faces ?? []).map((f) => [f, `/assets/faces/png/${f}.png`]))),
   loadHeadMesh(),
   loadAccessories(meta.accessories ?? []),
+  loadClothing(meta.clothing ?? []),
 ]);
 const sun = robloxLighting(scene, renderer, assets);
 const update = setup({ scene, camera, renderer, assets, faces, sun });
