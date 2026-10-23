@@ -4,3 +4,5 @@ __pycache__/
 assets/voice/*/lines/
 animation/out/*-stills/
 animation/out/*-parts/
+# Full-length renders are too big for the repo (GitHub warns over 50 MB); they're delivered directly.
+animation/out/twinkletoes.mp4
