@@ -1,0 +1,1088 @@
+// Detailed interiors for school stories, built like a Roblox showcase build:
+//   buildClassroom  a full classroom (ceiling tiles, lights, whiteboard, desks with clutter,
+//                   windows onto a schoolyard) with the hallway outside its door.
+//   buildBedroom    a teenager's bedroom at night (gaming desk, LED strip, lamp, posters).
+// Static parts are baked into merged meshes (bake.js); the returned handles are the parts
+// that shots animate (the classroom door) or switch on (the bedroom's lights).
+import * as THREE from 'three';
+import { BRICK, part, cylinder, ball } from './roblox.js';
+import * as P from './props.js';
+import { bake } from './bake.js';
+import { rng } from './world.js';
+
+const FONT = '"Fredoka One"';
+const BOOKS = [0xc4281c, 0x0d69ac, 0xf5cd30, 0x4b974b, 0x6225d1, 0xda8541, 0x1b2a35, 0xff98dc, 0x80bbdc, 0xa4bd47, 0xf2f3f3, 0x7c5c46];
+
+// ---- helpers --------------------------------------------------------------------------
+
+const box = (g, a, size, pos, color, mat = 'Plastic', shadows = true) => {
+  const m = part(a, size, pos, color, mat, { shadows });
+  g.add(m);
+  return m;
+};
+
+const put = (g, obj, x, y, z, ry = 0) => {
+  obj.position.set(x, y, z);
+  obj.rotation.y = ry;
+  g.add(obj);
+  return obj;
+};
+
+/** A flat picture (poster, board writing, screen) facing +z, `w` x `h` studs. */
+function decal(w, h, draw, { ppu = 64, glow = 0, alpha = false } = {}) {
+  const cw = Math.min(2048, Math.round(w * ppu));
+  const ch = Math.min(2048, Math.round(h * ppu));
+  const tex = P.canvasTexture(cw, ch, draw);
+  const mat = new THREE.MeshStandardMaterial({
+    map: tex,
+    roughness: 0.85,
+    alphaTest: alpha ? 0.5 : 0,
+    emissive: glow ? 0xffffff : 0x000000,
+    emissiveMap: glow ? tex : null,
+    emissiveIntensity: glow,
+  });
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
+  m.receiveShadow = true;
+  return m;
+}
+
+/** Puts pictures on the inside faces of a room's walls (x = ±hx, z = ±hz). */
+const mounter = (g, hx, hz) => (m, wall, u, y, out = 0.04) => {
+  if (wall === 'back') m.position.set(u, y, -hz + out);
+  if (wall === 'front') (m.position.set(u, y, hz - out), (m.rotation.y = Math.PI));
+  if (wall === 'left') (m.position.set(-hx + out, y, u), (m.rotation.y = Math.PI / 2));
+  if (wall === 'right') (m.position.set(hx - out, y, u), (m.rotation.y = -Math.PI / 2));
+  g.add(m);
+  return m;
+};
+
+/** A floor or ceiling plane with a repeating canvas texture (`tile` studs per repeat). */
+function texturedPlane(w, d, tile, draw, { up = true, rough = 0.6 } = {}) {
+  const tex = P.canvasTexture(256, 256, draw);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(w / tile, d / tile);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshStandardMaterial({ map: tex, roughness: rough }));
+  m.rotation.x = up ? -Math.PI / 2 : Math.PI / 2;
+  m.receiveShadow = true;
+  return m;
+}
+
+const tileDraw = (c1, c2, seed = 3) => (ctx, w, h) => {
+  const r = rng(seed);
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) {
+    ctx.fillStyle = (i + j) % 2 ? c1 : c2;
+    ctx.fillRect(i * 128, j * 128, 128, 128);
+  }
+  for (let k = 0; k < 1400; k++) {
+    ctx.fillStyle = r() < 0.5 ? `rgba(0,0,0,${0.04 + r() * 0.07})` : `rgba(255,255,255,${0.05 + r() * 0.08})`;
+    ctx.fillRect(r() * w, r() * h, 2 + r() * 2, 2 + r() * 2);
+  }
+  ctx.strokeStyle = 'rgba(0,0,0,0.16)';
+  ctx.lineWidth = 3;
+  for (const p of [0, 128, 256]) {
+    ctx.beginPath();
+    ctx.moveTo(p, 0);
+    ctx.lineTo(p, h);
+    ctx.moveTo(0, p);
+    ctx.lineTo(w, p);
+    ctx.stroke();
+  }
+};
+
+const ceilingDraw = (ctx, w, h) => {
+  const r = rng(11);
+  ctx.fillStyle = '#f1efe9';
+  ctx.fillRect(0, 0, w, h);
+  for (let k = 0; k < 2200; k++) {
+    ctx.fillStyle = `rgba(90,90,90,${0.08 + r() * 0.12})`;
+    ctx.fillRect(r() * w, r() * h, 1.5, 1.5);
+  }
+  ctx.fillStyle = '#c9c7c2';
+  for (const p of [0, 128]) {
+    ctx.fillRect(p, 0, 6, h);
+    ctx.fillRect(0, p, w, 6);
+  }
+};
+
+/** A row of books standing on a shelf, from `from` to `to` along x (or z). */
+function bookRow(g, a, r, { from, to, y, at, depth = 1, alongZ = false, maxH = 1.3 }) {
+  let p = from;
+  while (true) {
+    const w = 0.2 + r() * 0.24;
+    if (p + w > to) break;
+    const h = maxH * (0.68 + r() * 0.32);
+    const d = depth * (0.8 + r() * 0.2);
+    const c = BOOKS[Math.floor(r() * BOOKS.length)];
+    if (alongZ) box(g, a, [d, h, w], [at, y + h / 2, p + w / 2], c);
+    else box(g, a, [w, h, d], [p + w / 2, y + h / 2, at], c);
+    p += w + 0.03;
+    if (r() < 0.07) p += 0.5;
+  }
+}
+
+function tree(g, a, x, z, s = 1, r = Math.random) {
+  g.add(cylinder(a, 0.6 * s, 7 * s, [x, 3.5 * s - 0.2, z], BRICK.reddishBrown, 'Wood'));
+  const greens = [BRICK.brightGreen, BRICK.darkGreen, 0x3f8f3f];
+  g.add(ball(a, 3.2 * s, [x, 8 * s, z], greens[0], 'Grass'));
+  g.add(ball(a, 2.4 * s, [x + 1.8 * s, 6.8 * s, z + 0.8 * s], greens[1 + Math.floor(r() * 2)], 'Grass'));
+  g.add(ball(a, 2.2 * s, [x - 1.7 * s, 7 * s, z - 0.6 * s], greens[1], 'Grass'));
+}
+
+function plant(g, a, x, y, z, s = 1) {
+  g.add(cylinder(a, 0.38 * s, 0.6 * s, [x, y + 0.3 * s, z], 0xb5562f, 'Plastic'));
+  g.add(cylinder(a, 0.42 * s, 0.12 * s, [x, y + 0.6 * s, z], 0x9c4626, 'Plastic'));
+  g.add(ball(a, 0.5 * s, [x, y + 1.05 * s, z], 0x3f8f3f, 'Grass'));
+  g.add(ball(a, 0.35 * s, [x + 0.3 * s, y + 1.35 * s, z + 0.1 * s], BRICK.brightGreen, 'Grass'));
+  g.add(ball(a, 0.32 * s, [x - 0.25 * s, y + 1.4 * s, z - 0.15 * s], BRICK.darkGreen, 'Grass'));
+}
+
+function backpack(g, a, x, y, z, color, ry = 0) {
+  const b = new THREE.Group();
+  box(b, a, [1.3, 1.6, 0.75], [0, 0.8, 0], color, 'Fabric');
+  box(b, a, [1.0, 0.7, 0.3], [0, 0.55, 0.5], color, 'Fabric');
+  box(b, a, [1.32, 0.1, 0.77], [0, 1.25, 0], BRICK.reallyBlack, 'Plastic', false); // zip
+  box(b, a, [0.18, 1.3, 0.12], [-0.4, 0.85, -0.42], BRICK.reallyBlack, 'Fabric');
+  box(b, a, [0.18, 1.3, 0.12], [0.4, 0.85, -0.42], BRICK.reallyBlack, 'Fabric');
+  put(g, b, x, y, z, ry);
+  return b;
+}
+
+// ---- pictures -------------------------------------------------------------------------
+
+function text(ctx, s, x, y, size, color, { align = 'left', font = FONT, stroke = null, sw = 0 } = {}) {
+  ctx.font = `${size}px ${font}`;
+  ctx.textAlign = align;
+  ctx.textBaseline = 'middle';
+  if (stroke) {
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = sw;
+    ctx.strokeStyle = stroke;
+    ctx.strokeText(s, x, y);
+  }
+  ctx.fillStyle = color;
+  ctx.fillText(s, x, y);
+}
+
+const drawBoard = (ctx, w, h) => {
+  const r = rng(5);
+  ctx.fillStyle = '#fbfcfc';
+  ctx.fillRect(0, 0, w, h);
+  for (let k = 0; k < 26; k++) {
+    ctx.fillStyle = 'rgba(110,130,150,0.05)';
+    ctx.beginPath();
+    ctx.ellipse(r() * w, r() * h, 40 + r() * 90, 12 + r() * 30, r() * 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  text(ctx, 'Fractions!', 50, 70, 64, '#1f5fbf');
+  ctx.strokeStyle = '#1f5fbf';
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(50, 110);
+  ctx.lineTo(370, 104);
+  ctx.stroke();
+  text(ctx, '1/2 + 1/4 = 3/4', 60, 175, 50, '#222');
+  text(ctx, '2/3 of 9 = 6', 60, 245, 50, '#222');
+  text(ctx, 'HW: pg. 42  #1-15', 60, 330, 46, '#c4281c');
+  // Pizza, a quarter shaded.
+  const cx = 760, cy = 220, rr = 120;
+  ctx.fillStyle = 'rgba(240,160,60,0.55)';
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, rr, -Math.PI / 2, 0);
+  ctx.fill();
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(cx, cy, rr, 0, Math.PI * 2);
+  ctx.moveTo(cx - rr, cy);
+  ctx.lineTo(cx + rr, cy);
+  ctx.moveTo(cx, cy - rr);
+  ctx.lineTo(cx, cy + rr);
+  ctx.stroke();
+  text(ctx, '1/4', cx + 40, cy - 50, 36, '#222');
+  text(ctx, 'Tue, Oct 24', w - 40, 50, 34, '#444', { align: 'right' });
+  ctx.strokeStyle = '#c4281c';
+  ctx.lineWidth = 5;
+  ctx.strokeRect(w - 300, h - 110, 260, 70);
+  text(ctx, 'QUIZ FRIDAY!', w - 170, h - 75, 36, '#c4281c', { align: 'center' });
+};
+
+const drawBulletin = (ctx, w, h) => {
+  const r = rng(8);
+  ctx.fillStyle = '#c49a6c';
+  ctx.fillRect(0, 0, w, h);
+  for (let k = 0; k < 1600; k++) {
+    ctx.fillStyle = r() < 0.5 ? 'rgba(90,55,25,0.25)' : 'rgba(240,210,170,0.25)';
+    ctx.fillRect(r() * w, r() * h, 2, 2);
+  }
+  ctx.fillStyle = '#ffd21f';
+  ctx.fillRect(20, 14, w - 40, 54);
+  text(ctx, 'STAR STUDENTS', w / 2, 42, 36, '#1b2a35', { align: 'center' });
+  const papers = ['#ffffff', '#ffe08a', '#a8e6ff', '#ffc2e0', '#c8f7c5', '#ffffff'];
+  papers.forEach((c, i) => {
+    const x = 30 + (i % 3) * 118 + r() * 10;
+    const y = 90 + Math.floor(i / 3) * 112 + r() * 8;
+    ctx.save();
+    ctx.translate(x + 45, y + 45);
+    ctx.rotate((r() - 0.5) * 0.25);
+    ctx.fillStyle = 'rgba(0,0,0,0.18)';
+    ctx.fillRect(-42, -40, 90, 96);
+    ctx.fillStyle = c;
+    ctx.fillRect(-45, -45, 90, 96);
+    ctx.fillStyle = 'rgba(60,60,80,0.55)';
+    for (let l = 0; l < 5; l++) ctx.fillRect(-35, -25 + l * 15, 50 + r() * 20, 4);
+    if (i % 2 === 0) text(ctx, 'A+', 20, 30, 26, '#c4281c', { align: 'center' });
+    ctx.fillStyle = ['#e53935', '#1e88e5', '#43a047'][i % 3];
+    ctx.beginPath();
+    ctx.arc(0, -38, 7, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+};
+
+const drawCalendar = (ctx, w, h) => {
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#ef7d22';
+  ctx.fillRect(0, 0, w, 52);
+  text(ctx, 'OCTOBER', w / 2, 28, 34, '#ffffff', { align: 'center' });
+  const cw = w / 7, top = 66, rh = (h - top - 8) / 5;
+  ctx.strokeStyle = '#d9d9d9';
+  ctx.lineWidth = 2;
+  for (let d = 1; d <= 31; d++) {
+    const k = d + 3; // Oct 1 is a Thursday
+    const col = k % 7, row = Math.floor(k / 7);
+    const x = col * cw, y = top + row * rh;
+    if (row > 4) continue;
+    ctx.strokeRect(x, y, cw, rh);
+    text(ctx, String(d), x + 6, y + 12, 15, '#444');
+    if (d < 24) {
+      ctx.strokeStyle = 'rgba(196,40,28,0.7)';
+      ctx.beginPath();
+      ctx.moveTo(x + 6, y + 8);
+      ctx.lineTo(x + cw - 6, y + rh - 6);
+      ctx.stroke();
+      ctx.strokeStyle = '#d9d9d9';
+    }
+    if (d === 24) {
+      ctx.strokeStyle = '#c4281c';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(x + cw / 2, y + rh / 2, rh / 2.2, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.strokeStyle = '#d9d9d9';
+      ctx.lineWidth = 2;
+    }
+    if (d === 31) {
+      ctx.fillStyle = '#ef7d22';
+      ctx.beginPath();
+      ctx.arc(x + cw / 2, y + rh / 2 + 4, 10, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+};
+
+const drawRules = (ctx, w, h) => {
+  ctx.fillStyle = '#d6f5d0';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#2f8f46';
+  ctx.fillRect(0, 0, w, 44);
+  text(ctx, 'CLASS RULES', w / 2, 23, 26, '#ffffff', { align: 'center' });
+  ['1. Be kind', '2. Raise your hand', '3. Be on time', '4. Do your best'].forEach((s, i) => text(ctx, s, 12, 72 + i * 34, 18, '#1b2a35'));
+  text(ctx, '5. NO PHONES!', 12, 72 + 4 * 34, 20, '#c4281c');
+};
+
+const drawKind = (ctx, w, h) => {
+  ctx.fillStyle = '#ffc2e0';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#ff4d8d';
+  const cx = w / 2, cy = h * 0.42, s = w * 0.28;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy + s);
+  ctx.bezierCurveTo(cx - s * 2, cy - s * 0.2, cx - s * 0.6, cy - s * 1.6, cx, cy - s * 0.5);
+  ctx.bezierCurveTo(cx + s * 0.6, cy - s * 1.6, cx + s * 2, cy - s * 0.2, cx, cy + s);
+  ctx.fill();
+  text(ctx, 'BE KIND', w / 2, h * 0.85, 40, '#ffffff', { align: 'center', stroke: '#c2185b', sw: 8 });
+};
+
+const drawMath = (ctx, w, h) => {
+  ctx.fillStyle = '#1b2a55';
+  ctx.fillRect(0, 0, w, h);
+  const r = rng(2);
+  for (let k = 0; k < 40; k++) text(ctx, ['+', '÷', '×', '=', '%', '√'][k % 6], r() * w, r() * h, 16 + r() * 14, 'rgba(255,255,255,0.18)');
+  text(ctx, 'π', w / 2, h * 0.4, 130, '#ffd21f', { align: 'center' });
+  text(ctx, 'MATH IS', w / 2, h * 0.74, 30, '#ffffff', { align: 'center' });
+  text(ctx, 'EVERYWHERE', w / 2, h * 0.86, 30, '#ffffff', { align: 'center' });
+};
+
+const drawMap = (ctx, w, h) => {
+  ctx.fillStyle = '#5aa9e6';
+  ctx.fillRect(0, 0, w, h);
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+  ctx.lineWidth = 2;
+  for (let x = 0; x < w; x += w / 12) (ctx.beginPath(), ctx.moveTo(x, 0), ctx.lineTo(x, h), ctx.stroke());
+  for (let y = 0; y < h; y += h / 8) (ctx.beginPath(), ctx.moveTo(0, y), ctx.lineTo(w, y), ctx.stroke());
+  const land = [
+    // [x, y, rx, ry] as fractions: the Americas, Europe/Africa, Asia, Australia, Antarctica.
+    [0.2, 0.3, 0.09, 0.12], [0.24, 0.42, 0.05, 0.08], [0.28, 0.62, 0.05, 0.14], [0.49, 0.3, 0.05, 0.07],
+    [0.52, 0.55, 0.07, 0.15], [0.68, 0.32, 0.14, 0.12], [0.74, 0.5, 0.05, 0.06], [0.83, 0.7, 0.06, 0.05], [0.5, 0.96, 0.4, 0.04],
+  ];
+  const cols = ['#7cc576', '#a5d46a', '#e8c872', '#7cc576', '#c9e07a', '#8fd18a', '#a5d46a', '#e8c872', '#f4f4f4'];
+  land.forEach(([x, y, rx, ry], i) => {
+    ctx.fillStyle = cols[i];
+    ctx.beginPath();
+    ctx.ellipse(x * w, y * h, rx * w, ry * h, (i - 4) * 0.2, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(w / 2 - 130, 10, 260, 44);
+  text(ctx, 'WORLD MAP', w / 2, 33, 32, '#1b2a35', { align: 'center' });
+  ctx.strokeStyle = '#7c5c46';
+  ctx.lineWidth = 14;
+  ctx.strokeRect(0, 0, w, h);
+};
+
+const drawClock = (ctx, w, h) => {
+  const c = w / 2;
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(c, c, c - 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#222';
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2;
+    ctx.save();
+    ctx.translate(c + Math.sin(a) * c * 0.82, c - Math.cos(a) * c * 0.82);
+    ctx.rotate(a);
+    ctx.fillRect(-3, -10, 6, 20);
+    ctx.restore();
+  }
+  for (const [n, a] of [['12', 0], ['3', 0.25], ['6', 0.5], ['9', 0.75]])
+    text(ctx, n, c + Math.sin(a * Math.PI * 2) * c * 0.62, c - Math.cos(a * Math.PI * 2) * c * 0.62, 30, '#222', { align: 'center' });
+  const hand = (frac, len, wid, col) => {
+    ctx.save();
+    ctx.translate(c, c);
+    ctx.rotate(frac * Math.PI * 2);
+    ctx.fillStyle = col;
+    ctx.fillRect(-wid / 2, -len, wid, len + 10);
+    ctx.restore();
+  };
+  hand((8 + 5 / 60) / 12, c * 0.45, 9, '#222'); // 8:05
+  hand(5 / 60, c * 0.7, 6, '#222');
+  hand(38 / 60, c * 0.75, 2, '#c4281c');
+};
+
+const drawBunting = (ctx, w, h) => {
+  const cols = ['#e53935', '#fdd835', '#43a047', '#1e88e5', '#8e24aa', '#fb8c00'];
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(0, 6);
+  for (let x = 0; x <= w; x += 8) ctx.lineTo(x, 6 + Math.sin((x / w) * Math.PI * 6) * 4);
+  ctx.stroke();
+  const n = 30;
+  for (let i = 0; i < n; i++) {
+    const x = (i + 0.5) * (w / n);
+    ctx.fillStyle = cols[i % cols.length];
+    ctx.beginPath();
+    ctx.moveTo(x - 22, 8);
+    ctx.lineTo(x + 22, 8);
+    ctx.lineTo(x, h - 4);
+    ctx.fill();
+  }
+};
+
+const drawRug = (ctx, w, h) => {
+  const cols = ['#e53935', '#fb8c00', '#fdd835', '#43a047', '#1e88e5', '#8e24aa'];
+  cols.forEach((c, i) => {
+    ctx.fillStyle = c;
+    ctx.beginPath();
+    ctx.arc(w / 2, h / 2, (w / 2) * (1 - i / cols.length), 0, Math.PI * 2);
+    ctx.fill();
+  });
+};
+
+const signDraw = (lines, bg, fg, { stroke = null, border = null } = {}) => (ctx, w, h) => {
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, w, h);
+  if (border) {
+    ctx.strokeStyle = border;
+    ctx.lineWidth = h * 0.07;
+    ctx.strokeRect(0, 0, w, h);
+  }
+  const lh = h / (lines.length + 0.3);
+  lines.forEach((l, i) => P.drawText(ctx, l, w / 2, lh * (i + 0.65), w * 0.88, lh * 0.8, { color: fg, stroke: stroke ?? '#000', strokeW: stroke ? lh * 0.1 : 0 }));
+};
+
+// ---- the classroom --------------------------------------------------------------------
+
+const WALL = 0xece4cf;
+const WAINSCOT = 0x6f93ad;
+const TRIM = 0xf4f1ea;
+const FRAME = 0x9a9ea5;
+const DESK_TOP = 0xd2ad74;
+
+/**
+ * A classroom at `o`: interior x -17.5..17.5, z -14.5..14.5, 13 studs high. The board is on
+ * the back wall (-z), windows on the left (-x), the door on the right (+x) at z 6.5..10.5
+ * opening into a hallway. `desks` are [x, z] desk rows (students face -z and sit `seatDz`
+ * behind their desk). Returns { door } — a pivot to rotate (0 shut, ~1.6 wide open).
+ */
+export function buildClassroom(scene, a, o, { desks = [], seatDz = 1.05, seed = 1 } = {}) {
+  const r = rng(seed);
+  const g = new THREE.Group();
+  const mount = mounter(g, 17.5, 14.5);
+
+  // Floor, ceiling, walls (walls and ceiling don't block the sun, like an open-top build).
+  box(g, a, [36, 1, 30], [0, -0.5, 0], 0x9b9b95, 'Concrete', false);
+  put(g, texturedPlane(36, 30, 8, tileDraw('#e9e3d3', '#d3d6d2')), 0, 0.01, 0);
+  put(g, texturedPlane(36, 30, 8, ceilingDraw, { up: false, rough: 0.9 }), 0, 13, 0);
+  box(g, a, [37, 0.6, 31], [0, 13.31, 0], TRIM, 'Plastic', false);
+  const wall = (size, pos) => box(g, a, size, pos, WALL, 'Plastic', false);
+  wall([36, 13, 1], [0, 6.5, -15]);
+  wall([36, 13, 1], [0, 6.5, 15]);
+  // Left wall: three window openings (z -11..-5, -3..3, 5..11; y 3.8..10).
+  wall([1, 3.8, 30], [-18, 1.9, 0]);
+  wall([1, 3, 30], [-18, 11.5, 0]);
+  for (const [z, len] of [[-13, 4], [-4, 2], [4, 2], [13, 4]]) wall([1, 6.2, len], [-18, 6.9, z]);
+  // Right wall: doorway at z 6.5..10.5, 7.6 high.
+  wall([1, 13, 21.5], [18, 6.5, -4.25]);
+  wall([1, 13, 4.5], [18, 6.5, 12.75]);
+  wall([1, 5.4, 4], [18, 10.3, 8.5]);
+  // Two-tone walls: blue wainscot, a white chair rail and dark baseboards.
+  const lower = (size, pos) => {
+    box(g, a, size, pos, WAINSCOT, 'Plastic', false);
+    const [sx, , sz] = size;
+    box(g, a, [sx + (sx > 1 ? 0 : 0.08), 0.25, sz + (sz > 1 ? 0 : 0.08)], [pos[0], 3.3, pos[2]], TRIM, 'Plastic', false);
+    box(g, a, [sx + (sx > 1 ? 0 : 0.1), 0.5, sz + (sz > 1 ? 0 : 0.1)], [pos[0], 0.25, pos[2]], 0x55595f, 'Plastic', false);
+  };
+  lower([35, 3.2, 0.1], [0, 1.6, -14.45]);
+  lower([35, 3.2, 0.1], [0, 1.6, 14.45]);
+  lower([0.1, 3.2, 29], [-17.45, 1.6, 0]);
+  lower([0.1, 3.2, 21.3], [17.45, 1.6, -4.35]);
+  lower([0.1, 3.2, 4.3], [17.45, 1.6, 12.85]);
+
+  // Ceiling lights, projector, vent, smoke detector, speaker.
+  for (const x of [-9, 0, 9])
+    for (const z of [-8, 0, 8]) {
+      box(g, a, [2.8, 0.18, 5.4], [x, 12.9, z], TRIM, 'Metal', false);
+      box(g, a, [2.4, 0.06, 5.0], [x, 12.8, z], 0xfdfcf2, 'Neon', false);
+      for (const s of [-0.6, 0.6]) box(g, a, [0.05, 0.08, 5.0], [x + s, 12.77, z], 0xd8d8d8, 'Metal', false);
+    }
+  box(g, a, [0.18, 0.9, 0.18], [0, 12.5, -2], FRAME, 'Metal');
+  box(g, a, [1.8, 0.65, 1.5], [0, 11.8, -2], 0xe6e6e6, 'Plastic');
+  const lens = cylinder(a, 0.28, 0.25, [0, 11.8, -2.85], 0x222222, 'Plastic');
+  lens.rotation.x = Math.PI / 2;
+  g.add(lens);
+  box(g, a, [2.2, 0.06, 2.2], [13, 12.96, 4], 0xdcdcdc, 'Metal', false);
+  for (let k = -3; k <= 3; k++) box(g, a, [1.9, 0.07, 0.08], [13, 12.93, 4 + k * 0.27], 0x8a8a8a, 'Metal', false);
+  g.add(cylinder(a, 0.32, 0.12, [5, 12.94, 3], 0xf8f8f8, 'Plastic'));
+  box(g, a, [1.4, 0.08, 1.4], [-13, 12.95, -12], 0xe0ddd5, 'Fabric', false);
+
+  // ---- back wall: whiteboard, banner, bunting, clock, bulletin board, calendar, rules
+  box(g, a, [18, 6.5, 0.12], [0, 6.5, -14.43], 0xfafafa, 'Plastic', false);
+  mount(decal(18, 6.5, drawBoard, { ppu: 64 }), 'back', 0, 6.5, 0.1);
+  for (const y of [3.18, 9.82]) box(g, a, [18.5, 0.28, 0.35], [0, y, -14.35], 0xc0c4c8, 'Metal');
+  for (const x of [-9.1, 9.1]) box(g, a, [0.28, 6.9, 0.35], [x, 6.5, -14.35], 0xc0c4c8, 'Metal');
+  box(g, a, [16, 0.14, 0.7], [0, 3.1, -14.05], 0xc0c4c8, 'Metal');
+  [[0x1f5fbf, -5], [0xc4281c, -4.4], [0x111111, -3.8], [0x2f8f46, -3.2]].forEach(([c, x]) => {
+    const marker = cylinder(a, 0.09, 0.75, [x, 3.27, -13.95], c, 'Plastic');
+    marker.rotation.z = Math.PI / 2;
+    g.add(marker);
+  });
+  box(g, a, [1.1, 0.3, 0.45], [4, 3.32, -14.0], 0x222222, 'Fabric');
+  box(g, a, [1.1, 0.14, 0.45], [4, 3.53, -14.0], 0x8a5a3a, 'Wood');
+  mount(decal(11, 1.4, signDraw(["MS. PARKER'S CLASS"], '#ffd21f', '#1b2a35', { border: '#1b2a35' })), 'back', 0, 11.05, 0.06);
+  mount(decal(34, 1, drawBunting, { ppu: 40, alpha: true }), 'back', 0, 12.35, 0.08);
+  const rim = cylinder(a, 1.12, 0.22, [13.6, 11.0, -14.38], 0x1b2a35, 'Plastic');
+  rim.rotation.x = Math.PI / 2;
+  g.add(rim);
+  mount(decal(2.1, 2.1, drawClock, { ppu: 128, alpha: true }), 'back', 13.6, 11.0, 0.24);
+  box(g, a, [6.4, 5.4, 0.25], [-13.2, 6.6, -14.4], 0x8a5a3a, 'Wood');
+  mount(decal(6, 5, drawBulletin), 'back', -13.2, 6.6, 0.16);
+  mount(decal(4, 4.5, drawCalendar), 'back', 12.0, 6.6, 0.05);
+  mount(decal(2.6, 3.6, drawRules), 'back', 15.6, 6.6, 0.05);
+  // Low bookshelf under the bulletin board.
+  box(g, a, [6.4, 0.25, 1.6], [-13.2, 3.0, -13.6], 0xd8b98a, 'WoodPlanks');
+  box(g, a, [6.4, 0.25, 1.6], [-13.2, 1.5, -13.6], 0xd8b98a, 'WoodPlanks');
+  box(g, a, [6.4, 0.25, 1.6], [-13.2, 0.12, -13.6], 0xd8b98a, 'WoodPlanks');
+  for (const x of [-16.3, -10.1]) box(g, a, [0.25, 3.1, 1.6], [x, 1.55, -13.6], 0xd8b98a, 'WoodPlanks');
+  bookRow(g, a, r, { from: -16.1, to: -10.3, y: 0.25, at: -13.6, depth: 1.2, maxH: 1.15 });
+  bookRow(g, a, r, { from: -16.1, to: -10.3, y: 1.63, at: -13.6, depth: 1.2, maxH: 1.2 });
+  plant(g, a, -11, 3.12, -13.6, 0.9);
+  box(g, a, [1.2, 0.9, 0.9], [-14.8, 3.57, -13.6], 0x1e88e5, 'Plastic'); // pencil bin
+
+  // ---- teacher's desk, chair, filing cabinet with a globe, trash can
+  const td = new THREE.Group();
+  box(td, a, [7, 0.35, 3.2], [0, 3.2, 0], 0x7a5134, 'Wood');
+  box(td, a, [2.4, 3.0, 2.9], [2.2, 1.5, 0], 0x6b4a33, 'Wood');
+  for (const y of [0.6, 1.5, 2.4]) {
+    box(td, a, [2.2, 0.75, 0.06], [2.2, y, 1.47], 0x80583a, 'Wood', false);
+    box(td, a, [0.6, 0.12, 0.12], [2.2, y + 0.1, 1.53], 0xc0c4c8, 'Metal', false);
+  }
+  box(td, a, [0.3, 3.0, 2.9], [-3.35, 1.5, 0], 0x6b4a33, 'Wood');
+  box(td, a, [6.4, 1.8, 0.12], [-0.2, 2.1, 1.4], 0x6b4a33, 'Wood');
+  // On the desk: monitor (facing the teacher, -z), keyboard, mouse, mug, papers, apple, books, nameplate, plant.
+  box(td, a, [2.6, 1.6, 0.18], [-1.2, 4.55, 0.6], 0x1b1b1b, 'Plastic');
+  box(td, a, [2.4, 1.4, 0.02], [-1.2, 4.55, 0.5], 0x86b8e8, 'Neon', false);
+  box(td, a, [0.25, 0.6, 0.25], [-1.2, 3.65, 0.65], 0x1b1b1b, 'Plastic');
+  box(td, a, [1.0, 0.08, 0.6], [-1.2, 3.41, 0.65], 0x1b1b1b, 'Plastic');
+  box(td, a, [2.0, 0.1, 0.7], [-1.2, 3.42, -0.55], 0x2a2a2a, 'Plastic');
+  box(td, a, [0.3, 0.1, 0.45], [0.25, 3.42, -0.55], 0x2a2a2a, 'Plastic');
+  td.add(cylinder(a, 0.28, 0.6, [1.6, 3.67, -0.6], 0xff6f91, 'Plastic'));
+  [[0xf5cd30, 0.1], [0x1f5fbf, -0.08], [0xc4281c, 0.04]].forEach(([c, dx], i) => {
+    const p = cylinder(a, 0.05, 0.9, [1.6 + dx, 4.05, -0.6 + (i - 1) * 0.08], c, 'Plastic');
+    p.rotation.z = dx;
+    td.add(p);
+  });
+  for (let k = 0; k < 6; k++) box(td, a, [1.5, 0.04, 2.0], [2.4 + (r() - 0.5) * 0.12, 3.4 + k * 0.045, 0.1 + (r() - 0.5) * 0.12], 0xfafafa, 'Plastic', false);
+  td.add(ball(a, 0.36, [-2.8, 3.73, 0.6], BRICK.brightRed, 'Plastic'));
+  box(td, a, [0.08, 0.25, 0.08], [-2.8, 4.12, 0.6], 0x5a3a1a, 'Wood');
+  box(td, a, [1.4, 0.35, 1.0], [-2.6, 3.55, -0.6], 0x0d69ac, 'Plastic');
+  box(td, a, [1.3, 0.3, 0.95], [-2.6, 3.88, -0.6], 0xf5cd30, 'Plastic');
+  const plate = decal(2.2, 0.5, signDraw(['Ms. Parker'], '#1b2a35', '#ffd21f'));
+  put(td, plate, 0.4, 3.65, 1.41);
+  box(td, a, [2.3, 0.6, 0.3], [0.4, 3.63, 1.25], 0x1b2a35, 'Plastic');
+  plant(td, a, 3.1, 3.38, 1.0, 0.7);
+  put(g, td, 9.5, 0, -10);
+  // Rolling chair behind the desk.
+  const tc = new THREE.Group();
+  box(tc, a, [2, 0.4, 2], [0, 2.0, 0], 0x1b1b1b, 'Fabric');
+  box(tc, a, [2, 2.6, 0.35], [0, 3.5, -0.95], 0x1b1b1b, 'Fabric');
+  tc.add(cylinder(a, 0.12, 1.6, [0, 1.0, 0], 0x666666, 'Metal'));
+  for (let k = 0; k < 5; k++) {
+    const leg = part(a, [0.2, 0.15, 1.2], [Math.sin((k / 5) * Math.PI * 2) * 0.6, 0.25, Math.cos((k / 5) * Math.PI * 2) * 0.6], 0x333333, 'Metal');
+    leg.rotation.y = (k / 5) * Math.PI * 2;
+    tc.add(leg);
+  }
+  put(g, tc, 9.5, 0, -12.7, 0.3);
+  put(g, P.filingCabinet(a), 15.8, 0, -13.2);
+  g.add(cylinder(a, 0.4, 0.2, [15.8, 5.1, -13.2], 0x7a5134, 'Wood'));
+  box(g, a, [0.1, 1.0, 0.1], [15.8, 5.6, -13.2], 0xe2b33c, 'Metal');
+  const globe = ball(a, 0.9, [15.8, 6.6, -13.2], 0x3d8fd6, 'Plastic');
+  g.add(globe);
+  g.add(ball(a, 0.5, [16.2, 6.85, -12.65], 0x6fbf5a, 'Grass'));
+  g.add(ball(a, 0.42, [15.3, 6.3, -12.5], 0x6fbf5a, 'Grass'));
+  g.add(cylinder(a, 0.6, 1.6, [13.6, 0.8, -8.6], 0x5d6066, 'Plastic'));
+  g.add(ball(a, 0.3, [13.5, 1.55, -8.5], 0xffffff, 'Plastic'));
+
+  // ---- left wall: windows with blinds and plants, cabinets with books and a fish tank
+  for (const zc of [-8, 0, 8]) {
+    for (const y of [3.95, 9.85]) box(g, a, [1.2, 0.3, 6.3], [-18, y, zc], TRIM, 'Plastic', false);
+    for (const dz of [-3.0, 3.0]) box(g, a, [1.2, 6.2, 0.3], [-18, 6.9, zc + dz], TRIM, 'Plastic', false);
+    box(g, a, [0.3, 6.0, 0.2], [-18, 6.9, zc], TRIM, 'Plastic', false);
+    box(g, a, [0.3, 0.2, 6.0], [-18, 7.9, zc], TRIM, 'Plastic', false);
+    const glass = part(a, [0.08, 6, 6], [-18, 6.9, zc], 0xd8eef8, 'Glass', { shadows: false, mat: { opacity: 0.18 } });
+    g.add(glass);
+    box(g, a, [1.0, 0.2, 6.6], [-17.2, 3.9, zc], TRIM, 'Plastic');
+    // Blinds pulled half down.
+    box(g, a, [0.35, 0.35, 6.2], [-17.25, 9.85, zc], 0xf2f0e8, 'Plastic', false);
+    for (let k = 0; k < 6; k++) box(g, a, [0.22, 0.05, 5.9], [-17.3, 9.55 - k * 0.3, zc], 0xf2f0e8, 'Plastic', false);
+    box(g, a, [0.3, 0.1, 5.95], [-17.3, 7.7, zc], 0xe0ddd0, 'Plastic', false);
+    box(g, a, [0.04, 2.0, 0.04], [-17.2, 8.6, zc + 2.7], 0xdddddd, 'Plastic', false);
+    plant(g, a, -17.2, 4.0, zc + 1.8, 0.8);
+  }
+  box(g, a, [1.7, 3.0, 26], [-16.6, 1.5, 0], 0xd8b98a, 'WoodPlanks');
+  box(g, a, [1.9, 0.2, 26.2], [-16.55, 3.1, 0], 0x6b4a33, 'Wood');
+  for (let z = -11.5; z <= 11.5; z += 3.3) {
+    box(g, a, [0.06, 2.4, 3.0], [-15.73, 1.5, z], 0xc9a978, 'WoodPlanks', false);
+    box(g, a, [0.12, 0.6, 0.12], [-15.66, 1.9, z + 1.1], 0xc0c4c8, 'Metal', false);
+  }
+  bookRow(g, a, r, { from: 2.5, to: 6.5, y: 3.2, at: -16.6, depth: 1.1, alongZ: true, maxH: 1.0 });
+  bookRow(g, a, r, { from: -3.2, to: -1.0, y: 3.2, at: -16.6, depth: 1.1, alongZ: true, maxH: 1.0 });
+  // Fish tank.
+  const tank = new THREE.Group();
+  box(tank, a, [1.4, 0.15, 3.2], [0, 0.07, 0], 0x1b1b1b, 'Plastic');
+  box(tank, a, [1.3, 0.3, 3.1], [0, 0.28, 0], 0xd9c7a0, 'Sand');
+  tank.add(part(a, [1.2, 1.3, 3.0], [0, 0.95, 0], 0x3fa9f5, 'Glass', { shadows: false, mat: { opacity: 0.35 } }));
+  tank.add(part(a, [1.4, 1.6, 3.2], [0, 0.85, 0], 0xe8f6ff, 'Glass', { shadows: false, mat: { opacity: 0.12 } }));
+  box(tank, a, [1.45, 0.12, 3.25], [0, 1.7, 0], 0x1b1b1b, 'Plastic');
+  for (const [y, z, c] of [[0.9, -0.6, 0xff8c1a], [1.2, 0.5, 0xffd21f], [0.7, 1.0, 0xff5a5a]]) {
+    box(tank, a, [0.2, 0.25, 0.4], [0, y, z], c, 'Plastic', false);
+    box(tank, a, [0.1, 0.25, 0.15], [0, y, z + 0.25], c, 'Plastic', false);
+  }
+  for (const z of [-1.1, 0.9]) {
+    box(tank, a, [0.1, 0.8, 0.1], [0, 0.8, z], 0x2f8f46, 'Grass', false);
+    box(tank, a, [0.1, 0.55, 0.1], [0, 0.7, z + 0.2], 0x4b974b, 'Grass', false);
+  }
+  put(g, tank, -16.6, 3.2, -8.5);
+
+  // ---- right wall: door frame, exit sign, coat hooks with backpacks, posters, extinguisher
+  for (const z of [6.35, 10.65]) box(g, a, [1.25, 7.6, 0.3], [18, 3.8, z], FRAME, 'Metal', false);
+  box(g, a, [1.25, 0.3, 4.6], [18, 7.75, 8.5], FRAME, 'Metal', false);
+  const exit = decal(2, 0.8, signDraw(['EXIT'], '#ffffff', '#d50000', { border: '#d50000' }), { glow: 0.7 });
+  box(g, a, [0.3, 0.9, 2.1], [17.35, 8.7, 8.5], 0xf2f2f2, 'Plastic');
+  put(g, exit, 17.19, 8.7, 8.5, -Math.PI / 2);
+  box(g, a, [0.35, 0.4, 15], [17.3, 6.2, -6], 0x8a5a3a, 'Wood');
+  const packColors = [0xc4281c, 0x1b2a35, 0x6225d1, 0x2f8f46, 0xff98dc, 0x0d69ac, 0xda8541];
+  for (let k = 0; k < 7; k++) {
+    const z = -12.5 + k * 2.1;
+    box(g, a, [0.5, 0.12, 0.12], [17.05, 6.0, z], 0xc0c4c8, 'Metal', false);
+    if (k !== 3) backpack(g, a, 16.6, 4.3, z, packColors[k], -Math.PI / 2);
+  }
+  mount(decal(3, 4, drawKind), 'right', -10.5, 9.8);
+  mount(decal(3, 4, drawMath), 'right', -4.5, 9.8);
+  mount(decal(1.4, 0.5, signDraw(['FIRE'], '#d50000', '#ffffff')), 'right', 4.4, 5.1);
+  g.add(cylinder(a, 0.3, 1.4, [17.1, 3.2, 4.4], 0xd50000, 'Plastic'));
+  g.add(cylinder(a, 0.12, 0.3, [17.1, 4.05, 4.4], 0x1b1b1b, 'Plastic'));
+  box(g, a, [0.12, 0.8, 0.1], [17.0, 3.4, 4.75], 0x1b1b1b, 'Plastic', false);
+  box(g, a, [0.12, 0.6, 0.4], [17.45, 4.5, 5.7], 0xf8f8f8, 'Plastic', false); // light switch
+  box(g, a, [0.4, 0.9, 0.6], [17.3, 4.6, 11.6], 0xf8f8f8, 'Plastic'); // hand sanitizer
+  box(g, a, [0.2, 0.3, 0.15], [17.15, 4.1, 11.6], 0x80bbdc, 'Plastic', false);
+
+  // ---- front wall: cubbies, tall bookshelf, world map, reading corner, bins
+  const cub = new THREE.Group();
+  box(cub, a, [9.2, 4.6, 1.6], [0, 2.3, 0], 0xf4f1ea, 'WoodPlanks');
+  const binCols = [0xe53935, 0xfdd835, 0x43a047, 0x1e88e5, 0x8e24aa];
+  for (let row = 0; row < 3; row++)
+    for (let col = 0; col < 5; col++) {
+      const x = -3.6 + col * 1.8, y = 0.8 + row * 1.4;
+      box(cub, a, [1.6, 1.15, 0.2], [x, y, -0.75], 0x3b3b3b, 'Plastic', false);
+      box(cub, a, [1.55, 0.9, 1.3], [x, y - 0.05, -0.25], binCols[(row * 2 + col) % 5], 'Plastic');
+    }
+  box(cub, a, [1.2, 0.5, 1.0], [-3, 4.85, 0], 0xff8c1a, 'Plastic');
+  cub.add(ball(a, 0.6, [2.8, 5.2, 0], 0xe0702a, 'Plastic'));
+  put(g, cub, -10.6, 0, 13.6);
+  const shelf = new THREE.Group();
+  box(shelf, a, [5.4, 7.4, 0.2], [0, 3.7, 0.7], 0x8a5a3a, 'Wood');
+  for (const x of [-2.6, 2.6]) box(shelf, a, [0.25, 7.4, 1.6], [x, 3.7, 0], 0x8a5a3a, 'Wood');
+  for (const y of [0.15, 1.95, 3.75, 5.55, 7.3]) box(shelf, a, [5.4, 0.22, 1.6], [0, y, 0], 0x8a5a3a, 'Wood');
+  put(g, shelf, -0.5, 0, 13.65);
+  for (const y of [0.26, 2.06, 3.86, 5.66]) bookRow(g, a, r, { from: -3.0, to: 1.95, y, at: 13.55, depth: 1.25, maxH: 1.5 });
+  mount(decal(8, 5, drawMap), 'front', 9, 7.4);
+  box(g, a, [0.3, 0.3, 0.3], [5.2, 9.8, 14.35], 0xc4281c, 'Plastic', false);
+  put(g, decal(6, 6, drawRug, { alpha: true }), -12.5, 0.03, 9.3).rotation.x = -Math.PI / 2;
+  for (const [x, z, c] of [[-14.3, 10.6, 0xc4281c], [-11.2, 11.1, 0x0d69ac], [-13.2, 8.2, 0xf5cd30]]) {
+    const bag = ball(a, 1.3, [x, 0.75, z], c, 'Fabric');
+    bag.scale.set(1, 0.6, 1);
+    g.add(bag);
+  }
+  g.add(cylinder(a, 0.75, 2.2, [15.6, 1.1, 13.4], 0x5d6066, 'Plastic'));
+  g.add(cylinder(a, 0.75, 2.2, [13.9, 1.1, 13.4], 0x1e88e5, 'Plastic'));
+  mount(decal(1.2, 0.4, signDraw(['RECYCLE'], '#1e88e5', '#ffffff')), 'front', 13.9, 2.8);
+
+  // ---- student desks and chairs, with clutter and backpacks
+  for (const [i, [x, z]] of desks.entries()) {
+    const d = new THREE.Group();
+    box(d, a, [3.4, 0.22, 2.2], [0, 2.86, 0], DESK_TOP, 'WoodPlanks');
+    box(d, a, [3.44, 0.06, 2.24], [0, 2.73, 0], 0x6b5a4a, 'Plastic', false);
+    box(d, a, [3.0, 0.5, 1.9], [0, 2.43, -0.05], 0x5d6066, 'Metal');
+    for (const sx of [-1.45, 1.45]) {
+      for (const sz of [-0.85, 0.85]) d.add(cylinder(a, 0.08, 2.2, [sx, 1.1, sz], 0x8d8f94, 'Metal'));
+      box(d, a, [0.12, 0.12, 1.7], [sx, 0.45, 0], 0x8d8f94, 'Metal', false);
+    }
+    // Clutter: a notebook with a pencil, a textbook, sometimes a water bottle.
+    const nb = BOOKS[i % BOOKS.length];
+    box(d, a, [1.2, 0.05, 1.5], [-0.6 + r() * 0.3, 3.0, 0.1], nb, 'Plastic', false);
+    box(d, a, [1.1, 0.04, 1.4], [-0.6 + r() * 0.3, 3.04, 0.1], 0xfafafa, 'Plastic', false);
+    const pencil = part(a, [0.08, 0.08, 1.0], [0.3, 3.08, 0.3], 0xf5cd30, 'Plastic', { shadows: false });
+    pencil.rotation.y = 0.6 + r();
+    d.add(pencil);
+    if (r() < 0.6) box(d, a, [1.0, 0.3, 1.3], [1.0, 3.12, -0.3], BOOKS[(i * 5 + 3) % BOOKS.length], 'Plastic');
+    if (r() < 0.4) d.add(cylinder(a, 0.18, 0.75, [1.25, 3.35, 0.6], [0x80bbdc, 0xff98dc, 0x43a047][i % 3], 'Plastic'));
+    put(g, d, x, 0, z - 0.4);
+    const c = new THREE.Group();
+    box(c, a, [1.8, 0.22, 1.7], [0, 1.64, 0], 0x2f6fb5, 'Plastic');
+    const back = part(a, [1.8, 1.5, 0.18], [0, 2.75, 0.82], 0x2f6fb5, 'Plastic');
+    back.rotation.x = -0.08;
+    c.add(back);
+    for (const sx of [-0.75, 0.75]) {
+      for (const sz of [-0.7, 0.7]) c.add(cylinder(a, 0.07, 1.55, [sx, 0.77, sz], 0x8d8f94, 'Metal'));
+      box(c, a, [0.1, 1.1, 0.1], [sx * 0.9, 2.1, 0.8], 0x8d8f94, 'Metal', false);
+    }
+    put(g, c, x, 0, z + seatDz + 0.15);
+    if (r() < 0.75) {
+      const bp = backpack(g, a, x + 2.05, 0, z + seatDz + 0.2, packColors[(i * 3) % packColors.length], (r() - 0.5) * 0.8);
+      bp.rotation.x = -0.15;
+    }
+  }
+
+  // ---- the hallway outside the door (x 18.5..32)
+  put(g, texturedPlane(14, 46, 8, tileDraw('#e6e0d0', '#9fb3c4', 9)), 25.25, 0.01, 7.5);
+  box(g, a, [14, 1, 46], [25.25, -0.5, 7.5], 0x9b9b95, 'Concrete', false);
+  put(g, texturedPlane(14, 46, 8, ceilingDraw, { up: false, rough: 0.9 }), 25.25, 13, 7.5);
+  box(g, a, [15, 0.6, 47], [25.25, 13.31, 7.5], TRIM, 'Plastic', false);
+  box(g, a, [1, 13, 46], [32.5, 6.5, 7.5], 0xe9e2cc, 'Plastic', false);
+  box(g, a, [15, 13, 1], [25.25, 6.5, -15.5], 0xe9e2cc, 'Plastic', false);
+  box(g, a, [15, 13, 1], [25.25, 6.5, 30.5], 0xe9e2cc, 'Plastic', false);
+  box(g, a, [0.1, 3.2, 46], [32.0, 1.6, 7.5], 0x7d2f3a, 'Plastic', false);
+  box(g, a, [0.1, 3.2, 21.3], [18.55, 1.6, -4.35], 0x7d2f3a, 'Plastic', false);
+  box(g, a, [0.1, 3.2, 19.3], [18.55, 1.6, 20.35], 0x7d2f3a, 'Plastic', false);
+  for (const z of [-8, 2, 15, 25]) {
+    box(g, a, [2.4, 0.06, 5.0], [25.25, 12.8, z], 0xfdfcf2, 'Neon', false);
+    box(g, a, [2.8, 0.18, 5.4], [25.25, 12.9, z], TRIM, 'Metal', false);
+  }
+  put(g, P.lockers(a, 8, 0x1f5fa8), 31.0, 0, -2.5, -Math.PI / 2);
+  put(g, P.lockers(a, 7, 0x7d2f3a), 31.0, 0, 19.0, -Math.PI / 2);
+  // Trophy case opposite the door.
+  const tcase = new THREE.Group();
+  box(tcase, a, [1.6, 2.2, 5.4], [0, 1.1, 0], 0x6b4a33, 'Wood');
+  box(tcase, a, [1.6, 0.3, 5.4], [0, 6.6, 0], 0x6b4a33, 'Wood');
+  for (const z of [-2.6, 2.6]) box(tcase, a, [1.6, 6.75, 0.2], [0, 3.375, z], 0x6b4a33, 'Wood');
+  box(tcase, a, [0.15, 4.4, 5.0], [0.75, 4.4, 0], 0x8a1f2b, 'Fabric');
+  box(tcase, a, [1.4, 0.12, 5.0], [0, 4.4, 0], 0xe8f6ff, 'Glass', false);
+  for (const [y, z, s] of [[2.2, -1.6, 1], [2.2, 0, 1.4], [2.2, 1.6, 0.9], [4.46, -1.2, 0.8], [4.46, 1.0, 1.1]]) {
+    tcase.add(cylinder(a, 0.3 * s, 0.25, [0, y + 0.12, z], 0x3b2a1a, 'Wood'));
+    tcase.add(cylinder(a, 0.08 * s, 0.6 * s, [0, y + 0.25 + 0.3 * s, z], 0xe2b33c, 'Metal'));
+    tcase.add(ball(a, 0.32 * s, [0, y + 0.55 + 0.6 * s, z], 0xe2b33c, 'Metal'));
+  }
+  tcase.add(part(a, [0.06, 4.4, 5.0], [-0.78, 4.4, 0], 0xe8f6ff, 'Glass', { shadows: false, mat: { opacity: 0.15 } }));
+  put(g, tcase, 31.1, 0, 8.5);
+  const eagles = decal(10, 1.6, signDraw(['GO EAGLES!'], '#7d2f3a', '#ffd21f', { border: '#ffd21f' }));
+  put(g, eagles, 31.95, 10.3, -2.5, -Math.PI / 2);
+  const dance = decal(3, 4, signDraw(['SCHOOL', 'DANCE', 'FRI 7PM'], '#6225d1', '#ffffff', { stroke: '#1b2a35' }));
+  put(g, dance, 31.95, 9.6, 14.0, -Math.PI / 2);
+  const plate204 = decal(1.6, 0.9, signDraw(['204', 'Ms. Parker'], '#1b2a35', '#ffffff'));
+  put(g, plate204, 18.56, 6.3, 11.6, Math.PI / 2);
+  // Water fountain next to the trophy case.
+  box(g, a, [1.4, 1.0, 1.6], [31.3, 3.0, 12.6], 0xc0c4c8, 'Metal');
+  box(g, a, [0.4, 2.4, 0.6], [31.6, 1.2, 12.6], 0xc0c4c8, 'Metal');
+
+  // ---- outside the windows: schoolyard, playground, trees, the school's other wing
+  box(g, a, [264, 1, 320], [-150, -0.55, 0], BRICK.brightGreen, 'Grass', false);
+  box(g, a, [3.5, 0.2, 200], [-21.5, -0.02, 0], 0xb8b5ad, 'Concrete', false);
+  for (let z = -60; z <= 60; z += 5) box(g, a, [0.25, 4, 0.25], [-27, 2, z], 0x8d8f94, 'Metal');
+  for (const y of [1.2, 3.8]) box(g, a, [0.12, 0.12, 120], [-27, y, 0], 0x8d8f94, 'Metal');
+  // Slide.
+  const pg = new THREE.Group();
+  for (const [x, z] of [[-2, -2], [2, -2], [-2, 2], [2, 2]]) box(pg, a, [0.4, 8, 0.4], [x, 4, z], 0x1e88e5, 'Plastic');
+  box(pg, a, [4.4, 0.4, 4.4], [0, 5, 0], 0xf5cd30, 'Plastic');
+  for (const s of [-1, 1]) {
+    const roof = part(a, [4.8, 0.3, 2.8], [0, 8.6, s * 1.1], 0xc4281c, 'Plastic');
+    roof.rotation.x = s * 0.55;
+    pg.add(roof);
+  }
+  const slide = part(a, [1.8, 0.2, 8.3], [0, 2.75, 5.5], 0xc4281c, 'Plastic');
+  slide.rotation.x = 0.57;
+  pg.add(slide);
+  for (const s of [-1, 1]) {
+    const rail = part(a, [0.2, 0.4, 8.3], [s * 0.95, 3.0, 5.5], 0xc4281c, 'Plastic');
+    rail.rotation.x = 0.57;
+    pg.add(rail);
+  }
+  for (let k = 0; k < 6; k++) box(pg, a, [1.6, 0.15, 0.15], [0, 0.8 + k * 0.8, -2.6], 0xf5cd30, 'Plastic');
+  for (const s of [-0.85, 0.85]) box(pg, a, [0.15, 5.2, 0.15], [s, 2.6, -2.6], 0x1e88e5, 'Plastic');
+  put(g, pg, -40, 0, 2, 0.4);
+  // Swings.
+  const sw = new THREE.Group();
+  for (const z of [-4, 4]) for (const s of [-1, 1]) {
+    const leg = part(a, [0.35, 8.4, 0.35], [s * 1.2, 4, z], 0xc4281c, 'Metal');
+    leg.rotation.x = 0;
+    leg.rotation.z = s * 0.15;
+    sw.add(leg);
+  }
+  box(sw, a, [0.4, 0.4, 8.6], [0, 8.1, 0], 0xc4281c, 'Metal');
+  for (const z of [-1.8, 1.8]) {
+    for (const s of [-0.6, 0.6]) box(sw, a, [0.06, 6, 0.06], [0, 5.1, z + s], 0x8d8f94, 'Metal', false);
+    box(sw, a, [0.8, 0.15, 1.5], [0, 2.1, z], 0x1b2a35, 'Plastic');
+  }
+  put(g, sw, -38, 0, -16, 0.2);
+  // Basketball hoop.
+  g.add(cylinder(a, 0.25, 10, [-56, 5, 16], 0x8d8f94, 'Metal'));
+  box(g, a, [0.2, 3.2, 4.6], [-55.6, 9.4, 16], 0xffffff, 'Plastic');
+  box(g, a, [0.22, 1.2, 1.6], [-55.48, 9.0, 16], 0xc4281c, 'Plastic', false);
+  box(g, a, [1.4, 0.12, 1.4], [-54.8, 8.4, 16], 0xff7a1a, 'Metal');
+  box(g, a, [26, 0.12, 20], [-56, 0.0, 16], 0x6b6e73, 'Concrete', false);
+  for (let k = 0; k < 26; k++) {
+    const x = -32 - r() * 70, z = (r() - 0.5) * 150;
+    if (x > -64 && Math.abs(z - 2) < 26) continue; // keep the playground clear
+    tree(g, a, x, z, 0.9 + r() * 0.6, r);
+  }
+  // The school's other wing across the yard.
+  box(g, a, [22, 20, 140], [-96, 10, 0], 0xa34b3a, 'Brick');
+  box(g, a, [23, 1.2, 141], [-96, 20.3, 0], 0xe9e2cc, 'Concrete');
+  for (let z = -64; z <= 64; z += 8) for (const y of [5, 13]) {
+    box(g, a, [0.3, 4.4, 5], [-84.9, y, z], 0xe9e2cc, 'Concrete', false);
+    box(g, a, [0.35, 3.8, 4.4], [-84.85, y, z], 0x7fb4d9, 'Glass', false);
+  }
+
+  g.position.copy(o);
+  scene.add(bake(g));
+
+  // The door (not baked: it swings). Pivot on its hinge at z = 6.55; rotation.y > 0 opens it
+  // into the hallway.
+  const door = new THREE.Group();
+  box(door, a, [0.28, 7.4, 3.9], [0, 3.7, 1.97], 0x8a5a3a, 'WoodPlanks');
+  box(door, a, [0.32, 2.4, 0.8], [0, 5.1, 2.9], 0x9fd0ef, 'Glass');
+  for (const s of [-1, 1]) {
+    box(door, a, [0.25, 0.15, 0.7], [s * 0.3, 3.6, 3.35], 0xc0c4c8, 'Metal');
+    box(door, a, [0.15, 0.4, 0.15], [s * 0.18, 3.6, 3.6], 0xc0c4c8, 'Metal');
+  }
+  box(door, a, [0.3, 0.8, 3.9], [0, 0.4, 1.97], 0xc0c4c8, 'Metal');
+  door.position.set(o.x + 18, 0, o.z + 6.55);
+  scene.add(door);
+  return { door };
+}
+
+// ---- a teenager's bedroom, at night ---------------------------------------------------
+
+const drawNight = (ctx, w, h) => {
+  const r = rng(4);
+  const sky = ctx.createLinearGradient(0, 0, 0, h);
+  sky.addColorStop(0, '#070b24');
+  sky.addColorStop(1, '#25306a');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, w, h);
+  for (let k = 0; k < 90; k++) {
+    ctx.fillStyle = `rgba(255,255,255,${0.4 + r() * 0.6})`;
+    const s = r() < 0.1 ? 3 : 1.6;
+    ctx.fillRect(r() * w, r() * h * 0.7, s, s);
+  }
+  ctx.fillStyle = '#fff6d8';
+  ctx.beginPath();
+  ctx.arc(w * 0.72, h * 0.25, h * 0.11, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#0d1430';
+  ctx.beginPath();
+  ctx.arc(w * 0.75, h * 0.22, h * 0.1, 0, Math.PI * 2);
+  ctx.fill();
+  // Rooftops across the street, a few windows still lit.
+  ctx.fillStyle = '#0a0e1e';
+  for (const [x, bw, bh] of [[0, 0.28, 0.3], [0.26, 0.22, 0.38], [0.5, 0.3, 0.27], [0.78, 0.25, 0.34]]) {
+    ctx.fillRect(x * w, h * (1 - bh), bw * w, bh * h);
+    ctx.beginPath();
+    ctx.moveTo(x * w - 6, h * (1 - bh));
+    ctx.lineTo((x + bw / 2) * w, h * (1 - bh - 0.1));
+    ctx.lineTo((x + bw) * w + 6, h * (1 - bh));
+    ctx.fill();
+  }
+  ctx.fillStyle = '#ffd36b';
+  for (const [x, y] of [[0.08, 0.8], [0.34, 0.72], [0.4, 0.84], [0.6, 0.82], [0.86, 0.76]]) ctx.fillRect(x * w, y * h, w * 0.04, h * 0.05);
+};
+
+const drawSpace = (ctx, w, h) => {
+  const r = rng(6);
+  ctx.fillStyle = '#1a0f3a';
+  ctx.fillRect(0, 0, w, h);
+  for (let k = 0; k < 120; k++) {
+    ctx.fillStyle = `rgba(255,255,255,${r()})`;
+    ctx.fillRect(r() * w, r() * h, 1.5, 1.5);
+  }
+  for (const [x, y, rad, c] of [[0.35, 0.35, 0.2, '#ff8a3d'], [0.72, 0.62, 0.12, '#4fc3f7'], [0.25, 0.75, 0.07, '#ba68c8']]) {
+    ctx.fillStyle = c;
+    ctx.beginPath();
+    ctx.arc(x * w, y * h, rad * w, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.strokeStyle = '#ffd180';
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.ellipse(0.35 * w, 0.35 * h, 0.32 * w, 0.07 * w, -0.3, 0, Math.PI * 2);
+  ctx.stroke();
+  text(ctx, 'SPACE', w / 2, h * 0.9, 44, '#ffffff', { align: 'center' });
+};
+
+const drawHoops = (ctx, w, h) => {
+  ctx.fillStyle = '#ff8a1f';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#e0640a';
+  ctx.beginPath();
+  ctx.arc(w / 2, h * 0.42, w * 0.32, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#1b1b1b';
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.arc(w / 2, h * 0.42, w * 0.32, 0, Math.PI * 2);
+  ctx.moveTo(w * 0.18, h * 0.42);
+  ctx.lineTo(w * 0.82, h * 0.42);
+  ctx.moveTo(w / 2, h * 0.42 - w * 0.32);
+  ctx.lineTo(w / 2, h * 0.42 + w * 0.32);
+  ctx.stroke();
+  text(ctx, 'BALL IS LIFE', w / 2, h * 0.86, 30, '#ffffff', { align: 'center', stroke: '#1b1b1b', sw: 6 });
+};
+
+const drawGame = (ctx, w, h) => {
+  const sky = ctx.createLinearGradient(0, 0, 0, h);
+  sky.addColorStop(0, '#5ab4ff');
+  sky.addColorStop(1, '#bfe6ff');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, w, h);
+  const blocks = [[0.05, 0.75, 0.2, '#43a047'], [0.32, 0.62, 0.12, '#e53935'], [0.5, 0.52, 0.1, '#fdd835'], [0.66, 0.42, 0.1, '#8e24aa'], [0.82, 0.32, 0.14, '#1e88e5']];
+  for (const [x, y, bw, c] of blocks) {
+    ctx.fillStyle = c;
+    ctx.fillRect(x * w, y * h, bw * w, h * 0.08);
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.fillRect(x * w, (y + 0.08) * h, bw * w, h * 0.03);
+  }
+  ctx.fillStyle = '#f5cd30';
+  ctx.fillRect(0.12 * w, 0.6 * h, 0.04 * w, 0.06 * h);
+  ctx.fillStyle = '#0d69ac';
+  ctx.fillRect(0.115 * w, 0.66 * h, 0.05 * w, 0.06 * h);
+  ctx.fillStyle = '#4b974b';
+  ctx.fillRect(0.12 * w, 0.72 * h, 0.04 * w, 0.03 * h);
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  ctx.fillRect(10, 10, 150, 34);
+  text(ctx, 'STAGE 47', 20, 28, 22, '#ffffff');
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  ctx.fillRect(w - 130, 10, 120, 34);
+  text(ctx, '1,250', w - 20, 28, 22, '#ffd21f', { align: 'right' });
+};
+
+const drawAlarm = (ctx, w, h) => {
+  ctx.fillStyle = '#0b0b0b';
+  ctx.fillRect(0, 0, w, h);
+  text(ctx, '9:41', w / 2, h / 2 + 2, h * 0.7, '#ff3b30', { align: 'center' });
+};
+
+/**
+ * A bedroom at `o`: interior x -12..12, z -10..10, 11 studs high. The bed's headboard is on
+ * the back wall (-z) at x = 0 (mattress top 2.2, length z -9.9..-2.5); a gaming desk on the
+ * right wall. Returns { lights }: lamp, monitor and LED glow to switch on for night shots.
+ */
+export function buildBedroom(scene, a, o, { seed = 2 } = {}) {
+  const r = rng(seed);
+  const g = new THREE.Group();
+  const mount = mounter(g, 12, 10);
+  const WALLC = 0x3d4a6b;
+
+  box(g, a, [24, 1, 20], [0, -0.5, 0], 0x8a5a3a, 'WoodPlanks', false);
+  box(g, a, [26, 0.5, 22], [0, 11.25, 0], 0xe9e6f2, 'Plastic', false);
+  for (const [size, pos] of [[[26, 11, 1], [0, 5.5, -10.5]], [[26, 11, 1], [0, 5.5, 10.5]], [[1, 11, 22], [-12.5, 5.5, 0]], [[1, 11, 22], [12.5, 5.5, 0]]])
+    box(g, a, size, pos, WALLC, 'Plastic', false);
+  for (const [size, pos] of [[[24, 0.5, 0.15], [0, 0.25, -9.93]], [[0.15, 0.5, 20], [-11.93, 0.25, 0]], [[0.15, 0.5, 20], [11.93, 0.25, 0]], [[24, 0.5, 0.15], [0, 0.25, 9.93]]])
+    box(g, a, size, pos, 0xf2f2f2, 'Plastic', false);
+  // LED strip around the top of the walls.
+  for (const [size, pos] of [[[24, 0.14, 0.14], [0, 10.7, -9.9]], [[0.14, 0.14, 20], [-11.9, 10.7, 0]], [[0.14, 0.14, 20], [11.9, 10.7, 0]], [[24, 0.14, 0.14], [0, 10.7, 9.9]]])
+    box(g, a, size, pos, 0x9b5cff, 'Neon', false);
+  g.add(cylinder(a, 1.2, 0.2, [0, 10.9, 0], 0xf4f4f4, 'Plastic'));
+  // Round rug.
+  g.add(cylinder(a, 3.8, 0.06, [2.5, 0.03, 1], 0x4f4a6e, 'Fabric'));
+  g.add(cylinder(a, 2.7, 0.07, [2.5, 0.04, 1], 0x6a6390, 'Fabric'));
+
+  // Bed.
+  box(g, a, [4.8, 1.2, 7.4], [0, 0.6, -6.2], 0x4a3426, 'Wood');
+  box(g, a, [4.5, 0.9, 7.1], [0, 1.65, -6.2], 0xf4f4f4, 'Fabric');
+  box(g, a, [4.65, 0.2, 4.6], [0, 2.15, -4.35], 0x2b3a67, 'Fabric');
+  for (const s of [-1, 1]) box(g, a, [0.1, 1.0, 4.6], [s * 2.33, 1.7, -4.35], 0x2b3a67, 'Fabric');
+  box(g, a, [4.66, 0.22, 0.8], [0, 2.12, -6.9], 0x34477c, 'Fabric');
+  box(g, a, [4.8, 4.2, 0.4], [0, 2.1, -9.95], 0x4a3426, 'Wood');
+  box(g, a, [4.2, 2.0, 0.2], [0, 3.4, -9.7], 0x7d7f8c, 'Fabric');
+  for (const [x, c] of [[-1.05, 0xfafafa], [1.05, 0xd8dbe6]]) {
+    const pil = part(a, [1.8, 0.5, 1.1], [x, 2.4, -9.0], c, 'Fabric');
+    pil.rotation.x = -0.25;
+    g.add(pil);
+  }
+  // Plushie at the foot of the bed.
+  const plush = 0xa0662f;
+  g.add(ball(a, 0.42, [1.5, 2.6, -3.2], plush, 'Fabric'));
+  g.add(ball(a, 0.32, [1.5, 3.15, -3.2], plush, 'Fabric'));
+  for (const s of [-1, 1]) g.add(ball(a, 0.13, [1.5 + s * 0.24, 3.42, -3.2], plush, 'Fabric'));
+  // String lights above the bed.
+  for (let k = 0; k < 13; k++) {
+    const x = -5 + (k / 12) * 10;
+    g.add(ball(a, 0.14, [x, 7.6 - Math.sin((k / 12) * Math.PI) * 0.8, -9.85], [0xffd36b, 0xff8ad8, 0x8ad8ff][k % 3], 'Neon'));
+  }
+  // Nightstand with lamp and alarm clock.
+  box(g, a, [2, 2.4, 1.8], [-3.8, 1.2, -8.8], 0x6b4a33, 'Wood');
+  box(g, a, [1.7, 0.8, 0.06], [-3.8, 1.6, -7.88], 0x80583a, 'Wood', false);
+  g.add(ball(a, 0.1, [-3.8, 1.6, -7.82], 0xe2b33c, 'Metal'));
+  g.add(cylinder(a, 0.35, 0.15, [-4.2, 2.47, -9.1], 0x2a2a2a, 'Metal'));
+  g.add(cylinder(a, 0.07, 1.1, [-4.2, 3.0, -9.1], 0x2a2a2a, 'Metal'));
+  const shade = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.45, 0.7, 0.9, 24, 1, true),
+    new THREE.MeshStandardMaterial({ color: 0xffe2b8, emissive: 0xffb066, emissiveIntensity: 1.1, side: THREE.DoubleSide }),
+  );
+  shade.position.set(-4.2, 3.8, -9.1);
+  g.add(shade);
+  box(g, a, [0.9, 0.5, 0.4], [-3.4, 2.65, -8.4], 0x111111, 'Plastic');
+  const alarm = decal(0.8, 0.4, drawAlarm, { ppu: 160, glow: 1.2 });
+  put(g, alarm, -3.4, 2.65, -8.19);
+  g.add(cylinder(a, 0.18, 0.45, [-3.0, 2.63, -9.3], 0xcfe8ff, 'Glass'));
+
+  // Window with a night view, curtains and a rod.
+  box(g, a, [5.6, 4.6, 0.25], [6.5, 6, -9.95], 0xf2f2f2, 'Plastic', false);
+  mount(decal(5, 4, drawNight, { glow: 0.9 }), 'back', 6.5, 6, 0.2);
+  box(g, a, [0.18, 4, 0.12], [6.5, 6, -9.75], 0xf2f2f2, 'Plastic', false);
+  box(g, a, [5, 0.18, 0.12], [6.5, 6, -9.75], 0xf2f2f2, 'Plastic', false);
+  box(g, a, [5.8, 0.25, 0.4], [6.5, 3.75, -9.75], 0xf2f2f2, 'Plastic');
+  for (const x of [3.3, 9.7]) box(g, a, [1.6, 6.4, 0.3], [x, 5.4, -9.6], 0x5b3f8f, 'Fabric');
+  const rod = cylinder(a, 0.08, 8, [6.5, 8.7, -9.55], 0x2a2a2a, 'Metal');
+  rod.rotation.z = Math.PI / 2;
+  g.add(rod);
+
+  // Posters.
+  mount(decal(3, 4, drawSpace), 'back', -7.5, 6.6);
+  mount(decal(3, 4, drawHoops), 'left', 5.5, 7.4);
+
+  // Gaming desk on the right wall.
+  box(g, a, [2.8, 0.25, 6.2], [10.4, 3.0, -5.5], 0x1b1b1b, 'Plastic');
+  for (const z of [-8.4, -2.6]) box(g, a, [2.6, 2.9, 0.25], [10.4, 1.45, z], 0x1b1b1b, 'Plastic');
+  box(g, a, [0.06, 0.06, 6.2], [9.0, 3.0, -5.5], 0xff2d55, 'Neon', false);
+  box(g, a, [0.2, 2.2, 3.8], [11.3, 4.75, -5.5], 0x111111, 'Plastic');
+  const screen = decal(3.6, 2.0, drawGame, { ppu: 100, glow: 1.0 });
+  put(g, screen, 11.19, 4.75, -5.5, -Math.PI / 2);
+  box(g, a, [0.4, 0.9, 0.4], [11.4, 3.5, -5.5], 0x111111, 'Plastic');
+  box(g, a, [1.0, 0.1, 2.3], [10.0, 3.18, -5.5], 0x222222, 'Plastic');
+  box(g, a, [1.02, 0.04, 2.32], [10.0, 3.12, -5.5], 0x00e5ff, 'Neon', false);
+  box(g, a, [1.6, 0.03, 1.4], [10.0, 3.14, -3.6], 0x1b1b1b, 'Fabric');
+  box(g, a, [0.35, 0.12, 0.25], [10.0, 3.2, -3.6], 0xeeeeee, 'Plastic');
+  // PC tower with a glowing side, headphones on a stand.
+  box(g, a, [1.0, 3.0, 2.2], [10.8, 1.5, -1.1], 0x111111, 'Plastic');
+  box(g, a, [0.05, 2.6, 1.9], [10.28, 1.5, -1.1], 0xb04dff, 'Neon', false);
+  for (const y of [0.9, 2.1]) {
+    const fan = cylinder(a, 0.35, 0.06, [10.25, y, -1.1], 0x00e5ff, 'Neon');
+    fan.rotation.z = Math.PI / 2;
+    g.add(fan);
+  }
+  box(g, a, [0.1, 1.1, 0.1], [10.9, 3.65, -7.8], 0x333333, 'Metal');
+  box(g, a, [0.5, 0.3, 0.9], [10.9, 4.25, -7.8], 0x222222, 'Plastic');
+  // Gaming chair.
+  const gc = new THREE.Group();
+  box(gc, a, [2, 0.45, 2.1], [0, 1.9, 0], 0x1b1b1b, 'Fabric');
+  box(gc, a, [0.4, 3.6, 2.0], [-0.95, 3.9, 0], 0x1b1b1b, 'Fabric');
+  box(gc, a, [0.42, 3.0, 0.5], [-0.96, 3.9, 0], 0xff2d55, 'Fabric');
+  for (const s of [-1, 1]) box(gc, a, [1.4, 0.2, 0.3], [0, 2.8, s * 1.0], 0x1b1b1b, 'Plastic');
+  gc.add(cylinder(a, 0.12, 1.5, [0, 0.95, 0], 0x666666, 'Metal'));
+  for (let k = 0; k < 5; k++) {
+    const leg = part(a, [0.2, 0.15, 1.3], [Math.sin((k / 5) * Math.PI * 2) * 0.65, 0.25, Math.cos((k / 5) * Math.PI * 2) * 0.65], 0x333333, 'Metal');
+    leg.rotation.y = (k / 5) * Math.PI * 2;
+    gc.add(leg);
+  }
+  put(g, gc, 8.2, 0, -5.5, -0.3);
+  // Wall shelf above the desk with books and a trophy.
+  box(g, a, [1.0, 0.2, 5], [11.45, 7.6, -5.5], 0xf2f2f2, 'Plastic');
+  bookRow(g, a, r, { from: -7.8, to: -5.6, y: 7.7, at: 11.4, depth: 0.8, alongZ: true, maxH: 1.1 });
+  g.add(cylinder(a, 0.25, 0.25, [11.4, 7.83, -4.4], 0x3b2a1a, 'Wood'));
+  g.add(ball(a, 0.3, [11.4, 8.4, -4.4], 0xe2b33c, 'Metal'));
+
+  // Dresser, closet, laundry, shoes, basketball, backpack, door.
+  box(g, a, [1.8, 3.4, 4.5], [-11.0, 1.7, 3.2], 0xe8e4dc, 'WoodPlanks');
+  for (const y of [0.7, 1.7, 2.7]) {
+    box(g, a, [0.06, 0.85, 4.2], [-10.08, y, 3.2], 0xd8d2c6, 'WoodPlanks', false);
+    for (const z of [2.2, 4.2]) g.add(ball(a, 0.1, [-10.0, y, z], 0x2a2a2a, 'Metal'));
+  }
+  box(g, a, [0.3, 1.0, 0.8], [-11.2, 3.9, 2.0], 0x2a2a2a, 'Plastic');
+  box(g, a, [0.05, 0.85, 0.65], [-11.04, 3.9, 2.0], 0x9fd0ef, 'Plastic', false);
+  g.add(cylinder(a, 0.3, 0.35, [-11.0, 3.57, 4.3], 0xff98dc, 'Plastic'));
+  for (const z of [-7.2, -4.6]) {
+    box(g, a, [0.25, 7.6, 2.6], [-11.85, 3.8, z], 0xf2f2f2, 'WoodPlanks');
+    box(g, a, [0.1, 0.9, 0.1], [-11.68, 3.8, z + (z < -6 ? 1.0 : -1.0)], 0x9a9ea5, 'Metal', false);
+  }
+  g.add(cylinder(a, 0.9, 1.6, [-9.2, 0.8, -8.6], 0x8d8f94, 'Plastic'));
+  for (const [dx, dz, c] of [[0, 0, 0xc4281c], [0.3, -0.3, 0x1e88e5], [-0.3, 0.2, 0xf2f2f2]]) g.add(ball(a, 0.5, [-9.2 + dx, 1.7, -8.6 + dz], c, 'Fabric'));
+  for (const dx of [0, 0.85]) {
+    box(g, a, [0.7, 0.45, 1.5], [3.2 + dx, 0.22, -1.6], 0xf4f4f4, 'Plastic');
+    box(g, a, [0.72, 0.12, 1.52], [3.2 + dx, 0.06, -1.6], 0xff2d55, 'Plastic', false);
+  }
+  g.add(ball(a, 0.55, [-6.5, 0.55, 4.2], 0xe0702a, 'Plastic'));
+  backpack(g, a, 8.4, 0, 0.8, 0x1b2a35, -0.8);
+  box(g, a, [0.25, 7.4, 3.6], [11.9, 3.7, 6.5], 0xf2f2f2, 'WoodPlanks');
+  g.add(ball(a, 0.15, [11.7, 3.6, 5.2], 0xe2b33c, 'Metal'));
+
+  g.position.copy(o);
+  scene.add(bake(g));
+
+  // Night lights (off by default; turn them on for the bedroom's shots).
+  const lamp = new THREE.PointLight(0xffb066, 45, 26, 2);
+  lamp.position.set(o.x - 4.2, 3.9, o.z - 9.0);
+  const monitor = new THREE.PointLight(0x5aa8ff, 18, 18, 2);
+  monitor.position.set(o.x + 9.6, 4.8, o.z - 5.5);
+  const led = new THREE.PointLight(0xa585ff, 12, 30, 2);
+  led.position.set(o.x, 9.5, o.z - 1);
+  const lights = [lamp, monitor, led];
+  for (const l of lights) {
+    l.visible = false;
+    scene.add(l);
+  }
+  return { lights };
+}

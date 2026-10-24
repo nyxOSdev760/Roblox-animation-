@@ -5,8 +5,8 @@
 // below). The one jump, bedroom -> classroom ("The next morning"), is a quick dip to black.
 import * as THREE from 'three';
 import words from '../../assets/voice/crush/words.json' with { type: 'json' };
-import { BRICK, SKIN, part, ball, cylinder, robloxMaterial } from '../src/roblox.js';
-import { buildSets, ORIGIN } from '../src/sets.js';
+import { BRICK, SKIN, part, ball } from '../src/roblox.js';
+import { buildClassroom, buildBedroom } from '../src/rooms.js';
 import { Actor, POSES, blend } from '../src/actors.js';
 import { createCaptions } from '../src/captions.js';
 import { createPhone } from '../src/phone.js';
@@ -96,8 +96,8 @@ sfx('synth/thud.wav', W(20, 'Detention'), 0.8);
 sfx('sadd-rblx-se.mp3', W(20, 'Forever') + 0.5, 0.7);
 
 // ---- the classroom -----------------------------------------------------------------------
-const C = new THREE.Vector3(3000, 0, 0);
-const DOOR = [17.4, 8.5]; // door in the right wall (x = 18), near the back
+const C = new THREE.Vector3(3000, 0, 0); // classroom (door in the right wall at z 6.5..10.5)
+const B = new THREE.Vector3(3000, 0, 400); // bedroom
 const DESKS = [];
 for (const z of [-3, 2, 7]) for (const x of [-10, -4, 1.5, 7]) DESKS.push([x, z]);
 const MY_DESK = [-4, 2];
@@ -109,61 +109,6 @@ const SEAT_DZ = 1.05; // a seated student's root is this far behind the desk
 const TEACHER = [0, -11.2];
 const STOP = [13.6, 8.5]; // where the kid stops on his way out
 const PRINCIPAL = [15.9, 6.6];
-
-function buildClassroom(scene, a) {
-  const at = (o, x, y, z, r = 0) => {
-    o.position.set(C.x + x, y, C.z + z);
-    o.rotation.y = r;
-    scene.add(o);
-    return o;
-  };
-  at(part(a, [36, 1, 30], [0, 0, 0], BRICK.lightStoneGrey, 'WoodPlanks', { shadows: false }), 0, -0.5, 0);
-  at(part(a, [36, 13, 1], [0, 0, 0], BRICK.brickYellow, 'Plastic'), 0, 6.5, -15);
-  at(part(a, [1, 13, 30], [0, 0, 0], BRICK.brickYellow, 'Plastic'), -18, 6.5, 0);
-  // Right wall with a doorway at DOOR.
-  at(part(a, [1, 13, 19.5], [0, 0, 0], BRICK.brickYellow, 'Plastic'), 18, 6.5, -5.25);
-  at(part(a, [1, 13, 4.5], [0, 0, 0], BRICK.brickYellow, 'Plastic'), 18, 6.5, 12.75);
-  at(part(a, [1, 5.5, 3.5], [0, 0, 0], BRICK.brickYellow, 'Plastic'), 18, 10.25, 8.25);
-  at(part(a, [0.4, 7.4, 4], [0, 0, 0], BRICK.white, 'Plastic'), 17.6, 3.7, 8.5 - 0); // frame (behind the opening)
-  const door = at(P.door(a, BRICK.reddishBrown), 18.6, 0, 6.6, Math.PI / 2);
-  door.rotation.y = -0.2;
-  // Whiteboard and the lesson.
-  const board = P.canvasTexture(1024, 400, (ctx, w, h) => {
-    ctx.fillStyle = '#fbfbfb';
-    ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = '#1f6fd1';
-    ctx.font = '64px "Fredoka One"';
-    ctx.fillText('Fractions!', 50, 100);
-    ctx.fillStyle = '#333';
-    ctx.font = '52px "Fredoka One"';
-    ctx.fillText('1/2 + 1/4 = 3/4', 70, 200);
-    ctx.fillText('HW: page 42', 70, 300);
-    ctx.strokeStyle = '#c4281c';
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.arc(820, 200, 90, 0, Math.PI * 2);
-    ctx.stroke();
-  });
-  at(P.panel(a, 18, 7, board, { back: BRICK.mediumStoneGrey, depth: 0.3 }), 0, 6.5, -14.4);
-  at(P.sign(a, 10, 1.4, "MS. PARKER'S CLASS", { bg: '#ffd21f', fg: '#1b2a35', size: 140 }), 0, 11.2, -14.4);
-  // Windows on the left wall.
-  for (const z of [-7, 1, 9]) {
-    const w = new THREE.Group();
-    w.add(part(a, [0.3, 5, 6], [0, 0, 0], BRICK.institutionalWhite, 'Plastic'));
-    w.add(part(a, [0.34, 4.4, 5.4], [0, 0, 0], BRICK.pastelBlue, 'Glass', { shadows: false }));
-    at(w, -17.4, 6.5, z);
-  }
-  // Teacher's desk with an apple, a clock, posters.
-  at(P.table(a, 6, 3, 3.2, BRICK.reddishBrown, 'Wood'), 9, 0, -10);
-  at(ball(a, 0.35, [0, 0, 0], BRICK.brightRed, 'Plastic'), 8, 3.7, -10);
-  at(cylinder(a, 1, 0.2, [0, 0, 0], BRICK.institutionalWhite, 'Plastic'), 13, 10, -14.4).rotation.x = Math.PI / 2;
-  at(P.sign(a, 4, 5, 'READ!\n📚', { bg: '#80bbdc', fg: '#ffffff', size: 120, stroke: '#1b2a35' }), -12, 7, -14.4);
-  // Student desks and chairs (students face the board, -z).
-  for (const [x, z] of DESKS) {
-    at(P.table(a, 3.4, 2.2, 2.8, BRICK.brickYellow, 'WoodPlanks'), x, 0, z - 0.4);
-    at(P.chair(a, BRICK.brightBlue, 'Plastic'), x, 0, z + SEAT_DZ + 0.15, Math.PI);
-  }
-}
 
 function teddyBear(a) {
   const g = new THREE.Group();
@@ -198,41 +143,52 @@ function phoneProp(a) {
 // slow drift) and glides to the next over `move` seconds, arriving at its time.
 function classroomKeys() {
   return [
-    [MORNING, [-15, 9, 17], [2, 3.5, 2], 58, 0],
+    [MORNING, [-14, 9.5, 13.5], [2, 3.5, 2], 60, 0],
     [W(3, 'She') + 0.2, [-12, 8, 13], [0, 4.5, -8], 54, 1.0],
-    [W(3, 'directly') + 0.15, [-3.6, 4.9, 0.4], [0, 4.6, -11.2], 38, 0.7],
+    [W(3, 'directly') + 0.15, [-3.6, 4.9, 0.4], [0, 4.3, -11.2], 38, 0.7],
     [W(5, 'The') + 0.35, [0, 7.5, -10], [-1, 2.6, 4], 62, 0.6],
     [W(5, 'wanted') + 0.25, [-4.6, 4.6, -1.6], [-4, 3.1, 3], 44, 0.6],
-    [W(6, 'said') + 0.1, [2.8, 5.4, -4.6], [0, 4.6, -11.2], 48, 0.6],
+    [W(6, 'said') + 0.1, [2.8, 5.4, -4.6], [0, 4.3, -11.2], 48, 0.6],
     [W(7, 'slowly') + 0.2, [-7, 5.4, -0.6], [-4, 4.4, 3.2], 50, 0.6],
-    [W(7, 'smiled') + 0.15, [-1.8, 5, -4.4], [0, 4.6, -11.2], 44, 0.6],
-    [W(8, 'froze') + 0.05, [-4.4, 4.8, -2.4], [-4, 4.6, 3], 40, 0.5],
-    [W(8, 'best') + 0.1, [3.6, 5.6, -3], [1.2, 5.0, 3], 46, 0.6],
+    [W(7, 'smiled') + 0.15, [-1.8, 5, -4.4], [0, 4.3, -11.2], 44, 0.6],
+    [W(8, 'froze') + 0.05, [-4.4, 4.8, -2.4], [-4, 4.3, 3], 40, 0.5],
+    [W(8, 'best') + 0.1, [4.2, 5.8, -4.2], [1.4, 4.1, 4], 48, 0.6],
     [W(9, 'entire') + 0.2, [0, 9, -10.5], [0, 2.6, 4.5], 66, 0.6],
-    [W(9, 'screamed') + 0.05, [-4.4, 4.8, -2.4], [-4, 4.6, 3], 42, 0.5],
-    [W(10, 'teacher') + 0.15, [2.4, 5.2, -5], [0, 4.6, -11.2], 46, 0.7],
+    [W(9, 'screamed') + 0.05, [-4.4, 4.8, -2.4], [-4, 4.3, 3], 42, 0.5],
+    [W(10, 'teacher') + 0.15, [2.4, 5.2, -5], [0, 4.3, -11.2], 46, 0.7],
     [VOICE_TO + 0.05, [0, 8, -9.5], [0, 3, 4], 62, 0.5],
     [W(12, 'Wait'), [4, 8, -4], [STOP[0], 4, STOP[1]], 50, 1.8],
-    [W(13, 'She') + 0.1, [0.3, 5.1, -5.8], [0, 4.6, -11.2], 42, 0.6],
-    [W(14, 'slowly') + 0.15, [9.6, 4.8, 3.6], [STOP[0], 4.3, STOP[1]], 46, 0.6],
-    [W(14, 'looked') + 0.1, [0, 6.4, -3.4], [0, 4.6, -11.2], 50, 0.6],
-    [W(14, 'boyfriend') + 0.05, [0, 5.4, -6.4], [0, 4.6, -11.2], 40, 0.9],
+    [W(13, 'She') + 0.1, [0.3, 5.1, -5.8], [0, 4.3, -11.2], 42, 0.6],
+    [W(14, 'slowly') + 0.15, [9.6, 4.8, 3.6], [STOP[0], 4.0, STOP[1]], 46, 0.6],
+    [W(14, 'looked') + 0.1, [0, 6.4, -3.4], [0, 4.3, -11.2], 50, 0.6],
+    [W(14, 'boyfriend') + 0.05, [0, 5.4, -6.4], [0, 4.3, -11.2], 40, 0.9],
     [W(15, 'Everyone') + 0.1, [0, 8, -9.5], [0, 3, 4], 62, 0.5],
     [W(15, 'pointed') + 0.2, [7, 5.2, 1], [17.8, 4.2, 8.5], 50, 0.7],
     [W(16, 'Holding') + 0.1, [7.2, 5.6, 1.4], [15, 4.8, 7.4], 56, 0.9],
     [W(17, 'looked') + 0.1, [7, 7, 0.5], [PRINCIPAL[0] - 0.5, 4.8, PRINCIPAL[1]], 48, 0.6],
-    [W(17, 'Still') + 0.05, [11, 4.5, 5.8], [STOP[0], 4.3, STOP[1]], 40, 0.6],
-    [W(18, 'So') + 0.05, [10.5, 4.4, 2.5], [PRINCIPAL[0], 4.0, PRINCIPAL[1]], 42, 0.6],
-    [W(19, 'I') + 0.1, [11.2, 4.5, 6.1], [STOP[0], 4.3, STOP[1]], 40, 0.5],
+    [W(17, 'Still') + 0.05, [11, 4.5, 5.8], [STOP[0], 4.0, STOP[1]], 40, 0.6],
+    [W(18, 'So') + 0.05, [15.0, 5.0, 11.5], [PRINCIPAL[0], 4.2, PRINCIPAL[1]], 44, 0.6],
+    [W(19, 'I') + 0.1, [11.2, 4.5, 6.1], [STOP[0], 4.0, STOP[1]], 40, 0.5],
     [W(20, 'He') + 0.1, [10.4, 5.2, 3.6], [14.7, 4.4, 7.5], 46, 0.7],
-    [W(20, 'Detention') + 0.4, [9.6, 5.2, 2.6], [STOP[0], 4.0, STOP[1]], 44, 1.2],
+    [W(20, 'Detention') + 0.4, [9.6, 5.2, 2.6], [STOP[0], 3.7, STOP[1]], 44, 1.2],
   ];
 }
 
 // ---- setup -------------------------------------------------------------------------------
 export function setup({ scene, camera, assets, faces, sun }) {
-  buildSets(scene, assets);
-  buildClassroom(scene, assets);
+  const { door } = buildClassroom(scene, assets, C, { desks: DESKS, seatDz: SEAT_DZ });
+  const room = buildBedroom(scene, assets, B);
+  const hemi = scene.children.find((o) => o.isHemisphereLight);
+  // Night in the bedroom: moonlight, a lamp, the monitor and the LED strip.
+  function night(on) {
+    sun.intensity = on ? 0.3 : 2.3;
+    sun.color.set(on ? 0x9db4ff : 0xfff4e6);
+    hemi.intensity = on ? 0.62 : 1.35;
+    hemi.color.set(on ? 0xa4acd2 : 0xf4f2ee);
+    hemi.groundColor.set(on ? 0x3a3550 : 0xa8a196);
+    scene.environmentIntensity = on ? 0.05 : 0.12;
+    for (const l of room.lights) l.visible = on;
+  }
   const sc = sun.shadow.camera;
   sc.left = sc.bottom = -30;
   sc.right = sc.top = 30;
@@ -249,14 +205,17 @@ export function setup({ scene, camera, assets, faces, sun }) {
   const kids = KIDS.map(mk);
   const everyone = [...Object.values(A), ...kids];
   for (const a of everyone) scene.add(a.root);
-  A.me.attach('phone', phoneProp(assets), 'r', [0, -0.15, 0.35], [-0.6, 0, 0]);
+  const myPhone = A.me.attach('phone', phoneProp(assets), 'r', [0, -0.15, 0.35], [-0.6, 0, 0]);
+  const screenGlow = new THREE.PointLight(0xcfe0ff, 3, 6, 2); // lights his face at night
+  screenGlow.position.set(0, 0, 0.5);
+  myPhone.add(screenGlow);
   A.teacher.attach('phone', phoneProp(assets), 'r', [0, -0.15, 0.35], [-1.4, Math.PI, 0]);
   const bear = teddyBear(assets);
   bear.scale.setScalar(0.85);
   scene.add(bear);
 
   const phone = createPhone({ contact: 'Ms. Parker 📚', initials: 'MP' });
-  const captions = createCaptions(words, { yAt: (t) => (phoneShown(t) ? 0.13 : 0.6) });
+  const captions = createCaptions(words, { yAt: (t) => (phoneShown(t) ? 0.13 : 0.67) });
   const black = document.createElement('div');
   Object.assign(black.style, { position: 'fixed', inset: '0', background: '#000', pointerEvents: 'none', opacity: '0' });
   document.body.appendChild(black);
@@ -386,17 +345,21 @@ export function setup({ scene, camera, assets, faces, sun }) {
 
   function me(t) {
     // Walk in, sit, get called up, stand, run for the door, turn back, get caught.
-    const sitAt = MORNING + 2.0;
+    const sitAt = MORNING + 2.9;
     const desk = [MY_DESK[0], MY_DESK[1] + SEAT_DZ];
     if (t < sitAt) {
-      const u = seg(t, MORNING + 0.1, sitAt - 0.15);
-      const path = [[DOOR[0] - 0.5, DOOR[1]], [6, 11], [desk[0] + 0.8, desk[1] + 1.6], desk];
-      const k = Math.min(2, Math.floor(u * 3));
-      const lu = u * 3 - k;
+      // In from the hallway, along the back of the room, down the aisle to his desk.
+      const path = [[21, 8.5], [16.9, 8.5], [4.5, 11], [-1.2, 11], [-1.2, 3.6], desk];
+      const lens = path.slice(1).map((b, k) => Math.hypot(b[0] - path[k][0], b[1] - path[k][1]));
+      let d = seg(t, MORNING + 0.1, sitAt - 0.15) * lens.reduce((x, y) => x + y);
+      let k = 0;
+      while (k < lens.length - 1 && d > lens[k]) d -= lens[k++];
       const a = path[k];
       const b = path[k + 1];
+      const lu = Math.min(1, d / lens[k]);
       const yaw = (Math.atan2(b[0] - a[0], b[1] - a[1]) * 180) / Math.PI;
-      put(A.me, lerp(a[0], b[0], lu), lerp(a[1], b[1], lu), { yaw: u < 1 ? yaw : 180, pose: POSES.walk(t), face: 'neutral' });
+      const done = t > sitAt - 0.15;
+      put(A.me, lerp(a[0], b[0], lu), lerp(a[1], b[1], lu), { yaw: done ? 180 : yaw, pose: done ? seated(t, 9) : POSES.walk(t), face: 'neutral' });
       return;
     }
     const standAt = W(7, 'stood') - 0.1;
@@ -468,7 +431,7 @@ export function setup({ scene, camera, assets, faces, sun }) {
     const laugh = t > W(9, 'exploded') - 0.3 && t < W(10, 'My');
     const shout = POSES.yell(t);
   shout.pitch = 0;
-  shout.rArm = [-165, 0, 12]; // arm straight up, face clear
+  shout.rArm = [-160, 0, -22]; // arm up and out, face clear
   let p = up > 0 && t < W(10, 'My') ? blend(seated(t, 3), shout, sm(up)) : seated(t, 3);
     if (laugh) p = POSES.pointLaugh(t);
     if (t > W(10, 'My')) {
@@ -527,7 +490,6 @@ export function setup({ scene, camera, assets, faces, sun }) {
   }
 
   // ---- bedroom (texting) --------------------------------------------------------------
-  const B = ORIGIN.bedroom;
   function bedroom(t) {
     sunOn(B, 0, -4);
     const panic = W(2, 'I') - 0.1;
@@ -545,16 +507,18 @@ export function setup({ scene, camera, assets, faces, sun }) {
       camera.lookAt(B.x, 3.1, B.z - 7.2);
       camera.fov = 52;
     } else {
-      // Pacing by the bed, phone in hand.
-      const x = 3 + 2.4 * Math.sin((t - panic) * 1.6);
-      const dir = Math.cos((t - panic) * 1.6) > 0 ? 90 : -90;
+      // Pacing on the rug, phone in hand, back and forth on a diagonal.
+      const k = Math.sin((t - panic) * 1.6);
+      const x = 3 + 1.4 * k;
+      const z = 0.5 + 1.4 * k;
+      const dir = Math.cos((t - panic) * 1.6) > 0 ? 45 : 225;
       const p = POSES.walk(t, 0, 30, 1.6);
       p.rArm = [-70, 0, 18];
-      A.me.set({ at: [B.x + x, B.z - 3], yaw: dir, pose: p, face: ['face-terrified', 'face-addon-sweat-drop'] });
+      A.me.set({ at: [B.x + x, B.z + z], yaw: dir, pose: p, face: ['face-terrified', 'face-addon-sweat-drop'] });
       A.me.hold('phone');
       camera.position.set(B.x + 3, 6, B.z + 9);
-      camera.lookAt(B.x + 3, 3.4, B.z - 3);
-      camera.fov = 54;
+      camera.lookAt(B.x + 3, 3.4, B.z + 0.5);
+      camera.fov = 62;
     }
     camera.updateProjectionMatrix();
   }
@@ -586,10 +550,20 @@ export function setup({ scene, camera, assets, faces, sun }) {
       voice: { progress: seg(t, VOICE_FROM, VOICE_TO - 0.4), playing, seconds: 3 } };
   }
 
+  // The door: open as he walks in, swings shut, bursts open for the principal.
+  function doorAngle(t) {
+    const open = 1.5;
+    const burst = W(16, 'walked') - 0.45;
+    if (t >= burst) return 1.75 * ease('Back', 'Out', seg(t, burst, burst + 0.4));
+    return open * (1 - sm(seg(t, MORNING + 1.2, MORNING + 2.0)));
+  }
+
   return function update(t) {
     for (const a of everyone) a.hide();
     bear.visible = false;
     black.style.opacity = String(Math.max(0, 1 - Math.abs(t - MORNING) / 0.22));
+    night(t < MORNING);
+    door.rotation.y = doorAngle(t);
     if (t < MORNING) {
       bedroom(t);
     } else {
