@@ -8,8 +8,9 @@
  * @param {number} [o.y]        vertical centre as a fraction of the frame height
  * @param {number} [o.size]     font size as a fraction of the frame width
  * @param {number} [o.maxHold]  longest a word stays up during a pause (seconds)
+ * @param {(t: number) => number} [o.yAt]  vertical position over time (overrides y)
  */
-export function createCaptions(words, { y = 0.6, size = 0.115, maxHold = 0.9 } = {}) {
+export function createCaptions(words, { y = 0.6, size = 0.115, maxHold = 0.9, yAt = null } = {}) {
   const el = document.createElement('div');
   Object.assign(el.style, {
     position: 'fixed',
@@ -44,6 +45,7 @@ export function createCaptions(words, { y = 0.6, size = 0.115, maxHold = 0.9 } =
 
   let i = 0;
   return function update(t) {
+    if (yAt) el.style.top = `${yAt(t) * 100}vh`;
     // Words are sorted; walk from the last position (renders go forwards, stills may jump).
     if (i >= shown.length || shown[i].start > t) i = 0;
     while (i + 1 < shown.length && shown[i + 1].start <= t) i++;

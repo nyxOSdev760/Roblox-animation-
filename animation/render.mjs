@@ -13,6 +13,7 @@
 // Sound cues (meta.audio) are { file, at, volume, dur?, fade?, loop?, pitch? }: file is
 // relative to assets/sfx, at is the start time in seconds, dur trims the sound, fade fades
 // it out, loop repeats it and pitch shifts it by semitones without changing its timing.
+// from skips into the file and filter adds ffmpeg audio filters (e.g. a phone-speaker EQ).
 import { createServer } from 'node:http';
 import { readFile, mkdir, rm, rename, writeFile, access } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
@@ -162,6 +163,9 @@ function encode(videoInput, dest, videoCodec) {
     let chain = `[${i + 1}:a]aresample=44100,aformat=channel_layouts=stereo,volume=${cue.volume}`;
     if (cue.loop) chain = `[${i + 1}:a]aloop=loop=-1:size=2e9,aresample=44100,aformat=channel_layouts=stereo,volume=${cue.volume}`;
     // pitch: semitones up (+) or down (-); the timing stays the same.
+    // from: start this many seconds into the file; filter: extra ffmpeg audio filters.
+    if (cue.from) chain += `,atrim=start=${cue.from},asetpts=PTS-STARTPTS`;
+    if (cue.filter) chain += `,${cue.filter}`;
     if (cue.pitch) chain += `,rubberband=pitch=${2 ** (cue.pitch / 12)}:formant=shifted:pitchq=quality`;
     if (cue.dur) chain += `,atrim=0:${cue.dur}`;
     if (cue.fade) chain += `,afade=t=out:st=${(cue.dur ?? 0) - cue.fade}:d=${cue.fade}`;
