@@ -1,7 +1,7 @@
 // Clothing check: every shirt/pants pair from ?items= (shirt|pants,shirt|pants,...) on its own
 // character. Still t = 2i shows pair i from the front, t = 2i + 1 from the back.
 import { createR6 } from '../src/r6.js';
-import { BRICK } from '../src/roblox.js';
+import { BRICK, SKIN } from '../src/roblox.js';
 
 const query = typeof location !== 'undefined' ? new URLSearchParams(location.search) : new URLSearchParams();
 const pairs = (query.get('items') || '').split(',').filter(Boolean).map((p) => p.split('|'));
@@ -19,7 +19,7 @@ const SPACING = 8;
 
 export function setup({ scene, camera, assets, faces }) {
   pairs.forEach(([shirt, pants], i) => {
-    const skin = BRICK.brightYellow;
+    const skin = Object.values(SKIN)[i % Object.values(SKIN).length];
     const ch = createR6({ assets, faces, face: 'neutral', shirt: shirt || undefined, pants: pants || undefined, colors: { head: skin, torso: skin, rArm: skin, lArm: skin, rLeg: skin, lLeg: skin } });
     ch.pose({ root: { pos: [i * SPACING, 3, 0], rot: [0, 0, 0] }, rArm: [0, 0, -8], lArm: [0, 0, 8] });
     scene.add(ch.root);

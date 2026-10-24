@@ -8,6 +8,19 @@ import * as THREE from 'three';
 const TEX = '/animation/assets/rbx/textures';
 
 // Roblox BrickColor RGB values.
+// Realistic skin tones (Roblox avatar editor colours), light to dark.
+export const SKIN = {
+  porcelain: 0xffd8c0,
+  pastelBrown: 0xffcc99,
+  lightOrange: 0xeab892,
+  nougat: 0xcc8e69,
+  tan: 0xb57b4f,
+  darkOrange: 0xa05f35,
+  brown: 0x7c5c46,
+  reddishBrown: 0x694028,
+  deep: 0x4a2e1e,
+};
+
 export const BRICK = {
   brightYellow: 0xf5cd30,
   brightBlue: 0x0d69ac,
