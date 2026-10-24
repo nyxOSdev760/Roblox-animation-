@@ -14,7 +14,7 @@ character.setFace(['face-eyes-shocked', 'face-mouth-small-frown']);  // build a 
 
 The face decals from `assets/faces/png/` (neutral, happy, grin, smirk, suspicious, sad, crying, angry, troll) work the same way by name.
 
-## Hair (275, all user-made)
+## Hair (251, all user-made)
 
 | Slug | Catalog name | Asset ID | Creator |
 |---|---|---|---|
@@ -22,9 +22,7 @@ The face decals from `assets/faces/png/` (neutral, happy, grin, smirk, suspiciou
 | `hair-90s-inspired-blonde` | 90s Inspired Blonde Hair | 5644907218 | genkroco |
 | `hair-adorable-doll-anime-side` | ☆ adorable y2k doll anime side light ginger | 130803216366675 | momo kiss |
 | `hair-adorbs-black-long` | Adorbs black long hair | 6778986933 | Zayacti |
-| `hair-afro-2` | Afro | 5100703261 | DieSoft |
 | `hair-afro-puff` | Cute Afro Puff | 6203040671 | Jazzyx3 |
-| `hair-afro` | Afro | 5100703261 | DieSoft |
 | `hair-alt-wolf-cut-two` | Alt Wolf Cut Two-Tone Black & Blonde | 8358684655 | ReddieTheTeddy |
 | `hair-anime-bob-cat-clip-2` | Anime Bob With Cat Clip(White) | 13653469162 | DIDIgamedev |
 | `hair-anime-bob-cat-clip` | Anime Bob With Cat Clip(Black) | 13641279482 | DIDIgamedev |
@@ -34,7 +32,6 @@ The face decals from `assets/faces/png/` (neutral, happy, grin, smirk, suspiciou
 | `hair-black-anime-wolf-cut` | Black Anime Wolf Cut Hair | 17274655265 | DIDIgamedev |
 | `hair-black-anime` | Black Anime Hair | 5891039736 | PolarCub |
 | `hair-black-balding-man` | Black Balding Man Hair | 14720386664 | 7ballcraze |
-| `hair-black-cat-ears` | Black Cat Ears Hairstyle | 7141674388 | DIDIgamedev |
 | `hair-black-celebrity-ponytails` | Celebrity Ponytails in Black | 6005339007 | Archi_tecture |
 | `hair-black-curly-afro` | Black Curly Afro | 11748367474 | HYPSAL |
 | `hair-black-curly-amazing-people` | Black Curly Hair For Amazing People  | 5703037305 | Muffinzs |
@@ -78,10 +75,7 @@ The face decals from `assets/faces/png/` (neutral, happy, grin, smirk, suspiciou
 | `hair-black-stylish-layered-bob` | Black Stylish Layered Bob | 15702973337 | DIDIgamedev |
 | `hair-black-swept` | Black Swept Hair | 6413085241 | antilique |
 | `hair-black-to-red-fluffy` | Black To Red Fluffy Middle Swept Hair | 10781701701 | Rush_X |
-| `hair-black-to-white-fluffy-2` | Black to White Fluffy Messy Cool Boy Hair | 12593547548 | PointMelon |
-| `hair-black-to-white-fluffy` | Black to White Fluffy Middle Swept Hair | 10781702956 | Rush_X |
 | `hair-black-trendy-messy-buns` | Black Trendy Messy Buns | 5314006793 | Archi_tecture |
-| `hair-black-white-fluffy` | Black to White Fluffy Messy Cool Boy Hair | 12593547548 | PointMelon |
 | `hair-black-wolf-cut` | Black Short Wolf Cut | 6441556987 | antilique |
 | `hair-blonde-adorable-braided` | Blonde Adorable Braided Hair | 6188729655 | Rush_X |
 | `hair-blonde-bangs-bun` | Blonde Bangs w bun | 4584788319 | Erythia |
@@ -132,21 +126,14 @@ The face decals from `assets/faces/png/` (neutral, happy, grin, smirk, suspiciou
 | `hair-california-blonde` | California Girl Blonde Hair | 6522211748 | bunnexh |
 | `hair-california-girl-blonde` | California Girl Blonde Hair | 6522211748 | bunnexh |
 | `hair-california-girl-brown` | California Girl Brown Hair | 6522220525 | bunnexh |
-| `hair-cat-ears-white` | Cute Cat Ears Hairstyle(White) | 14474050865 | DIDIgamedev |
 | `hair-celebrity-ponytails-black` | Celebrity Ponytails in Black | 6005339007 | Archi_tecture |
-| `hair-cheap-hot-pink-party` | Cheap Hot Pink Party Bob | 5865642319 | antilique |
-| `hair-clean-shiny-spikes-2` | Clean Shiny Spikes | 4527498648 | Yourius |
-| `hair-clean-shiny-spikes` | Clean Shiny Spikes | 4527498648 | Yourius |
-| `hair-cool-boy-2` | Cool Boy Hair  | 5644883846 | genkroco |
 | `hair-cool-boy-mullet-2` | Cool Boy Mullet | 6008020755 | genkroco |
 | `hair-cool-boy-mullet` | Cool Boy Mullet | 6008020755 | genkroco |
-| `hair-cool-boy` | Cool Boy Hair  | 5644883846 | genkroco |
 | `hair-curly-afro-black` | Curly Afro  [Black] | 15442653160 | Wigzz |
 | `hair-curly-iconic-iconic-people-2` | Curly iconic hair for iconic people in brown | 6066584853 | Archi_tecture |
 | `hair-curly-iconic-iconic-people` | Curly iconic hair for iconic people in blonde | 6066575453 | Archi_tecture |
 | `hair-dark-ethereal` | Dark Ethereal Hairstyle | 5945438043 | genkroco |
 | `hair-dejah-loc` | Dejah Loc's | 11977296871 | Glam Factory |
-| `hair-dreads` | Dreads | 4584983773 | Onigiri_Tsuki |
 | `hair-dream-girl-low-pigtails-2` | Dream Girl Low Pigtails Black n Rainbow | 5165675549 | OceanOrbs |
 | `hair-dream-girl-low-pigtails` | Dream Girl Low Pigtails Blonde To Rainbow | 5234379995 | OceanOrbs |
 | `hair-elegant-braided-bun` | Elegant Braided Bun | 6741327809 | Beeism |
@@ -167,16 +154,11 @@ The face decals from `assets/faces/png/` (neutral, happy, grin, smirk, suspiciou
 | `hair-gospel-girl-black` | Gospel Girl Hair in Black | 9731173784 | BUNNEXH |
 | `hair-grandpa-gray` | Gray Grandpa Balding Old Man Hair | 7611015444 | DawsonDelRey |
 | `hair-grandpa-white` | White Grandpa Balding Old Man Hair | 7611004838 | DawsonDelRey |
-| `hair-grunge-bunny-beanie-black` | Grunge hair w/ bunny beanie in Black | 15029424591 | Archi_tecture |
-| `hair-grunge-bunny-beanie-brown` | Grunge hair w/ bunny beanie in Brown | 15029466279 | Archi_tecture |
-| `hair-grunge-bunny-beanie` | Grunge hair w/ bunny beanie in Black | 15029424591 | Archi_tecture |
-| `hair-grunge-mullet-bunny-beanie` | Grunge mullet w/ bunny beanie in Black | 14998156600 | Archi_tecture |
 | `hair-grunge-wolf-black` | Grunge wolf hair Black | 11770892209 | Archi_tecture |
 | `hair-gyaru-leopard-print-butterfly` | gyaru leopard print butterfly cut (honey blonde) | 118409335769258 | parfei |
 | `hair-half-up-blonde` | Aesthetic half up hair in blonde | 6256894291 | Archi_tecture |
 | `hair-half-up-half-down` | Cute Half up Half Down Pigtails(Brown) | 13895364348 | DIDIgamedev |
 | `hair-high-top-fade` | High Top Fade | 5164439083 | genkroco |
-| `hair-hot-pink-bob` | Cheap Hot Pink Party Bob | 5865642319 | antilique |
 | `hair-jay-jo-mullet` | Jay Jo Mullet | 72363502718122 | GODSBLOOD |
 | `hair-kawaii-blonde-curly-dolli` | ノ꒰ kawaii blonde curly dolli hair ❤︎ ͡ 𐦯 | 106037782241577 | bunmiu |
 | `hair-large-curly-messy-buns` | Large curly messy buns in blonde | 6875093956 | Archi_tecture |
@@ -229,11 +211,8 @@ The face decals from `assets/faces/png/` (neutral, happy, grin, smirk, suspiciou
 | `hair-messy-popular-boy-black` | Messy Popular Boy Hair in Black | 6594911228 | Rush_X |
 | `hair-messy-popular-boy` | Messy Popular Boy Hair in Black | 6594911228 | Rush_X |
 | `hair-messy-pulled-back-blonde` | Messy Pulled back Blonde Hair Bun | 94611248083546 | Alquo |
-| `hair-messy-punk-cat-beanie` | Messy Hair w/ Y2K Punk Cat Beanie(Sky Blue) | 13388773290 | DIDIgamedev |
 | `hair-mini-pigtails-chopped-bangs` | Cute Mini Pigtails & Chopped Bangs Black | 5764649581 | Erythia |
 | `hair-mini-pigtails-ribbons-beige` | Mini Pigtails with Ribbons(Beige) | 14797410243 | DIDIgamedev |
-| `hair-orange-curly-afro-2` | Orange Curly Afro | 12143093583 | Zartania |
-| `hair-orange-curly-afro` | Orange Curly Afro | 12143093583 | Zartania |
 | `hair-pigtail-locs-black` | Pigtail Locs Black | 8055965752 | Lirn |
 | `hair-pixie-cut` | Pixie Cut | 7323152045 | genkroco |
 | `hair-platinum-space-bun-braid` | Platinum Space Bun Braid | 4602272831 | Erythia |
@@ -256,7 +235,6 @@ The face decals from `assets/faces/png/` (neutral, happy, grin, smirk, suspiciou
 | `hair-short-wolf-cut-black` | Short Wolf Cut(Black) | 16199722680 | DIDIgamedev |
 | `hair-short-wolf-cut-ginger` | Short Wolf Cut(Ginger) | 16199920539 | DIDIgamedev |
 | `hair-short-wolf-cut-red` | Short Wolf Cut(Red Ombre) | 16200154273 | DIDIgamedev |
-| `hair-side-parted-afro` | Side Parted Afro | 6471985057 | Jazzyx3 |
 | `hair-side-parted-slicked-back` | Side Parted Slicked Back Gojo Hair | 120478611992895 | blanksfall |
 | `hair-silky-afro-pigtails` | Silky Afro Pigtails | 8705233070 | MURCE |
 | `hair-silver-locks` | Lovely Silver Locks | 5099895657 | PolarCub |
@@ -272,7 +250,6 @@ The face decals from `assets/faces/png/` (neutral, happy, grin, smirk, suspiciou
 | `hair-split-bangs-brown` | Aesthetic Split Bangs Hair in Brown  | 7284085462 | Lukacors |
 | `hair-straight-long-hime-cut` | Straight Long Hime Cut Hair (Blonde) | 12913266387 | gyansu |
 | `hair-super-messy-fluffy-boy` | Super Messy Fluffy Boy Hair Black | 12887129839 | bankwear |
-| `hair-sweet-baby` | Sweet baby hair | 7062555174 | Zayacti |
 | `hair-swept-burst-fade-black` | Swept Burst Fade Hair Black Highlights | 96034509334513 | Hairworks |
 | `hair-twice-pink-ombre-braids` | TWICE Pink Ombre Braids | 13527577327 | JYP Official |
 | `hair-vintage-wavy-blonde-bob` | Vintage Wavy Blonde Bob | 6036130430 | antilique |
@@ -292,7 +269,6 @@ The face decals from `assets/faces/png/` (neutral, happy, grin, smirk, suspiciou
 | `hair-white-messy` | White Messy Hairstyle | 7259147441 | DIDIgamedev |
 | `hair-wolf-cut-messy-mullet-2` | Wolf Cut Messy Mullet Hair in White | 15728302236 | munuko |
 | `hair-wolf-cut-messy-mullet` | Wolf Cut Messy Mullet Hair in Black | 15728271241 | munuko |
-| `hair-wolfcut-kitten-beanie-headphones` | Wolfcut w/ Kitten beanie & Headphones in Black | 16004297280 | Archi_tecture |
 
 ## UGC faces (37)
 

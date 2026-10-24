@@ -41,16 +41,16 @@ const CAST = {
   tripper: { shirt: 'shirt-r6-black-jacket', pants: 'pants-jeans-hip-hop-retro', hair: 'hair-black-messy', skin: SKIN.brown },
   laugher: { shirt: 'shirt-thrifted-86-warhead-jersey', pants: 'pants-khaki-distressed-jorts-f', hair: 'hair-messy-boy-blonde', skin: SKIN.lightOrange },
   waver: { shirt: 'shirt-vintage-flannel-button-up', pants: 'pants-ripped-black-jeans-mu', hair: 'hair-cool-boy-mullet', skin: SKIN.tan },
-  waved: { shirt: 'shirt-blue-stripe-shirt-neck', pants: 'pants-summer-hip-hop-punk', hair: 'hair-hot-pink-bob', skin: SKIN.nougat },
+  waved: { shirt: 'shirt-blue-stripe-shirt-neck', pants: 'pants-summer-hip-hop-punk', hair: 'hair-short-pink-fluffy', skin: SKIN.nougat },
   friend: { shirt: 'shirt-th-denim-jacket-floral', pants: 'pants-cargo-pants-grey-black', hair: 'hair-brown-anime', skin: SKIN.reddishBrown },
   bride: { shirt: 'shirt-wedding-dress', pants: 'pants-wedding-skirt', hair: 'hair-blonde-curly-celebrity', skin: SKIN.lightOrange },
   groom: { shirt: 'shirt-suit-black', pants: 'pants-suit-black', hair: 'hair-brown-side-sweep', skin: SKIN.darkOrange },
-  bestman: { shirt: 'shirt-thrifted-striped-polo', pants: 'pants-dark-pants', hair: 'hair-cool-boy', skin: SKIN.deep },
+  bestman: { shirt: 'shirt-thrifted-striped-polo', pants: 'pants-dark-pants', hair: 'hair-messy-boy-black-2', skin: SKIN.deep },
   singer: { shirt: 'shirt-rockstar-hoodie-black-y2k2', pants: 'pants-cargo-pants-grey-black', hair: 'hair-black-to-red-fluffy', skin: SKIN.porcelain },
   lunch: { shirt: 'shirt-lunch-lady', pants: 'pants-lunch-lady', hair: 'hair-black-messy-buns', skin: SKIN.brown },
-  mail: { shirt: 'shirt-mail-carrier', pants: 'pants-mail-shorts', hair: 'hair-cool-boy', skin: SKIN.nougat },
+  mail: { shirt: 'shirt-mail-carrier', pants: 'pants-mail-shorts', hair: 'hair-messy-boy-black-2', skin: SKIN.nougat },
   doctor: { shirt: 'shirt-doctor', pants: 'pants-scrubs', hair: 'hair-grandpa-gray', skin: SKIN.pastelBrown },
-  crew: { shirt: 'shirt-gotcha-crew', pants: 'pants-ripped-black-jeans-mu', hair: 'hair-grunge-bunny-beanie-black', skin: SKIN.reddishBrown },
+  crew: { shirt: 'shirt-gotcha-crew', pants: 'pants-ripped-black-jeans-mu', hair: 'hair-high-top-fade', skin: SKIN.reddishBrown },
   contestant: { shirt: 'shirt-thrifted-striped-polo', pants: 'pants-jeans-hip-hop-retro', hair: 'hair-fluffy-layered-shaggy-blonde', skin: SKIN.tan },
   diaryGirl: { shirt: 'shirt-sweter-galaxy-blue-100', pants: 'pants-white-cargo-jeans-dh', hair: 'hair-blonde-pigtails', skin: SKIN.porcelain },
   grandma: { shirt: 'shirt-cutesy-pink-striped-sweater', pants: 'pants-dark-pants', hair: 'hair-silver-locks', skin: SKIN.lightOrange },
@@ -60,7 +60,7 @@ const CAST = {
 // The crowd: Roblox's classic clothes in different combos.
 const SHIRTS = ['shirt-white-shirt', 'shirt-th-denim-jacket-floral', 'shirt-thrifted-striped-polo', 'shirt-blue-stripe-shirt-neck', 'shirt-butterfly', 'shirt-grey-knitted-sweater-chain', 'shirt-tech-fleece-red-hoodie', 'shirt-sweter-galaxy-blue-100', 'shirt-vintage-flannel-button-up', 'shirt-thrifted-86-warhead-jersey', 'shirt-r6-black-jacket', 'shirt-black-short-sleeve-tee'];
 const PANTS = ['pants-jeans-hip-hop-retro', 'pants-ripped-black-jeans-mu', 'pants-khaki-distressed-jorts-f', 'pants-dark-pants', 'pants-cargo-pants-grey-black', 'pants-summer-hip-hop-punk', 'pants-white-cargo-jeans-dh', 'pants-gray-sweatpants'];
-const HAIRS = ['hair-black-messy', 'hair-long-brunette', 'hair-brown-side-sweep', 'hair-afro', 'hair-messy-ponytail-black', 'hair-black-short-wolf-cut', 'hair-blonde-pigtails', 'hair-messy-popular-boy', 'hair-popular-girl-blonde-brown', 'hair-dreads', 'hair-short-wolf-cut-red', 'hair-black-high-pigtails', 'hair-cool-boy', 'hair-afro-puff', 'hair-long-blonde', 'hair-black-wolf-cut', 'hair-orange-curly-afro', 'hair-hot-pink-bob'];
+const HAIRS = ['hair-black-messy', 'hair-long-brunette', 'hair-brown-side-sweep', 'hair-curly-afro-black', 'hair-messy-ponytail-black', 'hair-black-short-wolf-cut', 'hair-blonde-pigtails', 'hair-messy-popular-boy', 'hair-popular-girl-blonde-brown', 'hair-dejah-loc', 'hair-short-wolf-cut-red', 'hair-black-high-pigtails', 'hair-messy-boy-black-2', 'hair-afro-puff', 'hair-long-blonde', 'hair-black-wolf-cut', 'hair-black-curly-afro', 'hair-short-pink-fluffy'];
 const SKINS = Object.values(SKIN);
 const EXTRAS = Array.from({ length: 18 }, (_, i) => ({
   shirt: SHIRTS[(i * 5) % SHIRTS.length],

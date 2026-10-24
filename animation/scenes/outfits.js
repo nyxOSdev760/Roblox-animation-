@@ -9,10 +9,10 @@ const CAST = [
   { shirt: 'shirt-suit-tv-host', pants: 'pants-suit-tv-host', hair: 'hair-black-middle-part', skin: SKIN.nougat },
   { shirt: 'shirt-suit-black', pants: 'pants-suit-black', hair: 'hair-business-comb-over', skin: SKIN.porcelain },
   { shirt: 'shirt-lunch-lady', pants: 'pants-lunch-lady', hair: 'hair-black-messy-buns', skin: SKIN.brown },
-  { shirt: 'shirt-mail-carrier', pants: 'pants-mail-shorts', hair: 'hair-cool-boy', skin: SKIN.tan },
+  { shirt: 'shirt-mail-carrier', pants: 'pants-mail-shorts', hair: 'hair-messy-boy-black-2', skin: SKIN.tan },
   { shirt: 'shirt-doctor', pants: 'pants-scrubs', hair: 'hair-grandpa-gray', skin: SKIN.lightOrange },
   { shirt: 'shirt-grad-gown', pants: 'pants-grad-gown', hair: 'hair-messy-boy-black', skin: SKIN.reddishBrown },
-  { shirt: 'shirt-gotcha-crew', pants: 'pants-ripped-black-jeans-mu', hair: 'hair-grunge-bunny-beanie-black', skin: SKIN.deep },
+  { shirt: 'shirt-gotcha-crew', pants: 'pants-ripped-black-jeans-mu', hair: 'hair-high-top-fade', skin: SKIN.deep },
 ];
 
 export const meta = {
