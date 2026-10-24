@@ -2,7 +2,7 @@
 //   node render.mjs wardrobe --stills 0,1,2 ...   (with ?items= set by WARDROBE_ITEMS)
 // Still number i (time t = i) shows item i in a 3/4 front view.
 import { createR6 } from '../src/r6.js';
-import { BRICK } from '../src/roblox.js';
+import { BRICK, SKIN } from '../src/roblox.js';
 
 const query = typeof location !== 'undefined' ? new URLSearchParams(location.search) : new URLSearchParams();
 const items = (query.get('items') || '').split(',').filter(Boolean);
@@ -34,7 +34,7 @@ export function setup({ scene, camera, assets, faces, sun }) {
       faces,
       face: isFace ? slug : 'happy',
       accessories: isFace ? [] : [slug],
-      colors: { head: BRICK.brightYellow, torso: BRICK.mediumStoneGrey, rArm: BRICK.brightYellow, lArm: BRICK.brightYellow, rLeg: BRICK.darkStoneGrey, lLeg: BRICK.darkStoneGrey },
+      colors: { head: SKIN.lightOrange, torso: BRICK.mediumStoneGrey, rArm: SKIN.lightOrange, lArm: SKIN.lightOrange, rLeg: BRICK.darkStoneGrey, lLeg: BRICK.darkStoneGrey },
     });
     ch.pose({ root: { pos: [i * SPACING, 3, 0], rot: [0, isFace ? 0 : 28, 0] } });
     scene.add(ch.root);
