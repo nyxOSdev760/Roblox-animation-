@@ -42,10 +42,10 @@ HEAD_ATTACHMENTS = {
 }
 
 
-def http(url, retries=4):
+def http(url, retries=4, headers=None):
     for attempt in range(retries):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept-Encoding": "gzip"})
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept-Encoding": "gzip", **(headers or {})})
             with urllib.request.urlopen(req, timeout=60) as r:
                 data = r.read()
                 if r.headers.get("Content-Encoding") == "gzip" or data[:2] == b"\x1f\x8b":
@@ -71,23 +71,32 @@ def fetch(aid: int) -> bytes:
     path = CACHE / str(aid)
     if path.exists():
         return path.read_bytes()
-    info = json.loads(http(f"https://assetdelivery.roblox.com/v2/asset/?id={aid}"))
-    if "locations" not in info:
+    key = os.environ.get("ROBLOX_API_KEY")
+    if key:
+        # Open Cloud asset delivery: also serves user-made items (needs a Legacy Assets key).
+        info = json.loads(http(f"https://apis.roblox.com/asset-delivery-api/v1/assetId/{aid}", headers={"x-api-key": key}))
+        location = info.get("location")
+    else:
+        info = json.loads(http(f"https://assetdelivery.roblox.com/v2/asset/?id={aid}"))
+        location = info["locations"][0]["location"] if info.get("locations") else None
+    if not location:
         raise RuntimeError(f"asset {aid}: {info}")
-    data = http(info["locations"][0]["location"])
+    data = http(location)
     path.write_bytes(data)
     return data
 
 
 # ---- catalog ---------------------------------------------------------------------------
 
-def search(sub, keyword=None, pages=1, sort=1):
+def search(sub, keyword=None, pages=1, sort=1, creator=None):
     cat, subcat = SUBCATEGORIES[sub]
     items, cursor = [], ""
     for _ in range(pages):
         q = {"Category": cat, "Subcategory": subcat, "Limit": 30, "SortType": sort, "SortAggregation": 5}
         if keyword:
             q["Keyword"] = keyword
+        if creator:
+            q["CreatorName"] = creator
         if cursor:
             q["Cursor"] = cursor
         d = json.loads(http("https://catalog.roblox.com/v1/search/items/details?" + urllib.parse.urlencode(q)))

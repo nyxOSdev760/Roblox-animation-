@@ -4,15 +4,15 @@ import { BRICK } from '../src/roblox.js';
 import { buildTown } from '../src/town.js';
 
 const CAST = [
-  { shirt: 'shirt-moto', pants: 'pants-dark-green-jeans', hair: 'hair-pal', skin: BRICK.brightYellow },
-  { shirt: 'shirt-pastel-starburst', pants: 'pants-beautiful-you-jeans', hair: 'hair-long-brunette', skin: BRICK.lightOrange },
+  { shirt: 'shirt-black-short-sleeve-tee', pants: 'pants-jeans-stars', hair: 'hair-pal', skin: BRICK.brightYellow },
+  { shirt: 'shirt-cutesy-pink-striped-sweater', pants: 'pants-pink-trendy-girls-casual', hair: 'hair-long-brunette', skin: BRICK.lightOrange },
   { shirt: 'shirt-suit-tv-host', pants: 'pants-suit-tv-host', hair: 'hair-black-middle-part', skin: BRICK.nougat },
   { shirt: 'shirt-suit-black', pants: 'pants-suit-black', hair: 'hair-business-comb-over', skin: BRICK.lightOrange },
   { shirt: 'shirt-lunch-lady', pants: 'pants-lunch-lady', hair: 'hair-black-messy-buns', skin: BRICK.brown },
   { shirt: 'shirt-mail-carrier', pants: 'pants-mail-shorts', hair: 'hair-cool-boy', skin: BRICK.lightOrange },
   { shirt: 'shirt-doctor', pants: 'pants-scrubs', hair: 'hair-grandpa-gray', skin: BRICK.nougat },
   { shirt: 'shirt-grad-gown', pants: 'pants-grad-gown', hair: 'hair-messy-boy-black', skin: BRICK.brightYellow },
-  { shirt: 'shirt-gotcha-crew', pants: 'pants-black-jeans', hair: 'hair-orange-beanie-black', skin: BRICK.brown },
+  { shirt: 'shirt-gotcha-crew', pants: 'pants-ripped-black-jeans-mu', hair: 'hair-orange-beanie-black', skin: BRICK.brown },
 ];
 
 export const meta = {
