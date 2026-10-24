@@ -6,14 +6,17 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 /**
  * Bake a group of static parts (already positioned) into merged meshes, one per material and
  * shadow setting. Meshes with several materials (signs, panels) and transparent ones (glass)
- * are kept as they are. Returns a new group in world space; `root` is emptied.
+ * are kept as they are. Returns a new group in world space; `root` is emptied. The group's
+ * userData.colliders lists every part's bounding box (in that same space) for physics.js.
  */
 export function bake(root) {
   root.updateMatrixWorld(true);
   const buckets = new Map();
   const keep = [];
+  const colliders = [];
   root.traverse((o) => {
     if (!o.isMesh) return;
+    if (!o.userData.noCollide) colliders.push(new THREE.Box3().setFromObject(o));
     if (Array.isArray(o.material) || o.material.transparent || o.userData.keep) {
       keep.push(o);
       return;
@@ -35,5 +38,6 @@ export function bake(root) {
     for (const g of geos) g.dispose();
   }
   for (const o of keep) out.attach(o);
+  out.userData.colliders = colliders;
   return out;
 }

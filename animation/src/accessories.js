@@ -48,6 +48,7 @@ export function accessory(slug) {
     mesh.castShadow = false; // hair shadows darken the whole face at this sun angle
     mesh.receiveShadow = true;
     if (a.kind === 'face') mesh.renderOrder = 1;
+    mesh.userData.accessoryKind = a.kind;
     neck.add(mesh);
     return mesh;
   };

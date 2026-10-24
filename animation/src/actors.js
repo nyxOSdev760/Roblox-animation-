@@ -282,8 +282,12 @@ export function sizeAt(t, start, steps, dur = 0.28) {
   return s;
 }
 
+/** Every Actor created, for the physics pass (physics.js). */
+export const ACTORS = [];
+
 export class Actor {
   constructor(opts) {
+    ACTORS.push(this);
     this.r6 = createR6(opts);
     this.root = this.r6.root;
     this.held = {}; // props attached to hands

@@ -6,6 +6,8 @@ import { loadRobloxAssets, robloxLighting } from './roblox.js';
 import { loadHeadMesh } from './r6.js';
 import { loadAccessories } from './accessories.js';
 import { loadClothing } from './clothing.js';
+import { ACTORS } from './actors.js';
+import { createPhysics } from './physics.js';
 
 const params = new URLSearchParams(location.search);
 const name = params.get('scene') || 'kick';
@@ -38,11 +40,16 @@ const [assets, faces] = await Promise.all([
 const sun = robloxLighting(scene, renderer, assets);
 const update = setup({ scene, camera, renderer, assets, faces, sun });
 
+// Physics (collisions, follow-through) for scenes with characters; meta.physics = false skips it.
+const physics = ACTORS.length && meta.physics !== false && params.get('physics') !== '0' ? createPhysics(scene, ACTORS, { fps: meta.fps }) : null;
+
 window.renderAt = (t) => {
-  update(t);
+  if (physics) physics.frame(update, t);
+  else update(t);
   renderer.render(scene, camera);
 };
 window.sceneMeta = meta;
+window.physics = physics;
 window.sceneReady = true;
 
 if (!params.has('frame')) {
