@@ -7,3 +7,4 @@ animation/out/*-parts/
 # Full-length renders are too big for the repo (GitHub warns over 50 MB); they're delivered directly.
 animation/out/twinkletoes.mp4
 animation/out/crush.mp4
+animation/out/icecream.mp4

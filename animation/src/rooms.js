@@ -5,7 +5,7 @@
 // Static parts are baked into merged meshes (bake.js); the returned handles are the parts
 // that shots animate (the classroom door) or switch on (the bedroom's lights).
 import * as THREE from 'three';
-import { BRICK, part, cylinder, ball } from './roblox.js';
+import { BRICK, part, cylinder, ball, robloxMaterial } from './roblox.js';
 import * as P from './props.js';
 import { bake } from './bake.js';
 import { rng } from './world.js';
@@ -1085,4 +1085,378 @@ export function buildBedroom(scene, a, o, { seed = 2 } = {}) {
     scene.add(l);
   }
   return { lights };
+}
+
+// ---- the front of a school, with the street ---------------------------------------------
+
+const drawSchoolSign = (ctx, w, h) => {
+  ctx.fillStyle = '#1b3a6b';
+  ctx.fillRect(0, 0, w, h);
+  ctx.strokeStyle = '#ffd21f';
+  ctx.lineWidth = h * 0.08;
+  ctx.strokeRect(h * 0.06, h * 0.06, w - h * 0.12, h - h * 0.12);
+  P.drawText(ctx, 'MAPLE MIDDLE SCHOOL', w / 2, h * 0.52, w * 0.9, h * 0.55, { color: '#ffffff' });
+};
+
+const drawWelcome = (ctx, w, h) => {
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, w, h);
+  const cols = ['#e53935', '#fb8c00', '#fdd835', '#43a047', '#1e88e5', '#8e24aa'];
+  const txt = 'HAVE A GREAT DAY!';
+  ctx.font = `${h * 0.62}px ${FONT}`;
+  ctx.textBaseline = 'middle';
+  let x = (w - ctx.measureText(txt).width) / 2;
+  [...txt].forEach((c, i) => {
+    ctx.fillStyle = cols[i % cols.length];
+    ctx.fillText(c, x, h * 0.54);
+    x += ctx.measureText(c).width;
+  });
+};
+
+const drawMarquee = (ctx, w, h) => {
+  ctx.fillStyle = '#111111';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#f2f2f2';
+  ctx.fillRect(w * 0.04, h * 0.1, w * 0.92, h * 0.8);
+  const lines = ['WELCOME BACK', 'STUDENTS!', 'PICTURE DAY FRI'];
+  lines.forEach((l, i) => P.drawText(ctx, l, w / 2, h * (0.28 + i * 0.25), w * 0.82, h * 0.2, { color: '#1b1b1b' }));
+};
+
+/**
+ * The front of a school at `o`. The street runs along x: road z 8..22 (cars drive at
+ * z ≈ 11.8 heading -x, nearest the school), curb at z = 8, sidewalk z 0..8, lawn z -12..0,
+ * the building's front wall at z = -14 (x -50..50) with the entrance at x = 0.
+ */
+export function buildSchoolFront(scene, a, o, { seed = 4 } = {}) {
+  const r = rng(seed);
+  const g = new THREE.Group();
+  const BR = 0xa34b3a;
+  const STONE = 0xe9e2cc;
+
+  // Ground: lawn, sidewalk, curb, road with markings, the far sidewalk and yards.
+  box(g, a, [400, 1, 300], [0, -0.6, -60], BRICK.brightGreen, 'Grass', false);
+  box(g, a, [400, 0.3, 8], [0, 0.15, 4], 0xc9c6bd, 'Concrete', false);
+  for (let x = -198; x < 200; x += 6) box(g, a, [0.08, 0.31, 8], [x, 0.16, 4], 0x9c9a92, 'Concrete', false);
+  box(g, a, [400, 0.45, 0.6], [0, 0.22, 8.2], 0xb3b0a6, 'Concrete', false);
+  box(g, a, [400, 0.1, 14], [0, 0.05, 15.2], 0x3a3d42, 'Concrete', false);
+  for (let x = -196; x < 200; x += 8) box(g, a, [4, 0.12, 0.3], [x, 0.06, 15.2], 0xf5cd30, 'Plastic', false);
+  box(g, a, [400, 0.12, 0.25], [0, 0.06, 8.9], 0xf2f2f2, 'Plastic', false);
+  box(g, a, [400, 0.12, 0.25], [0, 0.06, 21.6], 0xf2f2f2, 'Plastic', false);
+  for (let k = 0; k < 8; k++) box(g, a, [1.2, 0.13, 12.4], [34 + k * 2.2, 0.07, 15.2], 0xf2f2f2, 'Plastic', false); // crosswalk
+  box(g, a, [400, 0.45, 0.6], [0, 0.22, 22.2], 0xb3b0a6, 'Concrete', false);
+  box(g, a, [400, 0.3, 6], [0, 0.15, 25.4], 0xc9c6bd, 'Concrete', false);
+  box(g, a, [4, 0.1, 6], [0, 0.32, -8], 0xc9c6bd, 'Concrete', false);
+
+  // The building: two floors of brick with stone trim, the entrance block in the middle.
+  box(g, a, [100, 22, 30], [0, 11, -29], BR, 'Brick');
+  box(g, a, [101, 1.2, 31], [0, 22.6, -29], STONE, 'Concrete');
+  box(g, a, [100.4, 0.8, 0.6], [0, 11, -13.9], STONE, 'Concrete', false);
+  box(g, a, [100.4, 1.2, 0.6], [0, 0.6, -13.9], STONE, 'Concrete', false);
+  for (let x = -46; x <= 46; x += 6.5) {
+    if (Math.abs(x) < 12) continue;
+    for (const y of [5.6, 16.2]) {
+      box(g, a, [4.6, 5.2, 0.4], [x, y, -13.9], STONE, 'Concrete', false);
+      box(g, a, [4.0, 4.6, 0.45], [x, y, -13.88], 0x6fa8d6, 'Glass', false);
+      box(g, a, [0.18, 4.6, 0.5], [x, y, -13.86], STONE, 'Concrete', false);
+      box(g, a, [4.0, 0.18, 0.5], [x, y + 0.6, -13.86], STONE, 'Concrete', false);
+      box(g, a, [5.0, 0.35, 0.9], [x, y - 2.75, -13.6], STONE, 'Concrete', false);
+    }
+  }
+  // Entrance block, columns, glass doors, steps, sign, clock.
+  box(g, a, [24, 26, 6], [0, 13, -14], 0xb85a45, 'Brick');
+  box(g, a, [25, 1.4, 7], [0, 26.7, -14], STONE, 'Concrete');
+  box(g, a, [26, 0.8, 8], [0, 20.4, -8.5], STONE, 'Concrete');
+  for (const x of [-10, -5.5, 5.5, 10]) {
+    g.add(cylinder(a, 0.75, 19.4, [x, 10.4, -5.5], STONE, 'Concrete'));
+    box(g, a, [2, 0.6, 2], [x, 0.9, -5.5], STONE, 'Concrete');
+    box(g, a, [2, 0.6, 2], [x, 19.8, -5.5], STONE, 'Concrete');
+  }
+  box(g, a, [8.4, 8.6, 0.4], [0, 4.9, -10.85], 0x2a2f36, 'Metal');
+  for (const x of [-2, 2]) {
+    box(g, a, [3.6, 7.6, 0.2], [x, 4.4, -10.6], 0x9fd0ef, 'Glass', false);
+    box(g, a, [0.2, 2.4, 0.3], [x > 0 ? 0.5 : -0.5, 4.2, -10.4], 0xc0c4c8, 'Metal', false);
+  }
+  box(g, a, [0.3, 7.8, 0.35], [0, 4.4, -10.55], 0x2a2f36, 'Metal', false);
+  for (let k = 0; k < 3; k++) box(g, a, [14, 0.4, 2.2], [0, 0.2 + k * 0.4, -8.4 - k * 0.7], STONE, 'Concrete');
+  for (const x of [-7.2, 7.2]) box(g, a, [0.2, 3.2, 0.2], [x, 2.6, -8.2], 0xc0c4c8, 'Metal');
+  const sign = decal(18, 2.6, drawSchoolSign);
+  put(g, sign, 0, 15.2, -10.9);
+  const clockRim = cylinder(a, 1.8, 0.4, [0, 22.5, -10.85], STONE, 'Concrete');
+  clockRim.rotation.x = Math.PI / 2;
+  g.add(clockRim);
+  put(g, decal(3.2, 3.2, drawClock, { ppu: 80, alpha: true }), 0, 22.5, -10.6);
+  put(g, decal(14, 1.5, drawWelcome), -32, 11.0, -13.55);
+  // Flagpole with a school flag, the marquee sign, bike rack, benches, trash, hedges, trees.
+  g.add(cylinder(a, 0.18, 24, [18, 12, -3], 0xc0c4c8, 'Metal'));
+  g.add(ball(a, 0.35, [18, 24.2, -3], 0xe2b33c, 'Metal'));
+  g.add(cylinder(a, 1.4, 0.6, [18, 0.3, -3], STONE, 'Concrete'));
+  const flag = decal(5, 3, (ctx, w, h) => {
+    ctx.fillStyle = '#1b3a6b';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#ffd21f';
+    ctx.beginPath();
+    for (let i = 0; i < 10; i++) {
+      const rr = i % 2 ? h * 0.14 : h * 0.34;
+      const ang = (i / 10) * Math.PI * 2 - Math.PI / 2;
+      ctx.lineTo(w / 2 + Math.cos(ang) * rr, h / 2 + Math.sin(ang) * rr);
+    }
+    ctx.fill();
+  });
+  flag.material.side = THREE.DoubleSide;
+  put(g, flag, 20.6, 22, -3);
+  const mq = new THREE.Group();
+  box(mq, a, [9, 1.4, 1.4], [0, 0.7, 0], 0xb85a45, 'Brick');
+  for (const x of [-4, 4]) box(mq, a, [1, 6, 1.2], [x, 3, 0], 0xb85a45, 'Brick');
+  box(mq, a, [7.4, 4.2, 0.8], [0, 4, 0], 0x111111, 'Plastic');
+  put(mq, decal(7, 3.8, drawMarquee, { ppu: 48, glow: 0.25 }), 0, 4, 0.42);
+  box(mq, a, [9.4, 0.6, 1.6], [0, 6.3, 0], STONE, 'Concrete');
+  put(g, mq, -20, 0, -4, 0.15);
+  for (let k = 0; k < 6; k++) {
+    const x = 10 + k * 1.2;
+    const hoop = new THREE.Mesh(new THREE.TorusGeometry(0.9, 0.08, 8, 20, Math.PI), robloxMaterial(a, 0x8d8f94, 'Metal'));
+    hoop.position.set(x, 0.3, 2);
+    hoop.rotation.y = Math.PI / 2;
+    hoop.castShadow = true;
+    g.add(hoop);
+  }
+  const bike = (x, z, c) => {
+    for (const dz of [-0.9, 0.9]) {
+      const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.08, 8, 20), robloxMaterial(a, 0x1b1b1b, 'Plastic'));
+      wheel.position.set(x, 0.9, z + dz);
+      wheel.rotation.y = Math.PI / 2;
+      g.add(wheel);
+    }
+    box(g, a, [0.12, 0.12, 1.9], [x, 1.25, z], c, 'Metal');
+    box(g, a, [0.12, 0.9, 0.12], [x, 1.35, z - 0.3], c, 'Metal');
+    box(g, a, [0.3, 0.12, 0.6], [x, 1.85, z - 0.3], 0x1b1b1b, 'Plastic');
+    box(g, a, [0.9, 0.1, 0.1], [x, 1.9, z + 0.8], 0x1b1b1b, 'Metal');
+  };
+  bike(11.2, 2, 0xc4281c);
+  bike(13.6, 2, 0x1e88e5);
+  bike(16.0, 2, 0x43a047);
+  for (const x of [-12, 26]) {
+    box(g, a, [5, 0.3, 1.4], [x, 1.6, -1.2], 0x8a5a3a, 'Wood');
+    box(g, a, [5, 1.2, 0.25], [x, 2.4, -1.85], 0x8a5a3a, 'Wood');
+    for (const dx of [-2.1, 2.1]) box(g, a, [0.25, 1.6, 1.4], [x + dx, 0.8, -1.2], 0x2a2a2a, 'Metal');
+  }
+  g.add(cylinder(a, 0.7, 2.4, [-7, 1.2, 1.2], 0x2f6b3a, 'Metal'));
+  g.add(cylinder(a, 0.7, 2.4, [-31, 1.2, 1.2], 0x2f6b3a, 'Metal'));
+  for (let x = -48; x <= 48; x += 3.2) {
+    if (Math.abs(x) < 14) continue;
+    const h = ball(a, 1.6, [x, 1.0, -12.4], 0x2f7a35, 'Grass');
+    h.scale.set(1, 0.75, 0.8);
+    g.add(h);
+  }
+  for (const x of [-42, -30, 30, 42]) tree(g, a, x, -6, 1.1, r);
+  for (const x of [-60, -52, 56, 64]) tree(g, a, x, -2, 1.2, r);
+  // Street lamps and a school-zone sign.
+  for (const x of [-36, 36]) {
+    g.add(cylinder(a, 0.22, 13, [x, 6.5, 7.2], 0x3b3f45, 'Metal'));
+    box(g, a, [0.3, 0.3, 2.6], [x, 12.9, 8.4], 0x3b3f45, 'Metal');
+    box(g, a, [1, 0.5, 1.4], [x, 12.6, 9.6], 0x3b3f45, 'Metal');
+    box(g, a, [0.8, 0.1, 1.1], [x, 12.33, 9.6], 0xfff3c4, 'Neon', false);
+  }
+  g.add(cylinder(a, 0.1, 7, [28, 3.5, 7.0], 0x8d8f94, 'Metal'));
+  const zone = decal(2.4, 2.8, signDraw(['SCHOOL', 'ZONE', '20 MPH'], '#f5e400', '#111111', { border: '#111111' }));
+  zone.material.side = THREE.DoubleSide;
+  put(g, zone, 28, 6.0, 7.12, Math.PI / 4);
+  // Across the street: houses, fences and trees (seen behind the truck).
+  const houses = [[-70, 0xd9c7a0, 0x7c2f2f], [-40, 0x9fc4d8, 0x3b3f45], [-10, 0xf2efe6, 0x2f5f8a], [20, 0xe7b8a5, 0x5a3a2a], [50, 0xc9d8a8, 0x7c2f2f], [80, 0xf2d58a, 0x3b3f45]];
+  for (const [x, wall, roof] of houses) {
+    box(g, a, [18, 11, 12], [x, 5.5, 44], wall, 'Plastic');
+    for (const s of [-1, 1]) {
+      const rf = part(a, [19, 0.6, 7.6], [x, 13.2, 44 + s * 3.1], roof, 'Slate');
+      rf.rotation.x = s * 0.62;
+      g.add(rf);
+    }
+    box(g, a, [3, 6.5, 0.3], [x, 3.25, 37.9], 0x8a5a3a, 'WoodPlanks');
+    for (const dx of [-5.5, 5.5]) {
+      box(g, a, [3.4, 3, 0.3], [x + dx, 6, 37.9], 0x9fd0ef, 'Glass', false);
+      box(g, a, [3.8, 0.3, 0.6], [x + dx, 4.35, 37.8], 0xf2f2f2, 'Plastic', false);
+    }
+    for (let k = -4; k <= 4; k++) if (Math.abs(k) > 0) box(g, a, [0.3, 2.4, 0.3], [x + k * 2, 1.2, 30], 0xf2f2f2, 'WoodPlanks');
+    box(g, a, [17, 0.3, 0.2], [x, 1.9, 30], 0xf2f2f2, 'WoodPlanks');
+    tree(g, a, x + 12, 34, 1.0, r);
+  }
+  // A school bus parked down the street.
+  put(g, P.schoolBus(a), -42, 0, 12.0, Math.PI);
+
+  g.position.copy(o);
+  scene.add(bake(g));
+  return {};
+}
+
+// ---- an ice cream truck ---------------------------------------------------------------
+
+const drawTruckSide = (ctx, w, h) => {
+  ctx.clearRect(0, 0, w, h);
+  P.drawText(ctx, 'ICE CREAM', w / 2, h * 0.55, w * 0.95, h * 0.9, { color: '#ff4d8d', stroke: '#ffffff', strokeW: h * 0.16 });
+};
+
+const drawMenu = (ctx, w, h) => {
+  ctx.fillStyle = '#fff8e7';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#ff4d8d';
+  ctx.fillRect(0, 0, w, h * 0.16);
+  text(ctx, 'MENU', w / 2, h * 0.09, h * 0.11, '#ffffff', { align: 'center' });
+  const items = [['Cone', '$2', '#f7c6d9'], ['Popsicle', '$1', '#ff8a65'], ['Sundae', '$4', '#8d6e63'], ['Rocket Pop', '$3', '#4fc3f7'], ['Sandwich', '$3', '#5d4037']];
+  items.forEach(([n, p, c], i) => {
+    const y = h * (0.26 + i * 0.155);
+    ctx.fillStyle = c;
+    ctx.beginPath();
+    ctx.arc(w * 0.14, y, h * 0.05, 0, Math.PI * 2);
+    ctx.fill();
+    text(ctx, n, w * 0.24, y, h * 0.075, '#3b2a1a');
+    text(ctx, p, w * 0.92, y, h * 0.08, '#c4281c', { align: 'right' });
+  });
+};
+
+const drawCones = (ctx, w, h) => {
+  ctx.clearRect(0, 0, w, h);
+  const scoops = ['#f7c6d9', '#fff3c4', '#8d6e63', '#a5d6a7'];
+  scoops.forEach((c, i) => {
+    const x = w * (0.12 + i * 0.25);
+    ctx.fillStyle = '#e0a458';
+    ctx.beginPath();
+    ctx.moveTo(x - w * 0.07, h * 0.45);
+    ctx.lineTo(x + w * 0.07, h * 0.45);
+    ctx.lineTo(x, h * 0.95);
+    ctx.fill();
+    ctx.strokeStyle = '#b07a3a';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.fillStyle = c;
+    ctx.beginPath();
+    ctx.arc(x, h * 0.38, w * 0.08, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#e53935';
+    ctx.beginPath();
+    ctx.arc(x + w * 0.02, h * 0.14, w * 0.025, 0, Math.PI * 2);
+    ctx.fill();
+  });
+};
+
+/**
+ * An ice cream truck facing +x (16 long, 7 wide), its serving window on the right (+z)
+ * side at x -4..2, sill at y 4.4, floor inside at y 1.9 — a vendor stands inside at about
+ * (-1, 1.9, 2). Returns { root, panes, wheels }: slide the panes' position.x by up to -3.6
+ * to open the window, spin the wheels about z.
+ */
+export function iceCreamTruck(a) {
+  const root = new THREE.Group();
+  const g = new THREE.Group();
+  const W = 0xfafafa;
+  const PINK = 0xff6fa8;
+  const BLUE = 0x7cc8f2;
+  const side = (z, sign) => {
+    // A side wall of the box body; the +z side has the window opening.
+    if (sign > 0) {
+      box(g, a, [12.4, 2.9, 0.2], [-1.8, 2.95, z], W, 'Metal');
+      box(g, a, [12.4, 2.3, 0.2], [-1.8, 8.35, z], W, 'Metal');
+      box(g, a, [4, 2.8, 0.2], [-6, 5.8, z], W, 'Metal');
+      box(g, a, [2.4, 2.8, 0.2], [3.2, 5.8, z], W, 'Metal');
+    } else {
+      box(g, a, [12.4, 8, 0.2], [-1.8, 5.5, z], W, 'Metal');
+    }
+    box(g, a, [12.42, 0.8, 0.24], [-1.8, 3.0, z], PINK, 'Plastic', false);
+    box(g, a, [12.42, 0.3, 0.24], [-1.8, 3.6, z], BLUE, 'Plastic', false);
+    box(g, a, [12.42, 0.5, 0.24], [-1.8, 9.25, z], PINK, 'Plastic', false);
+    const lettering = decal(9.5, 1.5, drawTruckSide, { alpha: true });
+    put(g, lettering, -2.2, 8.3, z + sign * 0.13, sign > 0 ? 0 : Math.PI);
+    const cones = decal(sign > 0 ? 3.6 : 8, 2.4, drawCones, { alpha: true });
+    put(g, cones, sign > 0 ? -6 : -1.8, 5.9, z + sign * 0.13, sign > 0 ? 0 : Math.PI);
+  };
+  side(3.5, 1);
+  side(-3.5, -1);
+  box(g, a, [12.4, 0.3, 7.2], [-1.8, 9.65, 0], W, 'Metal');
+  box(g, a, [0.2, 8, 7], [-8, 5.5, 0], W, 'Metal');
+  box(g, a, [12, 0.4, 6.8], [-1.8, 1.7, 0], 0x6b6e73, 'Metal');
+  // Back: doors, bumper, tail lights.
+  box(g, a, [0.1, 6.4, 0.12], [-8.12, 5.0, 0], 0xc0c4c8, 'Metal', false);
+  for (const z of [-2.6, 2.6]) box(g, a, [0.15, 0.8, 0.6], [-8.1, 2.6, z], 0xd50000, 'Neon', false);
+  box(g, a, [0.6, 0.6, 7.2], [-8.3, 1.3, 0], 0xc0c4c8, 'Metal');
+  // Chassis, wheels.
+  box(g, a, [15.6, 0.7, 6.2], [0, 1.15, 0], 0x2a2a2a, 'Metal');
+  const wheels = [];
+  for (const [x, z] of [[-5, 3.15], [-5, -3.15], [5, 3.15], [5, -3.15]]) {
+    const wg = new THREE.Group();
+    const tire = cylinder(a, 1.15, 0.8, [0, 0, 0], 0x1b1b1b, 'Plastic');
+    tire.rotation.x = Math.PI / 2;
+    wg.add(tire);
+    const hub = cylinder(a, 0.55, 0.84, [0, 0, 0], 0xc0c4c8, 'Metal');
+    hub.rotation.x = Math.PI / 2;
+    wg.add(hub);
+    box(wg, a, [0.25, 0.9, 0.86], [0, 0, 0], 0x8d8f94, 'Metal', false);
+    wg.position.set(x, 1.15, z);
+    root.add(wg);
+    wheels.push(wg);
+    box(g, a, [2.8, 0.4, 0.5], [x, 2.35, z > 0 ? 3.3 : -3.3], 0x2a2a2a, 'Plastic', false); // fender
+  }
+  // Cab.
+  box(g, a, [3.6, 3.1, 6.8], [6.2, 2.9, 0], W, 'Metal');
+  box(g, a, [2.9, 2.8, 6.8], [5.85, 5.85, 0], W, 'Metal');
+  box(g, a, [0.12, 2.2, 6.2], [7.32, 5.9, 0], 0x9fd0ef, 'Glass', false);
+  for (const z of [-3.42, 3.42]) {
+    box(g, a, [2.0, 1.9, 0.08], [5.9, 6.0, z], 0x9fd0ef, 'Glass', false);
+    box(g, a, [0.15, 0.15, 0.9], [7.4, 5.6, z * 1.08], 0x1b1b1b, 'Plastic', false);
+    box(g, a, [0.12, 0.8, 0.5], [7.45, 5.6, z * 1.2], 0x1b1b1b, 'Plastic', false);
+    box(g, a, [0.12, 0.2, 0.7], [6.0, 3.9, z * 1.02], 0x8d8f94, 'Metal', false);
+  }
+  box(g, a, [3.0, 0.4, 7.0], [5.85, 7.4, 0], PINK, 'Plastic');
+  box(g, a, [0.4, 1.2, 6.4], [8.1, 2.0, 0], 0xc0c4c8, 'Metal');
+  box(g, a, [0.15, 1.4, 3.4], [8.05, 3.6, 0], 0x5d6066, 'Metal', false);
+  for (const z of [-2.5, 2.5]) {
+    box(g, a, [0.2, 0.7, 1.0], [8.05, 3.5, z], 0xfff3c4, 'Neon', false);
+    box(g, a, [0.2, 0.25, 0.6], [8.05, 2.75, z], 0xffa000, 'Neon', false);
+  }
+  // Inside: freezers, a menu board, lights.
+  box(g, a, [9, 2.8, 2.2], [-2.5, 3.3, -2.2], 0xdfe6ea, 'Metal');
+  for (let x = -6; x <= 1; x += 1.8) box(g, a, [1.6, 0.06, 2.0], [x, 4.73, -2.2], 0x9fd0ef, 'Glass', false);
+  box(g, a, [12, 7.6, 0.1], [-1.8, 5.5, -3.35], 0x9fb3c4, 'Plastic', false);
+  box(g, a, [10, 0.1, 0.4], [-2, 9.4, 0], 0xfdfcf2, 'Neon', false);
+  box(g, a, [0.1, 7.6, 6.8], [-7.85, 5.5, 0], 0x9fb3c4, 'Plastic', false);
+  box(g, a, [0.1, 7.6, 6.8], [4.3, 5.5, 0], 0x9fb3c4, 'Plastic', false);
+  // Window counter, awning and the menu.
+  box(g, a, [6.6, 0.25, 1.2], [-1, 4.35, 3.85], 0xc0c4c8, 'Metal');
+  box(g, a, [6.4, 0.25, 0.8], [-1, 4.35, 3.0], 0xc0c4c8, 'Metal');
+  for (let k = 0; k < 7; k++) {
+    const st = part(a, [1.0, 0.15, 2.0], [-4.0 + k * 1.0, 7.7, 4.3], k % 2 ? 0xffffff : PINK, 'Fabric');
+    st.rotation.x = 0.32;
+    g.add(st);
+  }
+  const menu = decal(2.3, 2.6, drawMenu);
+  put(g, menu, 3.1, 5.8, 3.62);
+  // On the roof: a giant cone and a loudspeaker.
+  const cone = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 0.08, 2.8, 16), robloxMaterial(a, 0xe0a458, 'WoodPlanks'));
+  cone.position.set(-3.5, 11.2, 0);
+  cone.castShadow = true;
+  g.add(cone);
+  g.add(ball(a, 1.2, [-3.5, 12.9, 0], 0xf7c6d9, 'Plastic'));
+  g.add(ball(a, 0.85, [-3.5, 14.0, 0], 0x8d6e63, 'Plastic'));
+  g.add(ball(a, 0.3, [-3.4, 14.9, 0], 0xe53935, 'Plastic'));
+  box(g, a, [0.4, 1.2, 0.4], [-3.5, 10.2, 0], 0x8d8f94, 'Metal');
+  const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.2, 1.4, 16), robloxMaterial(a, 0xc0c4c8, 'Metal'));
+  horn.rotation.z = -Math.PI / 2;
+  horn.position.set(2.5, 10.5, 0);
+  g.add(horn);
+  box(g, a, [0.6, 0.6, 0.6], [1.6, 10.1, 0], 0x8d8f94, 'Metal');
+
+  // The window panes (not baked: they slide).
+  const panes = [];
+  for (const [x, z] of [[-2.5, 3.3], [0.5, 3.2]]) {
+    const pane = new THREE.Group();
+    pane.add(part(a, [3.0, 2.8, 0.08], [0, 5.8, 0], 0xb8d4e6, 'Glass', { shadows: false, mat: { opacity: 0.72 } }));
+    box(pane, a, [3.0, 0.12, 0.12], [0, 7.15, 0], 0xc0c4c8, 'Metal', false);
+    box(pane, a, [3.0, 0.12, 0.12], [0, 4.45, 0], 0xc0c4c8, 'Metal', false);
+    box(pane, a, [0.12, 2.8, 0.12], [-1.45, 5.8, 0], 0xc0c4c8, 'Metal', false);
+    box(pane, a, [0.12, 2.8, 0.12], [1.45, 5.8, 0], 0xc0c4c8, 'Metal', false);
+    pane.position.set(x, 0, z);
+    pane.userData.home = x;
+    root.add(pane);
+    panes.push(pane);
+  }
+  // Bake the static body in the truck's own frame, so the whole truck can drive.
+  const baked = bake(g);
+  root.add(baked);
+  return { root, panes, wheels };
 }

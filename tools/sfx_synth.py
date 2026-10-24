@@ -14,6 +14,11 @@ Everything is deterministic (fixed random seed), mono 44.1 kHz WAV, peak-normali
   squeak.wav        tiny squeaks (three chirps)
   pop.wav           a popcorn pop
   music_loop.wav    20.9 s mellow e-piano / bass / hats loop (92 bpm), loops seamlessly
+  truck_jingle.wav  ice cream truck music box through a tinny loudspeaker (original tune), loops
+  cha_ching.wav     cash register: drawer clunk and bell
+  truck_engine.wav  3 s diesel idle rumble
+  brakes.wav        brake squeal as a truck stops
+  window_slide.wav  a sliding window
 """
 import sys
 import wave
@@ -193,6 +198,85 @@ def music_loop():
     return norm(loop, 0.7)
 
 
+def music_box(freq, dur):
+    """A music-box tine: bright bell partials with a fast decay."""
+    t = t_axis(dur)
+    env = np.minimum(1, t / 0.002) * np.exp(-t * 4.5)
+    sig = np.sin(2 * np.pi * freq * t) + 0.5 * np.sin(2 * np.pi * freq * 2.76 * t) * np.exp(-t * 9) + 0.25 * np.sin(2 * np.pi * freq * 5.4 * t) * np.exp(-t * 16)
+    return sig * env
+
+
+def truck_jingle():
+    bpm = 150
+    beat = 60 / bpm
+    hz = lambda n: 440 * 2 ** ((n - 69) / 12)
+    # An original bouncy tune in C (midi note, beats); -1 is a rest. Two 4-bar phrases.
+    tune = [(67, 1), (64, 0.5), (67, 0.5), (72, 1), (71, 0.5), (69, 0.5), (67, 1), (64, 1), (65, 1), (69, 0.5), (67, 0.5), (64, 1), (62, 1),
+            (64, 0.5), (65, 0.5), (67, 1), (69, 0.5), (71, 0.5), (72, 1), (74, 1), (72, 0.5), (71, 0.5), (69, 0.5), (67, 0.5), (65, 1), (62, 1), (60, 2)]
+    total = sum(b for _, b in tune) * beat
+    out = np.zeros(int(SR * (total + 2)))
+    at = 0.0
+    for n, b in tune:
+        if n > 0:
+            sig = music_box(hz(n), 1.2)
+            a = int(at * SR)
+            out[a : a + len(sig)] += sig * 0.5
+            low = music_box(hz(n - 24), 0.6)  # oom-pah bass under each note
+            out[a : a + len(low)] += low * 0.18
+        at += b * beat
+    loop = out[: int(SR * total)].copy()
+    loop[: len(out) - len(loop)] += out[len(loop) :]
+    # Tinny speaker on a truck roof: band-limited, a little wobble and drive.
+    tt = t_axis(len(loop) / SR)
+    loop = loop * (1 + 0.06 * np.sin(2 * np.pi * 5.5 * tt))
+    loop = lowpass(loop, 3800) - lowpass(loop, 380)
+    return norm(np.tanh(2.2 * loop), 0.75)
+
+
+def cha_ching():
+    t = t_axis(1.2)
+    clunk = lowpass(rng.uniform(-1, 1, len(t)), 900) * np.exp(-t * 35) * 2.5
+    slide = np.zeros(len(t))
+    k = int(0.05 * SR)
+    slide[k : k + int(0.18 * SR)] = (lowpass(rng.uniform(-1, 1, int(0.18 * SR)), 2500) * np.hanning(int(0.18 * SR)))
+    bell = np.zeros(len(t))
+    b0 = int(0.22 * SR)
+    tb = t_axis(1.2 - 0.22)
+    bell[b0 : b0 + len(tb)] = (np.sin(2 * np.pi * 2093 * tb) + 0.6 * np.sin(2 * np.pi * 2637 * tb) + 0.3 * np.sin(2 * np.pi * 5230 * tb)) * np.exp(-tb * 4)
+    return norm(clunk + slide * 0.8 + bell * 0.9, 0.85)
+
+
+def truck_engine(dur=3.0):
+    t = t_axis(dur)
+    f = 38 + 3 * np.sin(2 * np.pi * 0.7 * t)
+    phase = 2 * np.pi * np.cumsum(f) / SR
+    rumble = np.sign(np.sin(phase)) * 0.5 + np.sin(2 * phase) * 0.4
+    noise = lowpass(rng.uniform(-1, 1, len(t)), 300)
+    sig = lowpass(rumble, 420) + noise * 1.5
+    env = np.minimum(1, t / 0.2) * np.minimum(1, (dur - t) / 0.3)
+    return norm(sig * env, 0.8)
+
+
+def brakes():
+    t = t_axis(1.1)
+    f = 2300 - 500 * t
+    sq = np.sin(2 * np.pi * np.cumsum(f + 40 * np.sin(2 * np.pi * 23 * t)) / SR)
+    hiss = lowpass(rng.uniform(-1, 1, len(t)), 6000) * 0.3
+    env = np.minimum(1, t / 0.08) * np.exp(-t * 2.2)
+    tail = np.where(t > 0.75, np.exp(-(t - 0.75) * 12), 1)
+    return norm((sq * 0.7 + hiss) * env * tail, 0.6)
+
+
+def window_slide():
+    t = t_axis(0.45)
+    n = rng.uniform(-1, 1, len(t))
+    sweep = lowpass(n, 1800) - lowpass(n, 500)
+    env = np.sin(np.pi * t / 0.45) ** 2
+    click = np.zeros(len(t))
+    click[-int(0.03 * SR):] = rng.uniform(-1, 1, int(0.03 * SR)) * np.exp(-t_axis(0.03) * 120)
+    return norm(sweep * env + click * 0.8, 0.7)
+
+
 def write(path, x):
     pcm = (np.clip(x, -1, 1) * 32767).astype(np.int16)
     with wave.open(str(path), "wb") as w:
@@ -218,6 +302,11 @@ def main() -> None:
     write(out / "squeak.wav", squeak())
     write(out / "pop.wav", pop())
     write(out / "music_loop.wav", music_loop())
+    write(out / "truck_jingle.wav", truck_jingle())
+    write(out / "cha_ching.wav", cha_ching())
+    write(out / "truck_engine.wav", truck_engine())
+    write(out / "brakes.wav", brakes())
+    write(out / "window_slide.wav", window_slide())
     print("wrote", sorted(p.name for p in out.iterdir()))
 
 

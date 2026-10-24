@@ -1,0 +1,1136 @@
+[
+{
+"word": "I",
+"start": 0.0,
+"end": 0.1,
+"line": 0
+},
+{
+"word": "told",
+"start": 0.1,
+"end": 0.22,
+"line": 0
+},
+{
+"word": "my",
+"start": 0.22,
+"end": 0.4,
+"line": 0
+},
+{
+"word": "entire",
+"start": 0.4,
+"end": 0.64,
+"line": 0
+},
+{
+"word": "school",
+"start": 0.64,
+"end": 0.94,
+"line": 0
+},
+{
+"word": "I",
+"start": 0.94,
+"end": 1.1,
+"line": 0
+},
+{
+"word": "was",
+"start": 1.1,
+"end": 1.2,
+"line": 0
+},
+{
+"word": "rich.",
+"start": 1.2,
+"end": 1.4,
+"line": 0
+},
+{
+"word": "I",
+"start": 1.76,
+"end": 1.78,
+"line": 0
+},
+{
+"word": "said",
+"start": 1.78,
+"end": 1.92,
+"line": 0
+},
+{
+"word": "my",
+"start": 1.92,
+"end": 2.06,
+"line": 0
+},
+{
+"word": "dad",
+"start": 2.06,
+"end": 2.22,
+"line": 0
+},
+{
+"word": "drives",
+"start": 2.22,
+"end": 2.46,
+"line": 0
+},
+{
+"word": "a",
+"start": 2.46,
+"end": 2.56,
+"line": 0
+},
+{
+"word": "Lamborghini.",
+"start": 2.56,
+"end": 2.96,
+"line": 0
+},
+{
+"word": "Then",
+"start": 3.383,
+"end": 3.523,
+"line": 1
+},
+{
+"word": "my",
+"start": 3.523,
+"end": 3.663,
+"line": 1
+},
+{
+"word": "best",
+"start": 3.663,
+"end": 3.803,
+"line": 1
+},
+{
+"word": "friend",
+"start": 3.803,
+"end": 4.023,
+"line": 1
+},
+{
+"word": "said...",
+"start": 4.023,
+"end": 4.263,
+"line": 1
+},
+{
+"word": "\"Prove",
+"start": 4.583,
+"end": 4.703,
+"line": 1
+},
+{
+"word": "it.",
+"start": 4.703,
+"end": 4.883,
+"line": 1
+},
+{
+"word": "Have",
+"start": 5.123,
+"end": 5.203,
+"line": 1
+},
+{
+"word": "him",
+"start": 5.203,
+"end": 5.323,
+"line": 1
+},
+{
+"word": "pick",
+"start": 5.323,
+"end": 5.423,
+"line": 1
+},
+{
+"word": "you",
+"start": 5.423,
+"end": 5.543,
+"line": 1
+},
+{
+"word": "up",
+"start": 5.543,
+"end": 5.643,
+"line": 1
+},
+{
+"word": "after",
+"start": 5.643,
+"end": 5.843,
+"line": 1
+},
+{
+"word": "school.\"",
+"start": 5.843,
+"end": 6.063,
+"line": 1
+},
+{
+"word": "I",
+"start": 6.541,
+"end": 6.661,
+"line": 2
+},
+{
+"word": "froze.",
+"start": 6.661,
+"end": 6.901,
+"line": 2
+},
+{
+"word": "Everyone",
+"start": 7.221,
+"end": 7.401,
+"line": 2
+},
+{
+"word": "was",
+"start": 7.401,
+"end": 7.601,
+"line": 2
+},
+{
+"word": "staring",
+"start": 7.601,
+"end": 7.801,
+"line": 2
+},
+{
+"word": "at",
+"start": 7.801,
+"end": 7.981,
+"line": 2
+},
+{
+"word": "me.",
+"start": 7.981,
+"end": 8.141,
+"line": 2
+},
+{
+"word": "So",
+"start": 8.321,
+"end": 8.401,
+"line": 2
+},
+{
+"word": "I",
+"start": 8.401,
+"end": 8.541,
+"line": 2
+},
+{
+"word": "said...",
+"start": 8.541,
+"end": 8.741,
+"line": 2
+},
+{
+"word": "\"Fine.\"",
+"start": 9.061,
+"end": 9.301,
+"line": 2
+},
+{
+"word": "That",
+"start": 9.82,
+"end": 10.0,
+"line": 3
+},
+{
+"word": "night,",
+"start": 10.0,
+"end": 10.22,
+"line": 3
+},
+{
+"word": "I",
+"start": 10.4,
+"end": 10.44,
+"line": 3
+},
+{
+"word": "begged",
+"start": 10.44,
+"end": 10.6,
+"line": 3
+},
+{
+"word": "my",
+"start": 10.6,
+"end": 10.8,
+"line": 3
+},
+{
+"word": "dad",
+"start": 10.8,
+"end": 10.96,
+"line": 3
+},
+{
+"word": "to",
+"start": 10.96,
+"end": 11.12,
+"line": 3
+},
+{
+"word": "rent",
+"start": 11.12,
+"end": 11.22,
+"line": 3
+},
+{
+"word": "a",
+"start": 11.22,
+"end": 11.34,
+"line": 3
+},
+{
+"word": "fancy",
+"start": 11.34,
+"end": 11.52,
+"line": 3
+},
+{
+"word": "car.",
+"start": 11.52,
+"end": 11.84,
+"line": 3
+},
+{
+"word": "He",
+"start": 12.04,
+"end": 12.12,
+"line": 3
+},
+{
+"word": "laughed.",
+"start": 12.12,
+"end": 12.36,
+"line": 3
+},
+{
+"word": "Then",
+"start": 12.6,
+"end": 12.7,
+"line": 3
+},
+{
+"word": "he",
+"start": 12.7,
+"end": 12.8,
+"line": 3
+},
+{
+"word": "said,",
+"start": 12.8,
+"end": 13.0,
+"line": 3
+},
+{
+"word": "\"Don't",
+"start": 13.24,
+"end": 13.42,
+"line": 3
+},
+{
+"word": "worry.",
+"start": 13.42,
+"end": 13.58,
+"line": 3
+},
+{
+"word": "I",
+"start": 13.8,
+"end": 13.94,
+"line": 3
+},
+{
+"word": "got",
+"start": 13.94,
+"end": 14.1,
+"line": 3
+},
+{
+"word": "you.\"",
+"start": 14.1,
+"end": 14.3,
+"line": 3
+},
+{
+"word": "The",
+"start": 14.684,
+"end": 14.764,
+"line": 4
+},
+{
+"word": "next",
+"start": 14.764,
+"end": 14.904,
+"line": 4
+},
+{
+"word": "day,",
+"start": 14.904,
+"end": 15.144,
+"line": 4
+},
+{
+"word": "the",
+"start": 15.344,
+"end": 15.404,
+"line": 4
+},
+{
+"word": "whole",
+"start": 15.404,
+"end": 15.564,
+"line": 4
+},
+{
+"word": "school",
+"start": 15.564,
+"end": 15.784,
+"line": 4
+},
+{
+"word": "was",
+"start": 15.784,
+"end": 15.964,
+"line": 4
+},
+{
+"word": "waiting",
+"start": 15.964,
+"end": 16.124,
+"line": 4
+},
+{
+"word": "outside.",
+"start": 16.124,
+"end": 16.524,
+"line": 4
+},
+{
+"word": "Even",
+"start": 16.764,
+"end": 16.904,
+"line": 4
+},
+{
+"word": "my",
+"start": 16.904,
+"end": 17.064,
+"line": 4
+},
+{
+"word": "crush.",
+"start": 17.064,
+"end": 17.304,
+"line": 4
+},
+{
+"word": "Then",
+"start": 17.787,
+"end": 17.947,
+"line": 5
+},
+{
+"word": "we",
+"start": 17.947,
+"end": 18.067,
+"line": 5
+},
+{
+"word": "heard",
+"start": 18.067,
+"end": 18.227,
+"line": 5
+},
+{
+"word": "music.",
+"start": 18.227,
+"end": 18.547,
+"line": 5
+},
+{
+"word": "Ice",
+"start": 18.887,
+"end": 18.927,
+"line": 5
+},
+{
+"word": "cream",
+"start": 18.927,
+"end": 19.167,
+"line": 5
+},
+{
+"word": "truck",
+"start": 19.167,
+"end": 19.347,
+"line": 5
+},
+{
+"word": "music.",
+"start": 19.347,
+"end": 19.587,
+"line": 5
+},
+{
+"word": "The",
+"start": 20.12,
+"end": 20.22,
+"line": 6
+},
+{
+"word": "truck",
+"start": 20.22,
+"end": 20.38,
+"line": 6
+},
+{
+"word": "pulled",
+"start": 20.38,
+"end": 20.6,
+"line": 6
+},
+{
+"word": "up...",
+"start": 20.6,
+"end": 20.82,
+"line": 6
+},
+{
+"word": "right",
+"start": 20.98,
+"end": 21.18,
+"line": 6
+},
+{
+"word": "in",
+"start": 21.18,
+"end": 21.32,
+"line": 6
+},
+{
+"word": "front",
+"start": 21.32,
+"end": 21.42,
+"line": 6
+},
+{
+"word": "of",
+"start": 21.42,
+"end": 21.54,
+"line": 6
+},
+{
+"word": "me.",
+"start": 21.54,
+"end": 21.68,
+"line": 6
+},
+{
+"word": "The",
+"start": 21.9,
+"end": 21.96,
+"line": 6
+},
+{
+"word": "window",
+"start": 21.96,
+"end": 22.12,
+"line": 6
+},
+{
+"word": "slid",
+"start": 22.12,
+"end": 22.38,
+"line": 6
+},
+{
+"word": "open.",
+"start": 22.38,
+"end": 22.56,
+"line": 6
+},
+{
+"word": "It",
+"start": 23.012,
+"end": 23.112,
+"line": 7
+},
+{
+"word": "was",
+"start": 23.112,
+"end": 23.212,
+"line": 7
+},
+{
+"word": "my",
+"start": 23.212,
+"end": 23.352,
+"line": 7
+},
+{
+"word": "dad.",
+"start": 23.352,
+"end": 23.572,
+"line": 7
+},
+{
+"word": "He",
+"start": 24.07,
+"end": 24.17,
+"line": 8
+},
+{
+"word": "leaned",
+"start": 24.17,
+"end": 24.29,
+"line": 8
+},
+{
+"word": "out",
+"start": 24.29,
+"end": 24.51,
+"line": 8
+},
+{
+"word": "and",
+"start": 24.51,
+"end": 24.65,
+"line": 8
+},
+{
+"word": "yelled,",
+"start": 24.65,
+"end": 24.83,
+"line": 8
+},
+{
+"word": "\"SON!",
+"start": 25.17,
+"end": 25.27,
+"line": 8
+},
+{
+"word": "YOU",
+"start": 25.59,
+"end": 25.61,
+"line": 8
+},
+{
+"word": "FORGOT",
+"start": 25.61,
+"end": 25.81,
+"line": 8
+},
+{
+"word": "YOUR",
+"start": 25.81,
+"end": 25.95,
+"line": 8
+},
+{
+"word": "LUNCHBOX!\"",
+"start": 25.95,
+"end": 26.35,
+"line": 8
+},
+{
+"word": "Everyone",
+"start": 26.817,
+"end": 27.037,
+"line": 9
+},
+{
+"word": "went",
+"start": 27.037,
+"end": 27.217,
+"line": 9
+},
+{
+"word": "silent.",
+"start": 27.217,
+"end": 27.497,
+"line": 9
+},
+{
+"word": "My",
+"start": 27.777,
+"end": 27.857,
+"line": 9
+},
+{
+"word": "crush",
+"start": 27.857,
+"end": 28.057,
+"line": 9
+},
+{
+"word": "covered",
+"start": 28.057,
+"end": 28.297,
+"line": 9
+},
+{
+"word": "her",
+"start": 28.297,
+"end": 28.417,
+"line": 9
+},
+{
+"word": "mouth.",
+"start": 28.417,
+"end": 28.597,
+"line": 9
+},
+{
+"word": "I",
+"start": 28.877,
+"end": 28.977,
+"line": 9
+},
+{
+"word": "wanted",
+"start": 28.977,
+"end": 29.117,
+"line": 9
+},
+{
+"word": "to",
+"start": 29.117,
+"end": 29.277,
+"line": 9
+},
+{
+"word": "disappear.",
+"start": 29.277,
+"end": 29.557,
+"line": 9
+},
+{
+"word": "Then",
+"start": 30.07,
+"end": 30.19,
+"line": 10
+},
+{
+"word": "my",
+"start": 30.19,
+"end": 30.33,
+"line": 10
+},
+{
+"word": "best",
+"start": 30.33,
+"end": 30.51,
+"line": 10
+},
+{
+"word": "friend",
+"start": 30.51,
+"end": 30.69,
+"line": 10
+},
+{
+"word": "whispered...",
+"start": 30.69,
+"end": 30.95,
+"line": 10
+},
+{
+"word": "\"Wait.",
+"start": 31.39,
+"end": 31.47,
+"line": 10
+},
+{
+"word": "Is",
+"start": 31.79,
+"end": 31.85,
+"line": 10
+},
+{
+"word": "the",
+"start": 31.85,
+"end": 31.93,
+"line": 10
+},
+{
+"word": "ice",
+"start": 31.93,
+"end": 32.07,
+"line": 10
+},
+{
+"word": "cream",
+"start": 32.07,
+"end": 32.23,
+"line": 10
+},
+{
+"word": "free?\"",
+"start": 32.23,
+"end": 32.49,
+"line": 10
+},
+{
+"word": "My",
+"start": 32.948,
+"end": 33.068,
+"line": 11
+},
+{
+"word": "dad",
+"start": 33.068,
+"end": 33.268,
+"line": 11
+},
+{
+"word": "smiled.",
+"start": 33.268,
+"end": 33.588,
+"line": 11
+},
+{
+"word": "\"For",
+"start": 33.588,
+"end": 33.988,
+"line": 11
+},
+{
+"word": "his",
+"start": 33.988,
+"end": 34.128,
+"line": 11
+},
+{
+"word": "friends?",
+"start": 34.128,
+"end": 34.408,
+"line": 11
+},
+{
+"word": "Half",
+"start": 34.408,
+"end": 34.748,
+"line": 11
+},
+{
+"word": "price.\"",
+"start": 34.748,
+"end": 34.968,
+"line": 11
+},
+{
+"word": "The",
+"start": 35.481,
+"end": 35.621,
+"line": 12
+},
+{
+"word": "entire",
+"start": 35.621,
+"end": 35.821,
+"line": 12
+},
+{
+"word": "school",
+"start": 35.821,
+"end": 36.121,
+"line": 12
+},
+{
+"word": "ran",
+"start": 36.121,
+"end": 36.361,
+"line": 12
+},
+{
+"word": "to",
+"start": 36.361,
+"end": 36.521,
+"line": 12
+},
+{
+"word": "the",
+"start": 36.521,
+"end": 36.601,
+"line": 12
+},
+{
+"word": "truck.",
+"start": 36.601,
+"end": 36.781,
+"line": 12
+},
+{
+"word": "The",
+"start": 36.981,
+"end": 37.061,
+"line": 12
+},
+{
+"word": "line",
+"start": 37.061,
+"end": 37.241,
+"line": 12
+},
+{
+"word": "went",
+"start": 37.241,
+"end": 37.401,
+"line": 12
+},
+{
+"word": "around",
+"start": 37.401,
+"end": 37.561,
+"line": 12
+},
+{
+"word": "the",
+"start": 37.561,
+"end": 37.701,
+"line": 12
+},
+{
+"word": "building.",
+"start": 37.701,
+"end": 37.861,
+"line": 12
+},
+{
+"word": "By",
+"start": 38.349,
+"end": 38.469,
+"line": 13
+},
+{
+"word": "the",
+"start": 38.469,
+"end": 38.549,
+"line": 13
+},
+{
+"word": "end",
+"start": 38.549,
+"end": 38.629,
+"line": 13
+},
+{
+"word": "of",
+"start": 38.629,
+"end": 38.709,
+"line": 13
+},
+{
+"word": "the",
+"start": 38.709,
+"end": 38.809,
+"line": 13
+},
+{
+"word": "day,",
+"start": 38.809,
+"end": 39.009,
+"line": 13
+},
+{
+"word": "my",
+"start": 39.229,
+"end": 39.289,
+"line": 13
+},
+{
+"word": "dad",
+"start": 39.289,
+"end": 39.469,
+"line": 13
+},
+{
+"word": "made",
+"start": 39.469,
+"end": 39.669,
+"line": 13
+},
+{
+"word": "five",
+"start": 39.669,
+"end": 39.869,
+"line": 13
+},
+{
+"word": "hundred",
+"start": 39.869,
+"end": 40.089,
+"line": 13
+},
+{
+"word": "dollars.",
+"start": 40.089,
+"end": 40.329,
+"line": 13
+},
+{
+"word": "He",
+"start": 40.846,
+"end": 40.946,
+"line": 14
+},
+{
+"word": "handed",
+"start": 40.946,
+"end": 41.106,
+"line": 14
+},
+{
+"word": "me",
+"start": 41.106,
+"end": 41.266,
+"line": 14
+},
+{
+"word": "fifty.",
+"start": 41.266,
+"end": 41.486,
+"line": 14
+},
+{
+"word": "\"Your",
+"start": 41.866,
+"end": 41.966,
+"line": 14
+},
+{
+"word": "cut.\"",
+"start": 41.966,
+"end": 42.186,
+"line": 14
+},
+{
+"word": "The",
+"start": 42.631,
+"end": 42.731,
+"line": 15
+},
+{
+"word": "next",
+"start": 42.731,
+"end": 42.891,
+"line": 15
+},
+{
+"word": "morning,",
+"start": 42.891,
+"end": 43.171,
+"line": 15
+},
+{
+"word": "everyone",
+"start": 43.371,
+"end": 43.531,
+"line": 15
+},
+{
+"word": "called",
+"start": 43.531,
+"end": 43.751,
+"line": 15
+},
+{
+"word": "me",
+"start": 43.751,
+"end": 43.891,
+"line": 15
+},
+{
+"word": "Ice",
+"start": 43.891,
+"end": 44.051,
+"line": 15
+},
+{
+"word": "Cream",
+"start": 44.051,
+"end": 44.251,
+"line": 15
+},
+{
+"word": "Boy.",
+"start": 44.251,
+"end": 44.411,
+"line": 15
+},
+{
+"word": "And",
+"start": 44.864,
+"end": 44.964,
+"line": 16
+},
+{
+"word": "honestly?",
+"start": 44.964,
+"end": 45.264,
+"line": 16
+},
+{
+"word": "For",
+"start": 45.524,
+"end": 45.664,
+"line": 16
+},
+{
+"word": "the",
+"start": 45.664,
+"end": 45.744,
+"line": 16
+},
+{
+"word": "first",
+"start": 45.744,
+"end": 45.884,
+"line": 16
+},
+{
+"word": "time...",
+"start": 45.884,
+"end": 46.164,
+"line": 16
+},
+{
+"word": "I",
+"start": 46.404,
+"end": 46.544,
+"line": 16
+},
+{
+"word": "actually",
+"start": 46.544,
+"end": 46.824,
+"line": 16
+},
+{
+"word": "was",
+"start": 46.824,
+"end": 46.984,
+"line": 16
+},
+{
+"word": "rich.",
+"start": 46.984,
+"end": 47.164,
+"line": 16
+}
+]
