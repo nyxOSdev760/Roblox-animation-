@@ -4,7 +4,7 @@
 //   2. Follow-through: each character carries a damped spring driven by how its body speeds
 //      up, slows down and turns. Arms swing back when it starts running and forward when it
 //      stops, the body leans into the change, and hair sways and settles.
-//   3. Arms: every arm is tested against the sets (the boxes each baked set recorded, see
+//   3. Arms: every arm (upper arm, forearm, hand) is tested against the sets (the boxes each baked set recorded, see
 //      bake.js) and against other characters' bodies and arms. An arm that would pass through
 //      something is turned (raised, swung out, pushed forward or back) by the smallest amount
 //      that clears it, so hands rest on desks and counters instead of sinking into them.
@@ -17,7 +17,8 @@ const D = Math.PI / 180;
 const PRIME = 1.0; // seconds of run-up when jumping to a frame
 const ARM_R = 0.42; // arm half thickness used for contact
 const CELL = 6; // spatial grid cell (studs)
-const ARM_SAMPLES = [-0.55, -0.95, -1.35, -1.75, -2.0];
+// Points sampled along an arm (part frame, local y): upper arm, forearm, hand and just past it.
+const ARM_SAMPLES = [['UpperArm', 0.15], ['UpperArm', -0.35], ['LowerArm', 0.05], ['LowerArm', -0.4], ['Hand', -0.25]];
 // Candidate corrections, tried smallest first: [pitch, outward swing] in degrees.
 const FIXES = [];
 for (const out of [0, 8, 16, 26, 38, 52, 70]) for (const pitch of [0, -10, 10, -20, 20, -32, 32, -48, 48]) FIXES.push([pitch, out]);
@@ -88,7 +89,7 @@ export function createPhysics(scene, actors, { fps = 30 } = {}) {
   for (const a of actors) state.set(a, { p: null, vel: new THREE.Vector3(), yaw: 0, spin: 0, s: new THREE.Vector2(), sv: new THREE.Vector2(), hair: [], fix: { rArm: [0, 0], lArm: [0, 0] } });
   for (const a of actors) {
     const st = state.get(a);
-    a.r6.joints.neck.traverse((m) => m.userData.accessoryKind === 'hair' && st.hair.push(m));
+    a.rig.joints.neck.traverse((m) => m.userData.accessoryKind === 'hair' && st.hair.push(m));
   }
 
   const visible = () => actors.filter((a) => a.root.visible);
@@ -173,7 +174,7 @@ export function createPhysics(scene, actors, { fps = 30 } = {}) {
     }
     for (const a of list) {
       const st = state.get(a);
-      const { rArm, lArm } = a.r6.joints;
+      const { rArm, lArm } = a.rig.joints;
       const back = -st.s.y; // + when the body surged forward: arms trail back
       rArm.rotation.x += back * 40 * D;
       lArm.rotation.x += back * 40 * D;
@@ -189,7 +190,7 @@ export function createPhysics(scene, actors, { fps = 30 } = {}) {
   function arms(list) {
     for (const a of list) a.root.updateMatrixWorld(true);
     const bodies = list.map((a) => {
-      const j = a.r6.joints;
+      const j = a.rig.joints;
       return {
         a,
         torso: inv.clone().copy(a.root.matrixWorld).invert(),
@@ -198,10 +199,14 @@ export function createPhysics(scene, actors, { fps = 30 } = {}) {
         lLeg: new THREE.Matrix4().copy(j.lLeg.matrixWorld).invert(),
       };
     });
-    const armSeg = (a, side) => {
-      const j = a.r6.joints[side];
-      const x = side === 'rArm' ? -0.5 : 0.5;
-      return [new THREE.Vector3(x, -0.4, 0).applyMatrix4(j.matrixWorld), new THREE.Vector3(x, -2.0, 0).applyMatrix4(j.matrixWorld)];
+    const prefix = (side) => (side === 'rArm' ? 'Right' : 'Left');
+    // The arm as two segments: shoulder -> elbow -> just past the hand.
+    const armSegs = (a, side) => {
+      const P = a.rig.parts;
+      const sh = new THREE.Vector3().setFromMatrixPosition(a.rig.joints[side].matrixWorld);
+      const el = new THREE.Vector3().setFromMatrixPosition(a.rig.joints[side === 'rArm' ? 'rElbow' : 'lElbow'].matrixWorld);
+      const hand = new THREE.Vector3(0, -0.25, 0).applyMatrix4(P[`${prefix(side)}Hand`].matrixWorld);
+      return [[sh, el], [el, hand]];
     };
     const resolved = []; // [actor, segment start, end] of arms already placed this frame
 
@@ -211,16 +216,16 @@ export function createPhysics(scene, actors, { fps = 30 } = {}) {
       const boxes = nearbyBoxes(p.x, p.z, 4 * s);
       const others = bodies.filter((b) => b.a !== a && b.a.root.position.distanceTo(p) < 7 * s);
       for (const side of ['rArm', 'lArm']) {
-        const j = a.r6.joints[side];
-        const x = side === 'rArm' ? -0.5 : 0.5;
+        const j = a.rig.joints[side];
+        const frames = ARM_SAMPLES.map(([part, y]) => [a.rig.parts[prefix(side) + part], y]);
         const outward = side === 'rArm' ? -1 : 1;
         const base = j.rotation.clone();
         const r = ARM_R * s;
         const pts = ARM_SAMPLES.map(() => new THREE.Vector3());
         const cost = () => {
-          j.updateWorldMatrix(false, false);
+          j.updateWorldMatrix(false, true);
           let pen = 0;
-          ARM_SAMPLES.forEach((y, i) => pts[i].set(x, y, 0).applyMatrix4(j.matrixWorld));
+          frames.forEach(([f, y], i) => pts[i].set(0, y, 0).applyMatrix4(f.matrixWorld));
           for (const q of pts) {
             if (q.y < 0.2) pen += 0.2 - q.y; // the ground
             for (const b of boxes) {
@@ -232,8 +237,8 @@ export function createPhysics(scene, actors, { fps = 30 } = {}) {
               const dd = Math.min(
                 obbDist(q, o.torso, [0, 0, 0], [1, 1, 0.5]),
                 obbDist(q, o.head, [0, 0.5, 0], [0.6, 0.6, 0.6]),
-                obbDist(q, o.rLeg, [0.5, -1, 0], [0.5, 1, 0.5]),
-                obbDist(q, o.lLeg, [-0.5, -1, 0], [0.5, 1, 0.5]),
+                obbDist(q, o.rLeg, [0, -1, 0], [0.5, 1, 0.5]),
+                obbDist(q, o.lLeg, [0, -1, 0], [0.5, 1, 0.5]),
               ) * sc;
               if (dd < r - 0.08) pen += r - dd;
             }
@@ -266,7 +271,7 @@ export function createPhysics(scene, actors, { fps = 30 } = {}) {
         state.get(a).fix[side] = fix;
         j.rotation.set(base.x + fix[0] * D, base.y, base.z + outward * fix[1] * D);
         j.updateWorldMatrix(false, true);
-        resolved.push([a, ...armSeg(a, side)]);
+        for (const seg of armSegs(a, side)) resolved.push([a, ...seg]);
       }
     }
   }

@@ -77,6 +77,46 @@ export function clothingTexture(w, h, draw) {
 }
 
 /**
+ * The classic head on a neck joint (head centre 0.5 above it): skin, face decal and/or UGC
+ * face pieces, and accessories (hair, hats). Shared by the R6 and R15 rigs. Returns setFace.
+ */
+export function addHead(neck, { assets, colors, faces = {}, face, accessories = [] }) {
+  const head = new THREE.Mesh(headGeometry, robloxMaterial(assets, colors.head, 'Plastic'));
+  head.position.y = 0.5;
+  head.castShadow = head.receiveShadow = true;
+  neck.add(head);
+  const faceMat = new THREE.MeshStandardMaterial({
+    map: null,
+    transparent: true,
+    roughness: 0.5,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -4,
+  });
+  const faceMesh = new THREE.Mesh(headGeometry, faceMat);
+  faceMesh.position.y = 0.5;
+  neck.add(faceMesh);
+  for (const a of [accessories].flat()) (typeof a === 'string' ? accessory(a) : a)(neck, assets);
+
+  // Face: a decal texture on the head and/or UGC face accessory meshes. Pass one name or a
+  // list to layer pieces, e.g. ['crying', 'face-addon-anger-vein'] or
+  // ['face-eyes-shocked', 'face-mouth-small-frown']. Accessory pieces are attached the first
+  // time they're used and then just shown/hidden.
+  const faceAccessories = {};
+  function setFace(name) {
+    const names = [name].flat();
+    const decal = names.find((n) => n in faces);
+    faceMesh.visible = decal !== undefined;
+    if (decal !== undefined) faceMat.map = faces[decal];
+    for (const n of names) if (!(n in faces)) faceAccessories[n] ??= accessory(n)(neck, assets);
+    for (const [slug, mesh] of Object.entries(faceAccessories)) mesh.visible = names.includes(slug);
+  }
+  setFace(face);
+  return setFace;
+}
+
+/**
  * @param {object} o
  * @param {object} o.assets      from loadRobloxAssets
  * @param {object} o.colors      { head, torso, rArm, lArm, rLeg, lLeg } BrickColor hex values
@@ -114,38 +154,7 @@ export function createR6({ assets, colors, faces = {}, face, shirtFront, shirt, 
   }
 
   const neck = pivot(root, 0, 1, 0);
-  const head = new THREE.Mesh(headGeometry, plastic(colors.head));
-  head.position.y = 0.5;
-  head.castShadow = head.receiveShadow = true;
-  neck.add(head);
-  const faceMat = new THREE.MeshStandardMaterial({
-    map: null,
-    transparent: true,
-    roughness: 0.5,
-    depthWrite: false,
-    polygonOffset: true,
-    polygonOffsetFactor: -1,
-    polygonOffsetUnits: -4,
-  });
-  const faceMesh = new THREE.Mesh(headGeometry, faceMat);
-  faceMesh.position.y = 0.5;
-  neck.add(faceMesh);
-  for (const a of [accessories].flat()) (typeof a === 'string' ? accessory(a) : a)(neck, assets);
-
-  // Face: a decal texture on the head and/or UGC face accessory meshes. Pass one name or a
-  // list to layer pieces, e.g. ['crying', 'face-addon-anger-vein'] or
-  // ['face-eyes-shocked', 'face-mouth-small-frown']. Accessory pieces are attached the first
-  // time they're used and then just shown/hidden.
-  const faceAccessories = {};
-  function setFace(name) {
-    const names = [name].flat();
-    const decal = names.find((n) => n in faces);
-    faceMesh.visible = decal !== undefined;
-    if (decal !== undefined) faceMat.map = faces[decal];
-    for (const n of names) if (!(n in faces)) faceAccessories[n] ??= accessory(n)(neck, assets);
-    for (const [slug, mesh] of Object.entries(faceAccessories)) mesh.visible = names.includes(slug);
-  }
-  setFace(face);
+  const setFace = addHead(neck, { assets, colors, faces, face, accessories });
 
   const rArm = pivot(root, -1, 0.5, 0);
   const lArm = pivot(root, 1, 0.5, 0);

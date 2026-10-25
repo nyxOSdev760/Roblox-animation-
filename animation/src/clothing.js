@@ -1,4 +1,4 @@
-// Classic Roblox clothing (Shirt / Pants templates, 585x559) on R6 body parts.
+// Classic Roblox clothing (Shirt / Pants templates, 585x559) on R6 and R15 body parts.
 //
 // Templates live in assets/rbx/clothing/<slug>.png (tools/roblox_assets.py clothing ... or
 // tools/make_clothes.py). Scenes list the slugs they use in meta.clothing so they're
@@ -77,5 +77,77 @@ export function clothedTexture(color, { pants, shirt }) {
   t.colorSpace = THREE.SRGBColorSpace;
   t.anisotropy = 8;
   textureCache.set(key, t);
+  return t;
+}
+
+const atlasCache = new Map();
+const ATLAS_SCALE = 2; // atlas pixels per composite-mesh pixel
+
+/**
+ * R15 clothing, composited the way Roblox does it: the part's colour, then the pants and
+ * shirt templates drawn into the limb's atlas through Roblox's R15 composite mesh (each
+ * triangle maps a template region to an atlas region, see tools/rbx_r15.py). The R15 body
+ * meshes' UVs point into that atlas. `composite` is r15.json's torso/rightArm/leftArm entry.
+ */
+export function clothedAtlas(composite, key, color, { pants, shirt }) {
+  const cacheKey = `${key}|${color}|${pants}|${shirt}`;
+  if (atlasCache.has(cacheKey)) return atlasCache.get(cacheKey);
+  // The template layers, pants under shirt, on a transparent template-sized canvas.
+  const layer = document.createElement('canvas');
+  layer.width = TW;
+  layer.height = TH;
+  for (const slug of [pants, shirt]) {
+    if (!slug) continue;
+    const img = images.get(slug);
+    if (!img) throw new Error(`clothing ${slug} not loaded (add it to meta.clothing)`);
+    layer.getContext('2d').drawImage(img, 0, 0, TW, TH);
+  }
+  const [W, H] = composite.size;
+  const c = document.createElement('canvas');
+  c.width = W * ATLAS_SCALE;
+  c.height = H * ATLAS_SCALE;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = `#${new THREE.Color(color).getHexString()}`;
+  ctx.fillRect(0, 0, c.width, c.height);
+  const P = composite.positions;
+  const UV = composite.uvs;
+  const I = composite.indices;
+  const dst = (i) => [P[2 * i] * ATLAS_SCALE, (H - P[2 * i + 1]) * ATLAS_SCALE]; // atlas y is up
+  const src = (i) => [UV[2 * i] * TW, UV[2 * i + 1] * TH];
+  for (let t = 0; t < I.length; t += 3) {
+    const [a, b, d] = [I[t], I[t + 1], I[t + 2]];
+    const [p0, p1, p2] = [dst(a), dst(b), dst(d)];
+    const [s0, s1, s2] = [src(a), src(b), src(d)];
+    // Affine map template -> atlas: solve for [m11 m12 m21 m22 dx dy].
+    const den = (s1[0] - s0[0]) * (s2[1] - s0[1]) - (s2[0] - s0[0]) * (s1[1] - s0[1]);
+    if (Math.abs(den) < 1e-9) continue;
+    const ax = ((p1[0] - p0[0]) * (s2[1] - s0[1]) - (p2[0] - p0[0]) * (s1[1] - s0[1])) / den;
+    const bx = ((p2[0] - p0[0]) * (s1[0] - s0[0]) - (p1[0] - p0[0]) * (s2[0] - s0[0])) / den;
+    const ay = ((p1[1] - p0[1]) * (s2[1] - s0[1]) - (p2[1] - p0[1]) * (s1[1] - s0[1])) / den;
+    const by = ((p2[1] - p0[1]) * (s1[0] - s0[0]) - (p1[1] - p0[1]) * (s2[0] - s0[0])) / den;
+    const cx = p0[0] - ax * s0[0] - bx * s0[1];
+    const cy = p0[1] - ay * s0[0] - by * s0[1];
+    // Clip to the triangle grown by a pixel so neighbours overlap instead of leaving seams.
+    const mx = (p0[0] + p1[0] + p2[0]) / 3;
+    const my = (p0[1] + p1[1] + p2[1]) / 3;
+    const grow = (p) => {
+      const dx = p[0] - mx;
+      const dy = p[1] - my;
+      const l = Math.hypot(dx, dy) || 1;
+      return [p[0] + (dx / l) * 1.2, p[1] + (dy / l) * 1.2];
+    };
+    ctx.save();
+    ctx.beginPath();
+    for (const [k, p] of [p0, p1, p2].map(grow).entries()) (k ? ctx.lineTo : ctx.moveTo).call(ctx, p[0], p[1]);
+    ctx.closePath();
+    ctx.clip();
+    ctx.setTransform(ax, ay, bx, by, cx, cy);
+    ctx.drawImage(layer, 0, 0);
+    ctx.restore();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = 8;
+  atlasCache.set(cacheKey, t);
   return t;
 }

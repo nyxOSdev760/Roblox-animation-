@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { createRenderer, loadTextures } from './world.js';
 import { loadRobloxAssets, robloxLighting } from './roblox.js';
 import { loadHeadMesh } from './r6.js';
+import { loadR15 } from './r15.js';
 import { loadAccessories } from './accessories.js';
 import { loadClothing } from './clothing.js';
 import { ACTORS } from './actors.js';
@@ -34,6 +35,7 @@ const [assets, faces] = await Promise.all([
   loadRobloxAssets(renderer),
   loadTextures(Object.fromEntries((meta.faces ?? []).map((f) => [f, `/assets/faces/png/${f}.png`]))),
   loadHeadMesh(),
+  loadR15(),
   loadAccessories(meta.accessories ?? []),
   loadClothing(meta.clothing ?? []),
 ]);

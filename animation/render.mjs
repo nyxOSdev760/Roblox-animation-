@@ -99,9 +99,9 @@ async function renderFrames() {
   const items = opt('--items') ? `&items=${encodeURIComponent(opt('--items'))}` : '';
   const url = `http://127.0.0.1:${server.address().port}/animation/index.html?scene=${name}&frame=1&scale=${scale}${items}`;
 
-  const browser = await chromium.launch({
-    args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
-  });
+  // Playwright's own browser, or the container's pre-installed Chromium when versions differ.
+  const launchArgs = { args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] };
+  const browser = await chromium.launch(launchArgs).catch(() => chromium.launch({ ...launchArgs, executablePath: '/opt/pw-browsers/chromium' }));
   const page = await browser.newPage({ viewport: { width, height } });
   page.on('pageerror', (e) => console.error('page error:', e.message));
   page.on('console', (m) => m.type() === 'error' && console.error('console:', m.text()));
