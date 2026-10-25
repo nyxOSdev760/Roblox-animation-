@@ -83,8 +83,12 @@ const TRUCK_GO = W(5, 'Then') + 0.15; // the truck starts down the street
 const TRUCK_STOP = W(6, 'up') + 0.35;
 const SILENT = W(9, 'Everyone');
 sfx('../voice/icecream/narration.flac', 0, 1.0);
-sfx('synth/music_loop.wav', 0, 0.13, { loop: true, dur: SILENT, fade: 0.4 });
-sfx('synth/music_loop.wav', W(10, 'Then'), 0.13, { loop: true, from: 6, dur: END - W(10, 'Then'), fade: 1 });
+// No background music: the song is added in the YouTube app at upload.
+// "FAHHH" right after each punchline.
+const FAH = (at) => sfx('fahhh.mp3', at, 2.2);
+FAH(W(8, 'LUNCHBOX') + 0.55);
+FAH(W(11, 'price') + 0.45);
+FAH(W(14, 'cut') + 0.4);
 for (const c of CUTS) sfx('synth/whoosh_long.wav', c - 0.2, 0.4);
 sfx('woahh-rblx-se.mp3', W(0, 'Lamborghini') + 0.3, 0.55);
 sfx('woahh-rblx-se.mp3', W(0, 'Lamborghini') + 0.4, 0.4, { pitch: 3 });
