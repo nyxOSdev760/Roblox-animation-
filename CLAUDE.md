@@ -22,6 +22,21 @@ Rendered with three.js in headless Chromium (`animation/render.mjs`), voiced wit
 - Faces switch with the moment (shocked, blush, sweat, tears, anger mark, grin); the default is
   the relaxed half-smile.
 
+## Next upgrade the owner asked for (do this before the next video)
+
+1. **R15 characters, no more R6.** Build an R15 rig (Head, UpperTorso, LowerTorso, Left/Right
+   UpperArm/LowerArm/Hand, Upper/Lower Leg, Foot) from Roblox's own R15 blocky body meshes
+   (Studio content on setup.rbxcdn.com, like the R6 head mesh in `src/r6.js`), with joints where
+   R15 Motor6Ds sit (elbows and knees bend). Map classic Shirt/Pants templates onto the R15 parts
+   the way Roblox does. Keep the `Actor`/`POSES` API working (add elbow/knee bends to poses,
+   default to sensible values), update `src/physics.js` (arm = upper+lower+hand) and hand props.
+   Verify with `scenes/mainchar.js` stills before using it in a video.
+2. **Very realistic lighting** (like Roblox "Future" lighting with realism shaders): softer
+   PCF/VSM shadows, SSAO/GTAO ambient occlusion, bloom on Neon and lights, ACES-style tone mapping
+   that keeps BrickColors true, warm sun + sky-colored fill, light shafts through windows,
+   interior point/spot lights for lamps and ceiling panels, contact shadows. Check render time
+   per frame stays reasonable.
+
 ## Story style (what works on this channel)
 
 - **Crazy-rule hook that drops the viewer into a world**, first person:
