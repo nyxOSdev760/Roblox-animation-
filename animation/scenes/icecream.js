@@ -83,7 +83,8 @@ const TRUCK_GO = W(5, 'Then') + 0.15; // the truck starts down the street
 const TRUCK_STOP = W(6, 'up') + 0.35;
 const SILENT = W(9, 'Everyone');
 sfx('../voice/icecream/narration.flac', 0, 1.0);
-// No background music: the song is added in the YouTube app at upload.
+// Background music: "Feeling Blue" (Caleb Arredondo), low under the voice.
+sfx('feeling-blue.mp3', 0, 0.2, { dur: END, fade: 1.2 });
 // "FAHHH" right after each punchline.
 const FAH = (at) => sfx('fahhh.mp3', at, 2.2);
 FAH(W(8, 'LUNCHBOX') + 0.55);

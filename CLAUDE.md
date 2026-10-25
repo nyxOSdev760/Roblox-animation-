@@ -16,8 +16,9 @@ Rendered with three.js in headless Chromium (`animation/render.mjs`), voiced wit
   `shirt-th-denim-jacket-floral`, `shirt-grey-button-up-undershirt`, `shirt-striped-crop-top`,
   `shirt-purple-cool-crop-top`. Check any new outfit with `scenes/closet.js` stills first.
 - **Real skin tones** for every character (`SKIN` in `src/roblox.js`).
-- **No background music** in the video: the owner adds "Feeling Blue" (Caleb Arredondo) in the
-  YouTube app. Put a **"FAHHH"** (`assets/sfx/fahhh.mp3`, volume ~2.2) right after every punchline.
+- **Background music: "Feeling Blue" (Caleb Arredondo)**, `assets/sfx/feeling-blue.mp3` (107 s),
+  as one cue from 0 at volume 0.2 with `{ dur: END, fade: 1.2 }`. Put a **"FAHHH"**
+  (`assets/sfx/fahhh.mp3`, volume ~2.2) right after every punchline.
 - Faces switch with the moment (shocked, blush, sweat, tears, anger mark, grin); the default is
   the relaxed half-smile.
 
@@ -72,4 +73,4 @@ a place and dip to black between places, per-character functions posing by time.
 
 Send the MP4 plus, in the message: **Title** (with emoji), **Description** (2 lines + question +
 `#roblox #robloxstory #robloxshorts #funny #storytime #shorts`), and a **pinned-comment** question.
-Remind them to add "Feeling Blue" with Add sound at ~15% volume.
+The music is already in the video: they just upload it.
