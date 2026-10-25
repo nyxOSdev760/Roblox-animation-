@@ -6,12 +6,13 @@ import { BRICK, SKIN, part } from '../src/roblox.js';
 import { Actor, POSES } from '../src/actors.js';
 import * as P from '../src/props.js';
 
-// Outfit #4 (grey star sweater, white cargo pants) with peach skin, in different hairstyles.
+// Hair F (big fluffy messy black), a slightly darker skin, white cargo pants, different shirts.
 export const FACE = 'suspicious';
-const OUTFIT = { shirt: 'shirt-grey-knitted-sweater-chain', pants: 'pants-white-cargo-jeans-dh', skin: SKIN.pastelBrown };
+const LOOK = { pants: 'pants-white-cargo-jeans-dh', hair: 'hair-fluffy-messy-black', skin: SKIN.lightOrange };
 export const CANDIDATES = Object.fromEntries(
-  ['hair-black-messy-side-part', 'hair-messy-popular-boy', 'hair-brown-side-sweep', 'hair-black-wolf-cut', 'hair-super-messy-fluffy-boy', 'hair-fluffy-messy-black']
-    .map((hair, i) => [String.fromCharCode(65 + i), { ...OUTFIT, hair }]),
+  ['shirt-black-short-sleeve-tee', 'shirt-black-flannel-soft-trendy', 'shirt-vintage-flannel-button-up', 'shirt-mu-red-flannel-black',
+    'shirt-tech-fleece-red-hoodie', 'shirt-sweter-galaxy-blue-100']
+    .map((shirt, i) => [String.fromCharCode(65 + i), { ...LOOK, shirt }]),
 );
 const FACES = ['face-eyes-shocked', 'face-mouth-small-frown', 'face-addon-sweat-drop', 'face-addon-tears', 'face-addon-anger-mark-big'];
 
@@ -55,7 +56,7 @@ export function setup({ scene, camera, assets, faces, sun }) {
       a.set({ at: [-12.5 + i * 5, 0], y: 1, yaw: sheet === 0 ? 0 : 0, pose, face: sheet === 0 ? FACE : mood(i) });
     });
     camera.fov = 30;
-    camera.position.set(0, 6.5, 30);
+    camera.position.set(0, 6.0, 29);
     camera.lookAt(0, 4.4, -1);
     camera.updateProjectionMatrix();
   };
