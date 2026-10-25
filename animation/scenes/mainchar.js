@@ -6,13 +6,15 @@ import { BRICK, SKIN, part } from '../src/roblox.js';
 import { Actor, POSES } from '../src/actors.js';
 import * as P from '../src/props.js';
 
+// Casual looks, all with the same chill face (dot eyes, small smile).
+export const FACE = ['face-eyes-skeptical-lower', 'face-mouth-smirk'];
 export const CANDIDATES = {
-  A: { shirt: 'shirt-tech-fleece-red-hoodie', pants: 'pants-cargo-pants-grey-black', hair: 'hair-super-messy-fluffy-boy', skin: SKIN.lightOrange },
-  B: { shirt: 'shirt-black-flannel-soft-trendy', pants: 'pants-jeans-hip-hop-retro', hair: 'hair-black-messy-cat-boy', skin: SKIN.tan },
-  C: { shirt: 'shirt-thrifted-striped-polo', pants: 'pants-cargo-pants-tan-beige', hair: 'hair-brown-messy', skin: SKIN.pastelBrown },
-  D: { shirt: 'shirt-sweter-galaxy-blue-100', pants: 'pants-white-cargo-jeans-dh', hair: 'hair-short-wolf-cut-ginger', skin: SKIN.nougat },
+  A: { shirt: 'shirt-tech-fleece-red-hoodie', pants: 'pants-jeans-hip-hop-retro', hair: 'hair-messy-popular-boy', skin: SKIN.lightOrange },
+  B: { shirt: 'shirt-vintage-flannel-button-up', pants: 'pants-dark-pants', hair: 'hair-brown-side-sweep', skin: SKIN.pastelBrown },
+  C: { shirt: 'shirt-blue-stripe-shirt-neck', pants: 'pants-cargo-pants-tan-beige', hair: 'hair-high-top-fade', skin: SKIN.brown },
+  D: { shirt: 'shirt-grey-knitted-sweater-chain', pants: 'pants-white-cargo-jeans-dh', hair: 'hair-black-messy-side-part', skin: SKIN.tan },
 };
-const FACES = ['face-eyes-shocked', 'face-mouth-small-frown', 'face-addon-sweat-drop', 'face-addon-tears', 'face-addon-anger-mark-big'];
+const FACES = [...FACE, 'face-eyes-shocked', 'face-mouth-small-frown', 'face-addon-sweat-drop', 'face-addon-tears', 'face-addon-anger-mark-big'];
 
 export const meta = {
   duration: 2,
@@ -39,7 +41,7 @@ export function setup({ scene, camera, assets, faces, sun }) {
   for (const a of actors) scene.add(a.root);
   keys.forEach((k, i) => {
     const s = P.sign(assets, 2.2, 1.6, k, { bg: '#ffd21f', fg: '#1b2a35', size: 150, border: '#1b2a35' });
-    s.position.set(-12 + i * 8, 1.9, 0.0);
+    s.position.set(-9 + i * 6, 1.9, 0.0);
     scene.add(s);
   });
   const moods = [['happy'], ['face-eyes-shocked', 'face-mouth-small-frown', 'face-addon-sweat-drop'], ['sad', 'face-addon-tears'], ['angry', 'face-addon-anger-mark-big']];
@@ -48,12 +50,12 @@ export function setup({ scene, camera, assets, faces, sun }) {
   return (t) => {
     const sheet = Math.round(t);
     actors.forEach((a, i) => {
-      const pose = sheet === 0 ? POSES.wave(0.3 + i * 0.4) : poses[i](0.5);
-      a.set({ at: [-12 + i * 8, -2], y: 1, yaw: sheet === 0 ? 0 : 0, pose, face: sheet === 0 ? 'grin' : moods[i] });
+      const pose = sheet === 0 ? POSES.idle(0.3 + i * 0.4) : poses[i](0.5);
+      a.set({ at: [-9 + i * 6, -2], y: 1, yaw: sheet === 0 ? 0 : 0, pose, face: sheet === 0 ? FACE : moods[i] });
     });
     camera.fov = 30;
-    camera.position.set(0, 7, 30);
-    camera.lookAt(0, 4.2, -2);
+    camera.position.set(0, 6.2, 27);
+    camera.lookAt(0, 4.6, -2);
     camera.updateProjectionMatrix();
   };
 }
