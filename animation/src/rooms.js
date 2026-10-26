@@ -1460,3 +1460,325 @@ export function iceCreamTruck(a) {
   root.add(baked);
   return { root, panes, wheels };
 }
+
+// ---- the school gym, set up for an assembly -------------------------------------------
+
+const courtDraw = (ctx, w, h) => {
+  // Maple boards; the court lines are added as parts.
+  const r = rng(17);
+  ctx.fillStyle = '#d9a86a';
+  ctx.fillRect(0, 0, w, h);
+  for (let y = 0; y < h; y += 16) {
+    ctx.fillStyle = `rgba(${120 + r() * 40},${70 + r() * 30},20,${0.1 + r() * 0.12})`;
+    ctx.fillRect(0, y, w, 15);
+    ctx.fillStyle = 'rgba(70,40,10,0.25)';
+    ctx.fillRect(0, y + 15, w, 1);
+    for (let k = 0; k < 3; k++) ctx.fillRect(r() * w, y, 1.5, 15);
+  }
+  for (let k = 0; k < 600; k++) {
+    ctx.fillStyle = `rgba(255,240,210,${r() * 0.12})`;
+    ctx.fillRect(r() * w, r() * h, 6 + r() * 20, 1);
+  }
+};
+
+/**
+ * A school gym at `o` set up for an assembly: interior x -30..30, z -22..22, 22 high. The
+ * stage is at the back (-z): x -15..15, z -22..-12, top at y 3, with steps at x ±9 on its
+ * front. Bleachers line both side walls (rows at x ±21..±28, facing the middle); the middle
+ * floor is open for folding chairs. High windows on the left wall (-x) let the sun in.
+ * Returns { stageTop: 3, stageFront: -12 }.
+ */
+export function buildGym(scene, a, o, { seed = 9 } = {}) {
+  const r = rng(seed);
+  const g = new THREE.Group();
+  const mount = mounter(g, 30, 22);
+  const BLOCK = 0xe8e2d2;
+  const BLUE = 0x1f4f9a;
+  const GOLD = 0xf2b632;
+
+  // Floor and court lines.
+  box(g, a, [61, 1, 45], [0, -0.5, 0], 0x9b9b95, 'Concrete', false);
+  put(g, texturedPlane(60, 44, 10, courtDraw, { rough: 0.35 }), 0, 0.01, 0);
+  const line = (size, pos, c = 0xffffff) => box(g, a, size, [pos[0], 0.03, pos[1]], c, 'SmoothPlastic', false);
+  line([0.25, 0.04, 36], [0, 0]);
+  line([50, 0.04, 0.25], [0, 18]);
+  line([50, 0.04, 0.25], [0, -18 + 6]);
+  for (const x of [-25, 25]) line([0.25, 0.04, 30], [x, 3]);
+  g.add(cylinder(a, 5, 0.04, [0, 0.025, 3], BLUE, 'SmoothPlastic'));
+  g.add(cylinder(a, 4.75, 0.05, [0, 0.03, 3], 0xd9a86a, 'Wood'));
+  g.add(cylinder(a, 1.6, 0.06, [0, 0.035, 3], GOLD, 'SmoothPlastic'));
+
+  // Walls: painted block with a blue band, roof with steel trusses.
+  const wall = (size, pos, c = BLOCK) => box(g, a, size, pos, c, 'Brick');
+  wall([62, 22, 1], [0, 11, -22.5]);
+  wall([62, 22, 1], [0, 11, 22.5]);
+  wall([1, 22, 45], [30.5, 11, 0]);
+  // Left wall with a row of high windows (y 14..19).
+  wall([1, 14, 45], [-30.5, 7, 0]);
+  wall([1, 3, 45], [-30.5, 20.5, 0]);
+  for (const z of [-21, -10.5, 0, 10.5, 21]) wall([1, 5, 3], [-30.5, 16.5, z]);
+  for (const zc of [-15.75, -5.25, 5.25, 15.75]) {
+    g.add(part(a, [0.1, 5, 7.5], [-30.5, 16.5, zc], 0xd8eef8, 'Glass', { shadows: false, mat: { opacity: 0.2 } }));
+    box(g, a, [0.4, 0.3, 7.5], [-30.3, 16.5, zc], 0x8d8f94, 'Metal');
+    box(g, a, [0.4, 5, 0.3], [-30.3, 16.5, zc], 0x8d8f94, 'Metal');
+  }
+  for (const [size, pos] of [[[60, 2.4, 0.2], [0, 1.2, 21.95]], [[0.2, 2.4, 44], [29.95, 1.2, 0]], [[0.2, 2.4, 44], [-29.95, 1.2, 0]]]) box(g, a, size, pos, BLUE, 'SmoothPlastic', false);
+  box(g, a, [62, 0.6, 45], [0, 22.3, 0], 0x8d8f94, 'Metal');
+  put(g, texturedPlane(60, 44, 12, ceilingDraw, { up: false, rough: 0.9 }), 0, 22, 0);
+  for (const z of [-15, -5, 5, 15]) {
+    box(g, a, [60, 0.6, 0.6], [0, 20.6, z], 0x5d6066, 'Metal', false);
+    box(g, a, [60, 0.3, 0.3], [0, 18.8, z], 0x5d6066, 'Metal', false);
+    for (let x = -27; x <= 27; x += 6) {
+      const strut = box(g, a, [0.25, 2.4, 0.25], [x, 19.7, z], 0x5d6066, 'Metal', false);
+      strut.rotation.z = 0.6;
+    }
+  }
+  // High-bay lights.
+  for (const x of [-18, -6, 6, 18])
+    for (const z of [-8, 8]) {
+      g.add(cylinder(a, 1.1, 0.9, [x, 18.2, z], 0x5d6066, 'Metal'));
+      g.add(cylinder(a, 0.9, 0.08, [x, 17.72, z], 0xfff6e0, 'Neon'));
+      box(g, a, [0.1, 2.0, 0.1], [x, 19.4, z], 0x3a3a3a, 'Metal', false);
+    }
+
+  // Stage with curtains, a valance and a banner.
+  const ST = 0x6b4a33;
+  box(g, a, [30, 3, 10], [0, 1.5, -17], ST, 'WoodPlanks');
+  box(g, a, [30.2, 0.3, 0.3], [0, 2.95, -12], 0x2a2a2a, 'Plastic');
+  box(g, a, [30, 2.7, 0.2], [0, 1.35, -11.95], 0x4f3626, 'WoodPlanks');
+  for (const x of [-9, 9])
+    for (let k = 0; k < 3; k++) {
+      const sh = 0.75 * (k + 1);
+      box(g, a, [3, sh, 1.2], [x, sh / 2, -11.4 + (2 - k) * 1.2], ST, 'WoodPlanks');
+    }
+  const RED = 0x8f1d24;
+  for (const s of [-1, 1]) {
+    for (let k = 0; k < 7; k++) box(g, a, [0.9, 16, 0.7], [s * (12 + k * 0.85), 11, -12.6 - (k % 2) * 0.25], k % 2 ? RED : 0x7a161d, 'Fabric');
+    box(g, a, [1.6, 22, 1.6], [s * 15.8, 11, -12.4], BLOCK, 'Brick');
+  }
+  for (let k = 0; k < 28; k++) box(g, a, [1.0, 2.2, 0.6], [-13.5 + k, 18.1, -12.3 - (k % 2) * 0.2], k % 2 ? RED : 0x7a161d, 'Fabric');
+  box(g, a, [30, 0.4, 0.8], [0, 19.4, -12.4], GOLD, 'Fabric');
+  box(g, a, [28, 15, 0.4], [0, 10.5, -21.8], 0x3b0f14, 'Fabric');
+  mount(decal(16, 3, (ctx, w, h) => {
+    ctx.fillStyle = '#1f4f9a';
+    ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = '#f2b632';
+    ctx.lineWidth = h * 0.08;
+    ctx.strokeRect(h * 0.06, h * 0.06, w - h * 0.12, h - h * 0.12);
+    P.drawText(ctx, 'MAPLE MIDDLE SCHOOL ASSEMBLY', w / 2, h * 0.58, w * 0.9, h * 0.42, { color: '#ffffff', font: FONT });
+  }), 'back', 0, 15.6, 0.7);
+  // Stage footlights.
+  for (let x = -13; x <= 13; x += 2.6) box(g, a, [0.5, 0.3, 0.4], [x, 3.15, -12.5], 0xfff3c4, 'Neon', false);
+
+  // Bleachers along both side walls, facing the middle.
+  for (const s of [-1, 1])
+    for (let row = 0; row < 4; row++) {
+      const x = s * (21.5 + row * 2.2);
+      const h = 1.1 + row * 1.1;
+      box(g, a, [2.2, h, 30], [x, h / 2, 2], 0x8d8f94, 'Metal');
+      box(g, a, [1.9, 0.25, 30], [x, h + 0.12, 2], 0xc49a6c, 'WoodPlanks');
+      box(g, a, [0.2, 0.9, 30], [x + s * 1.0, h - 0.4, 2], 0x5d6066, 'Metal', false);
+    }
+  // Pennants and banners.
+  const pennants = [['GO EAGLES', '#1f4f9a', '#f2b632'], ['STATE CHAMPS', '#8f1d24', '#ffffff'], ['READ MORE!', '#2f7d3a', '#ffffff'], ['BE KIND', '#f2b632', '#1f4f9a']];
+  pennants.forEach(([text, bg, fg], i) =>
+    mount(decal(7, 2.6, (ctx, w, h) => {
+      ctx.fillStyle = bg;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(w, h / 2);
+      ctx.lineTo(0, h);
+      ctx.fill();
+      P.drawText(ctx, text, w * 0.38, h * 0.56, w * 0.62, h * 0.28, { color: fg, font: FONT });
+    }, { alpha: true }), 'right', -14 + i * 9, 14.5));
+  // Scoreboard on the front wall.
+  const board = new THREE.Group();
+  box(board, a, [12, 5, 0.6], [0, 0, 0], 0x1b1b1b, 'Plastic');
+  board.add(decal(11.4, 4.4, (ctx, w, h) => {
+    ctx.fillStyle = '#111';
+    ctx.fillRect(0, 0, w, h);
+    P.drawText(ctx, 'HOME  42', w * 0.25, h * 0.45, w * 0.4, h * 0.28, { color: '#ff5a3c', font: FONT });
+    P.drawText(ctx, 'GUEST  38', w * 0.75, h * 0.45, w * 0.4, h * 0.28, { color: '#ff5a3c', font: FONT });
+    P.drawText(ctx, 'EAGLES', w / 2, h * 0.82, w * 0.5, h * 0.18, { color: '#f2b632', font: FONT });
+  }, { glow: 0.8 }));
+  board.children.at(-1).position.z = 0.32;
+  board.rotation.y = Math.PI;
+  board.position.set(0, 15, 21.6);
+  g.add(board);
+  // Retracted hoops near the ceiling, double doors, a trophy shelf, clutter.
+  for (const s of [-1, 1]) {
+    box(g, a, [0.3, 3.6, 6], [s * 26, 16.5, 3], 0xf4f4f4, 'Plastic');
+    box(g, a, [0.35, 1.4, 2], [s * 26, 15.6, 3], 0xc4281c, 'Plastic', false);
+    box(g, a, [3, 0.2, 0.2], [s * 27.5, 18.5, 3], 0x5d6066, 'Metal', false);
+  }
+  for (const x of [-4, 4]) {
+    box(g, a, [7.6, 9, 0.4], [x * 1.0, 4.5, 22.1], 0x1f4f9a, 'Metal');
+    box(g, a, [0.3, 0.4, 2.2], [x * 0.25, 4.2, 21.8], 0xc0c4c8, 'Metal', false);
+    box(g, a, [2, 1.6, 0.1], [x, 6.6, 21.85], 0xd8eef8, 'Glass', false);
+  }
+  box(g, a, [9, 0.4, 2.4], [-14, 6.5, 21.2], 0x6b4a33, 'Wood');
+  for (let k = 0; k < 5; k++) {
+    g.add(cylinder(a, 0.35, 1.2 + r() * 0.8, [-17.5 + k * 1.8, 7.3, 21.2], GOLD, 'Metal'));
+    g.add(ball(a, 0.45, [-17.5 + k * 1.8, 8.3 + r() * 0.5, 21.2], GOLD, 'Metal'));
+  }
+  for (let k = 0; k < 6; k++) g.add(ball(a, 0.6, [24 + (k % 3) * 1.3, 0.6, 18 + Math.floor(k / 3) * 1.3], [0xe0702a, 0xe0702a, 0xffffff][k % 3], 'Plastic'));
+  box(g, a, [3.5, 1.6, 1.8], [25.3, 0.8, 15.5], 0x5d6066, 'Metal');
+
+  g.position.copy(o);
+  scene.add(bake(g));
+
+  for (const x of [-12, 12]) for (const z of [-8, 8]) fixture([o.x + x, 16, o.z + z], { color: 0xfff1de, intensity: 90, distance: 46, decay: 1.6 });
+  fixture([o.x, 9, o.z - 7], { color: 0xffe0b0, intensity: 40, distance: 22 }); // stage wash
+  for (const zc of [-15.75, -5.25, 5.25, 15.75]) scene.add(lightShaft([o.x - 30.3, 16.5, o.z + zc], [0, 0, 3.6], [0, 2.4, 0], [1, -0.85, 0.15], { length: 24, opacity: 0.18 }));
+  return { stageTop: 3, stageFront: -12 };
+}
+
+// ---- a family kitchen ------------------------------------------------------------------
+
+/**
+ * A kitchen at `o`: interior x -11..11, z -9..9, 11 high. Counters, sink, stove and fridge
+ * along the back wall (-z) with a window over the sink; the dining table is at (0, 2.5),
+ * top at y 3, with chairs at x ±3.4 (facing in) and z 5.2 (facing -z). Returns { table, tableTop }.
+ */
+export function buildKitchen(scene, a, o, { seed = 12 } = {}) {
+  const r = rng(seed);
+  const g = new THREE.Group();
+  const mount = mounter(g, 11, 9);
+  const WALLK = 0xf3e7cf;
+
+  box(g, a, [22, 1, 18], [0, -0.5, 0], 0x9b9b95, 'Concrete', false);
+  put(g, texturedPlane(22, 18, 4, tileDraw('#f4f1ea', '#c84b3a', 21)), 0, 0.01, 0);
+  box(g, a, [24, 0.5, 20], [0, 11.25, 0], 0xf4f4f0, 'Plastic');
+  put(g, texturedPlane(22, 18, 8, ceilingDraw, { up: false, rough: 0.9 }), 0, 11, 0);
+  const wall = (size, pos) => box(g, a, size, pos, WALLK, 'Plastic');
+  // Back wall with a window over the sink (x 0..5, y 5..8.6).
+  wall([11, 11, 1], [-5.5, 5.5, -9.5]);
+  wall([6, 11, 1], [8, 5.5, -9.5]);
+  wall([5, 5, 1], [2.5, 2.5, -9.5]);
+  wall([5, 2.4, 1], [2.5, 9.8, -9.5]);
+  g.add(part(a, [5, 3.6, 0.1], [2.5, 6.8, -9.5], 0xd8eef8, 'Glass', { shadows: false, mat: { opacity: 0.18 } }));
+  box(g, a, [5.4, 0.3, 0.8], [2.5, 4.95, -9.2], 0xffffff, 'Plastic');
+  box(g, a, [0.25, 3.6, 0.4], [2.5, 6.8, -9.4], 0xffffff, 'Plastic', false);
+  for (const x of [0.6, 4.4]) box(g, a, [1.2, 3.9, 0.15], [x, 7.0, -8.85], 0xd6524a, 'Fabric');
+  wall([22, 11, 1], [0, 5.5, 9.5]);
+  wall([1, 11, 18], [-11.5, 5.5, 0]);
+  // Right wall with a doorway (z 2..6).
+  wall([1, 11, 11], [11.5, 5.5, -3.5]);
+  wall([1, 11, 3], [11.5, 5.5, 7.5]);
+  wall([1, 3.4, 4], [11.5, 9.3, 4]);
+  // Wallpaper band and baseboards.
+  for (const [size, pos] of [[[22, 0.4, 0.12], [0, 0.2, -8.95]], [[22, 0.4, 0.12], [0, 0.2, 8.95]], [[0.12, 0.4, 18], [-10.95, 0.2, 0]]])
+    box(g, a, size, pos, 0xffffff, 'Plastic', false);
+
+  // Back counter run: cabinets, countertop, sink, stove, fridge, upper cabinets.
+  box(g, a, [17, 3.2, 2.6], [-1.5, 1.6, -7.7], 0x6f8fb0, 'WoodPlanks');
+  box(g, a, [17.2, 0.3, 2.8], [-1.5, 3.35, -7.7], 0xe8e4dc, 'Slate');
+  for (let x = -9.5; x <= 6.5; x += 2) {
+    box(g, a, [1.8, 2.7, 0.08], [x, 1.6, -6.38], 0x5f7fa0, 'WoodPlanks', false);
+    box(g, a, [0.5, 0.12, 0.1], [x, 2.6, -6.3], 0xc0c4c8, 'Metal', false);
+  }
+  box(g, a, [3.2, 0.25, 1.8], [2.5, 3.4, -7.8], 0xc0c4c8, 'Metal', false);
+  g.add(cylinder(a, 0.08, 1.2, [2.5, 4.0, -8.6], 0xc0c4c8, 'Metal'));
+  box(g, a, [0.15, 0.15, 0.9], [2.5, 4.55, -8.2], 0xc0c4c8, 'Metal', false);
+  put(g, P.stove(a), -4.5, 0, -7.6);
+  put(g, P.fridge(a), 8.6, 0, -7.6);
+  for (const x of [-9.4, -6.6, -2.2, 6.4]) {
+    box(g, a, [2.6, 3, 1.6], [x, 8.3, -8.4], 0x6f8fb0, 'WoodPlanks');
+    box(g, a, [0.12, 0.6, 0.1], [x + 0.9, 7.4, -7.55], 0xc0c4c8, 'Metal', false);
+  }
+  // Clutter: toaster, fruit bowl, cutting board, kettle, mugs.
+  box(g, a, [1.2, 0.9, 0.8], [-8.6, 3.95, -8.0], 0xd8d8d8, 'Metal');
+  g.add(cylinder(a, 0.7, 0.35, [-1.0, 3.67, -7.6], 0xffffff, 'Plastic'));
+  for (const [dx, c] of [[-0.3, 0xc4281c], [0.25, 0xf5cd30], [0, 0x4b974b]]) g.add(ball(a, 0.3, [-1.0 + dx, 4.0, -7.6 + dx * 0.5], c, 'Plastic'));
+  box(g, a, [1.6, 0.12, 1.0], [5.6, 3.56, -7.5], 0xb5835a, 'Wood');
+  for (let k = 0; k < 3; k++) g.add(cylinder(a, 0.22, 0.45, [-6.8 + k * 0.6, 3.72, -8.4], [0xc4281c, 0x0d69ac, 0xf2f3f3][k], 'Plastic'));
+
+  // Dining table, chairs, a rug and a pendant lamp.
+  g.add(cylinder(a, 5.2, 0.06, [0, 0.03, 2.5], 0x7a8f5a, 'Fabric'));
+  put(g, P.table(a, 6.4, 4.2, 3, 0x8a5a3a, 'WoodPlanks'), 0, 0, 2.5);
+  for (const [x, z, ry] of [[-3.4, 2.5, Math.PI / 2], [3.4, 2.5, -Math.PI / 2], [0, 5.2, Math.PI], [0, -0.2, 0]]) {
+    const c = P.chair(a, 0x6b4a33, 'Wood');
+    c.scale.setScalar(0.9);
+    put(g, c, x, 0, z, ry);
+  }
+  g.add(cylinder(a, 0.05, 3.2, [0, 9.4, 2.5], 0x2a2a2a, 'Metal'));
+  const shade = new THREE.Mesh(new THREE.ConeGeometry(1.2, 1.0, 24, 1, true), robloxMaterial(a, 0x2f4f3a, 'Metal', { side: THREE.DoubleSide }));
+  shade.position.set(0, 7.4, 2.5);
+  g.add(shade);
+  g.add(ball(a, 0.35, [0, 7.0, 2.5], 0xfff1c9, 'Neon'));
+  // Pictures and a calendar.
+  mount(decal(3, 2.2, (ctx, w, h) => {
+    ctx.fillStyle = '#f4e3c3';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#7fb4d9';
+    ctx.fillRect(w * 0.06, h * 0.08, w * 0.88, h * 0.84);
+    ctx.fillStyle = '#4b974b';
+    ctx.fillRect(w * 0.06, h * 0.6, w * 0.88, h * 0.32);
+    ctx.fillStyle = '#ffd21f';
+    ctx.beginPath();
+    ctx.arc(w * 0.75, h * 0.3, h * 0.12, 0, Math.PI * 2);
+    ctx.fill();
+  }), 'left', -2, 6.5);
+  mount(decal(2, 2.6, (ctx, w, h) => {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#c84b3a';
+    ctx.fillRect(0, 0, w, h * 0.22);
+    P.drawText(ctx, 'MAY', w / 2, h * 0.14, w * 0.8, h * 0.14, { color: '#fff', font: FONT });
+    ctx.strokeStyle = '#999';
+    for (let i = 1; i < 7; i++) ctx.strokeRect((i - 1) * w / 6 + 2, h * 0.3, w / 6 - 4, h * 0.6);
+  }), 'left', 3, 6.2);
+  plant(g, a, -9.8, 0, 7.6, 1.6);
+  box(g, a, [1.4, 1.2, 1.4], [9.6, 0.6, 7.4], 0x6b4a33, 'Plastic');
+  g.add(ball(a, 0.5, [9.6, 1.45, 7.4], 0xc4281c, 'Plastic'));
+
+  g.position.copy(o);
+  scene.add(bake(g));
+  fixture([o.x, 6.6, o.z + 2.5], { color: 0xffd9a0, intensity: 30, distance: 22 });
+  fixture([o.x - 3, 9.5, o.z - 5], { color: 0xfff1de, intensity: 16, distance: 18 });
+  scene.add(lightShaft([o.x + 2.5, 6.8, o.z - 9.4], [2.4, 0, 0], [0, 1.8, 0], [0.2, -0.7, 1], { length: 11 }));
+  return { table: [0, 2.5], tableTop: 3.18 };
+}
+
+// ---- an outdoor wedding ------------------------------------------------------------------
+
+/**
+ * A backyard wedding at `o`: lawn, an arch at (0, -6) facing +z, rows of white chairs with an
+ * aisle along x = 0, and the cake table at (7, -3) (top at y 3). Returns { cakeTable }.
+ */
+export function buildWedding(scene, a, o, { seed = 14 } = {}) {
+  const r = rng(seed);
+  const g = new THREE.Group();
+  box(g, a, [140, 1, 140], [0, -0.5, 0], BRICK.brightGreen, 'Grass', false);
+  put(g, P.weddingArch(a), 0, 0, -6);
+  box(g, a, [3, 0.06, 26], [0, 0.03, 6], 0xf4f4f4, 'Fabric', false);
+  for (let k = 0; k < 13; k++) for (const s of [-1, 1]) g.add(ball(a, 0.18, [s * 1.6, 0.18, -4 + k * 2], [0xff9fcf, 0xffffff][k % 2], 'Fabric'));
+  for (let row = 0; row < 4; row++)
+    for (const s of [-1, 1])
+      for (let k = 0; k < 4; k++) {
+        const c = P.chair(a, BRICK.institutionalWhite, 'Plastic');
+        c.scale.setScalar(0.75);
+        put(g, c, s * (3.2 + k * 1.6), 0, 4 + row * 2.6, Math.PI);
+      }
+  put(g, P.table(a, 4, 2.6, 3, BRICK.institutionalWhite, 'Fabric'), 7.5, 0, -3);
+  box(g, a, [4.2, 2.2, 2.8], [7.5, 1.9, -3], BRICK.institutionalWhite, 'Fabric', false);
+  // String lights on poles.
+  for (const [x, z] of [[-12, -10], [12, -10], [-12, 16], [12, 16]]) g.add(cylinder(a, 0.2, 10, [x, 5, z], 0x6b4a33, 'Wood'));
+  for (let k = 0; k <= 24; k++) {
+    const u = k / 24;
+    g.add(ball(a, 0.16, [-12 + 24 * u, 9.6 - Math.sin(u * Math.PI) * 1.4, -10], [0xffd36b, 0xffffff][k % 2], 'Neon'));
+    g.add(ball(a, 0.16, [-12 + 24 * u, 9.6 - Math.sin(u * Math.PI) * 1.4, 16], [0xffd36b, 0xffffff][k % 2], 'Neon'));
+  }
+  for (let k = 0; k < 9; k++) tree(g, a, -40 + k * 10 + r() * 3, -28 - r() * 8, 1 + r() * 0.4, r);
+  // A white picket fence and flower bushes behind the arch.
+  for (let x = -20; x <= 20; x += 1.2) box(g, a, [0.25, 2.4, 0.2], [x, 1.2, -14], 0xffffff, 'WoodPlanks');
+  for (const y of [0.8, 1.8]) box(g, a, [41, 0.25, 0.15], [0, y, -14.15], 0xffffff, 'WoodPlanks', false);
+  for (let k = 0; k < 10; k++) {
+    const x = -9 + k * 2;
+    g.add(ball(a, 0.9, [x, 0.7, -12.4], BRICK.darkGreen, 'Grass'));
+    g.add(ball(a, 0.28, [x + 0.3, 1.3, -11.9], [0xff6fae, 0xffffff, 0xffd1e8][k % 3], 'Fabric'));
+  }
+  g.position.copy(o);
+  scene.add(bake(g));
+  return { cakeTable: [7.5, -3] };
+}
