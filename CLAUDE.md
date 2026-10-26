@@ -24,6 +24,13 @@ Rendered with three.js in headless Chromium (`animation/render.mjs`), voiced wit
 
 ## Story style (what works on this channel)
 
+- **Best performer: "I accidentally..." cringe stories.** `scripts/crush.md` ("I Accidentally
+  Texted My Teacher...") hit **104K views in 48 h** (the channel's top Short, +273 subs, 57% of
+  viewers 25-44). Shape: an embarrassing mistake in the first sentence, public humiliation that
+  keeps escalating (the class laughs, a friend makes it worse, the evidence gets played out
+  loud), a fake-out ("I have something to tell you..."), then an authority figure's twist line
+  as the punchline. Thumbnail/title: the angry teacher face with the anger mark,
+  "I Accidentally <did X>..." Alternate this format with the rule hook below.
 - **Crazy-rule hook that drops the viewer into a world**, first person:
   "In this world, every time you X, Y happens." (see `scripts/twinkletoes.md`, the 46K-view one).
   Then funny examples of life under the rule, then "Then there's me...", escalation, and a

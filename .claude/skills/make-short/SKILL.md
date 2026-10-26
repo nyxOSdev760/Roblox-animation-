@@ -12,6 +12,7 @@ pipeline commands. Follow it exactly. Keep tool calls lean: the owner pays per u
 ## Steps
 
 1. **Story.** If the argument names `scripts/<slug>.md`, use it. Otherwise write a new one there:
+   either an "I accidentally..." cringe story (the 104K-view format, see CLAUDE.md) or the
    "In this world, every time you X, Y happens." hook, funny examples, "Then there's me...",
    escalation, twist punchline as the last line, ~180-200 words, never an idea already in
    `scripts/`. Show the script to the user and wait for an OK unless they said to just go.
