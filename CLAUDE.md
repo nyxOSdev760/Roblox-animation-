@@ -33,8 +33,12 @@ Rendered with three.js in headless Chromium (`animation/render.mjs`), voiced wit
   "I Accidentally <did X>..." Alternate this format with the rule hook below.
 - **Crazy-rule hook that drops the viewer into a world**, first person:
   "In this world, every time you X, Y happens." (see `scripts/twinkletoes.md`, the 46K-view one).
-  Then funny examples of life under the rule, then "Then there's me...", escalation, and a
-  **twist punchline as the very last line**. End within ~0.6 s of the punchline: no wrap-up
+  The rule must **transfer** (whoever does it to you gains what you lose). Then funny examples
+  of life under the rule, a **villain** who abuses it and has never had it happen to him, a
+  **loved one** (mom, little brother) about to be lost to it, the big public night where the
+  villain goes too far, and **me turning the whole town's rule back on him** with one secret
+  (a sound word per hit: "Bloop", "Thunk"), ending on my funny cost and "Worth it." A rule
+  with no villain and no payback (a plain gimmick + joke twist) was rejected as boring. End within ~0.6 s of the punchline: no wrap-up
   (retention drops at slow endings).
 - ~180-200 words (~50-60 s). Short punchy sentences, ellipses for beats, quotes for dialogue.
 - Audience is mostly 25-44; keep it clean and relatable. Never reuse an idea in `scripts/`.
