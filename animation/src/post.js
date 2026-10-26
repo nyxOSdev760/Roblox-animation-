@@ -17,8 +17,8 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 
 /**
- * GTAO at half resolution (soft anyway, and a quarter of the cost) that ignores transparent
- * and alpha-tested meshes (hair cards, glass, face decals).
+ * GTAO at half resolution (soft anyway, and a quarter of the cost) that ignores sprites and
+ * transparent and alpha-tested meshes (hair cards, glass, face decals).
  */
 class SolidGTAOPass extends GTAOPass {
   setSize(width, height) {
@@ -28,6 +28,7 @@ class SolidGTAOPass extends GTAOPass {
   overrideVisibility() {
     super.overrideVisibility();
     this.scene.traverse((o) => {
+      if (o.isSprite) o.visible = false; // billboards (name tags, numbers) don't occlude
       if (!o.isMesh || !o.visible) return;
       const m = Array.isArray(o.material) ? o.material[0] : o.material;
       if (m.transparent || m.alphaTest > 0) o.visible = false;

@@ -79,7 +79,11 @@ a place and dip to black between places, per-character functions posing by time.
   New sets: walls and roofs cast shadows, glass doesn't, add fixtures for every lamp and
   `lightShaft()`s at sunny windows. `scenes/lighttest.js` shows every set; `--no-post` skips
   post-processing for quick framing checks.
-- **Camera framing in a vertical frame:** a medium shot needs ~7 studs distance at fov ~40.
+- **Camera framing in a vertical frame:** a medium shot needs ~7 studs distance at fov ~40;
+  a two-shot needs fov ~50 at ~8.5 studs with the pair ~2.2 studs apart. Cheat people who talk
+  to each other ~40 degrees toward the camera (yaw 50 / -50 instead of 90 / -90) so both faces
+  show, and centre the camera on the pair. `W(line, word)` takes the first match: pass `n` for a
+  repeated word (`W(1, 'My', 1)`), or the cut lands on the wrong one.
   Never put the camera inside or right behind a character; keep a clear lane in front of the
   main characters. Captions sit at y 0.67, so keep faces above that.
 - Render stills across the whole video, look at them, fix framing, then render.

@@ -705,6 +705,7 @@ export function buildClassroom(scene, a, o, { desks = [], seatDz = 1.05, seed = 
   put(g, texturedPlane(14, 46, 8, ceilingDraw, { up: false, rough: 0.9 }), 25.25, 13, 7.5);
   box(g, a, [15, 0.6, 47], [25.25, 13.31, 7.5], TRIM, 'Plastic');
   box(g, a, [1, 13, 46], [32.5, 6.5, 7.5], 0xe9e2cc, 'Plastic');
+  box(g, a, [1, 13, 15.5], [18, 6.5, 22.75], 0xe9e2cc, 'Plastic'); // left wall past the classroom
   box(g, a, [15, 13, 1], [25.25, 6.5, -15.5], 0xe9e2cc, 'Plastic');
   box(g, a, [15, 13, 1], [25.25, 6.5, 30.5], 0xe9e2cc, 'Plastic');
   box(g, a, [0.1, 3.2, 46], [32.0, 1.6, 7.5], 0x7d2f3a, 'Plastic', false);
