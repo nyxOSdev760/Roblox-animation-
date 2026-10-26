@@ -9,6 +9,8 @@ import { loadAccessories } from './accessories.js';
 import { loadClothing } from './clothing.js';
 import { ACTORS } from './actors.js';
 import { createPhysics } from './physics.js';
+import { createPost } from './post.js';
+import { updateLights } from './lighting.js';
 
 const params = new URLSearchParams(location.search);
 const name = params.get('scene') || 'kick';
@@ -45,10 +47,15 @@ const update = setup({ scene, camera, renderer, assets, faces, sun });
 // Physics (collisions, follow-through) for scenes with characters; meta.physics = false skips it.
 const physics = ACTORS.length && meta.physics !== false && params.get('physics') !== '0' ? createPhysics(scene, ACTORS, { fps: meta.fps }) : null;
 
+// Realistic look (ambient occlusion, bloom, filmic grade); ?post=0 or meta.post = false skips it.
+const post = meta.post !== false && params.get('post') !== '0' ? createPost(renderer, scene, camera, width, height) : null;
+
 window.renderAt = (t) => {
   if (physics) physics.frame(update, t);
   else update(t);
-  renderer.render(scene, camera);
+  updateLights(camera);
+  if (post) post.render();
+  else renderer.render(scene, camera);
 };
 window.sceneMeta = meta;
 window.physics = physics;

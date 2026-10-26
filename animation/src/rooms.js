@@ -9,6 +9,7 @@ import { BRICK, part, cylinder, ball, robloxMaterial } from './roblox.js';
 import * as P from './props.js';
 import { bake } from './bake.js';
 import { rng } from './world.js';
+import { fixture, lightShaft } from './lighting.js';
 
 const FONT = '"Fredoka One"';
 const BOOKS = [0xc4281c, 0x0d69ac, 0xf5cd30, 0x4b974b, 0x6225d1, 0xda8541, 0x1b2a35, 0xff98dc, 0x80bbdc, 0xa4bd47, 0xf2f3f3, 0x7c5c46];
@@ -433,12 +434,13 @@ export function buildClassroom(scene, a, o, { desks = [], seatDz = 1.05, seed = 
   const g = new THREE.Group();
   const mount = mounter(g, 17.5, 14.5);
 
-  // Floor, ceiling, walls (walls and ceiling don't block the sun, like an open-top build).
+  // Floor, ceiling, walls. The roof and walls block the sun: daylight comes in through the
+  // windows (aim the sun from -x to get patches and shafts), the rest from the ceiling lights.
   box(g, a, [36, 1, 30], [0, -0.5, 0], 0x9b9b95, 'Concrete', false);
   put(g, texturedPlane(36, 30, 8, tileDraw('#e9e3d3', '#d3d6d2')), 0, 0.01, 0);
   put(g, texturedPlane(36, 30, 8, ceilingDraw, { up: false, rough: 0.9 }), 0, 13, 0);
-  box(g, a, [37, 0.6, 31], [0, 13.31, 0], TRIM, 'Plastic', false);
-  const wall = (size, pos) => box(g, a, size, pos, WALL, 'Plastic', false);
+  box(g, a, [37, 0.6, 31], [0, 13.31, 0], TRIM, 'Plastic');
+  const wall = (size, pos) => box(g, a, size, pos, WALL, 'Plastic');
   wall([36, 13, 1], [0, 6.5, -15]);
   wall([36, 13, 1], [0, 6.5, 15]);
   // Left wall: three window openings (z -11..-5, -3..3, 5..11; y 3.8..10).
@@ -577,7 +579,7 @@ export function buildClassroom(scene, a, o, { desks = [], seatDz = 1.05, seed = 
     box(g, a, [1.0, 0.2, 6.6], [-17.2, 3.9, zc], TRIM, 'Plastic');
     // Blinds pulled half down.
     box(g, a, [0.35, 0.35, 6.2], [-17.25, 9.85, zc], 0xf2f0e8, 'Plastic', false);
-    for (let k = 0; k < 6; k++) box(g, a, [0.22, 0.05, 5.9], [-17.3, 9.55 - k * 0.3, zc], 0xf2f0e8, 'Plastic', false);
+    for (let k = 0; k < 6; k++) box(g, a, [0.22, 0.05, 5.9], [-17.3, 9.55 - k * 0.3, zc], 0xf2f0e8, 'Plastic');
     box(g, a, [0.3, 0.1, 5.95], [-17.3, 7.7, zc], 0xe0ddd0, 'Plastic', false);
     box(g, a, [0.04, 2.0, 0.04], [-17.2, 8.6, zc + 2.7], 0xdddddd, 'Plastic', false);
     plant(g, a, -17.2, 4.0, zc + 1.8, 0.8);
@@ -701,10 +703,10 @@ export function buildClassroom(scene, a, o, { desks = [], seatDz = 1.05, seed = 
   put(g, texturedPlane(14, 46, 8, tileDraw('#e6e0d0', '#9fb3c4', 9)), 25.25, 0.01, 7.5);
   box(g, a, [14, 1, 46], [25.25, -0.5, 7.5], 0x9b9b95, 'Concrete', false);
   put(g, texturedPlane(14, 46, 8, ceilingDraw, { up: false, rough: 0.9 }), 25.25, 13, 7.5);
-  box(g, a, [15, 0.6, 47], [25.25, 13.31, 7.5], TRIM, 'Plastic', false);
-  box(g, a, [1, 13, 46], [32.5, 6.5, 7.5], 0xe9e2cc, 'Plastic', false);
-  box(g, a, [15, 13, 1], [25.25, 6.5, -15.5], 0xe9e2cc, 'Plastic', false);
-  box(g, a, [15, 13, 1], [25.25, 6.5, 30.5], 0xe9e2cc, 'Plastic', false);
+  box(g, a, [15, 0.6, 47], [25.25, 13.31, 7.5], TRIM, 'Plastic');
+  box(g, a, [1, 13, 46], [32.5, 6.5, 7.5], 0xe9e2cc, 'Plastic');
+  box(g, a, [15, 13, 1], [25.25, 6.5, -15.5], 0xe9e2cc, 'Plastic');
+  box(g, a, [15, 13, 1], [25.25, 6.5, 30.5], 0xe9e2cc, 'Plastic');
   box(g, a, [0.1, 3.2, 46], [32.0, 1.6, 7.5], 0x7d2f3a, 'Plastic', false);
   box(g, a, [0.1, 3.2, 21.3], [18.55, 1.6, -4.35], 0x7d2f3a, 'Plastic', false);
   box(g, a, [0.1, 3.2, 19.3], [18.55, 1.6, 20.35], 0x7d2f3a, 'Plastic', false);
@@ -798,6 +800,11 @@ export function buildClassroom(scene, a, o, { desks = [], seatDz = 1.05, seed = 
 
   g.position.copy(o);
   scene.add(bake(g));
+
+  // Ceiling panels light the room and the hallway; sun shafts come in under the blinds.
+  for (const x of [-6, 6]) for (const z of [-5.5, 5.5]) fixture([o.x + x, 11.6, o.z + z], { color: 0xfff1de, intensity: 28, distance: 34 });
+  for (const z of [-3, 20]) fixture([o.x + 25.25, 11.6, o.z + z], { color: 0xfff1de, intensity: 24, distance: 28 });
+  for (const zc of [-8, 0, 8]) scene.add(lightShaft([o.x - 17.9, 5.85, o.z + zc], [0, 0, 2.9], [0, 1.85, 0], [1, -0.62, 0.28], { length: 17 }));
 
   // The door (not baked: it swings). Pivot on its hinge at z = 6.55; rotation.y > 0 opens it
   // into the hallway.
@@ -1072,19 +1079,11 @@ export function buildBedroom(scene, a, o, { seed = 2 } = {}) {
   g.position.copy(o);
   scene.add(bake(g));
 
-  // Night lights (off by default; turn them on for the bedroom's shots).
-  const lamp = new THREE.PointLight(0xffb066, 45, 26, 2);
-  lamp.position.set(o.x - 4.2, 3.9, o.z - 9.0);
-  const monitor = new THREE.PointLight(0x5aa8ff, 18, 18, 2);
-  monitor.position.set(o.x + 9.6, 4.8, o.z - 5.5);
-  const led = new THREE.PointLight(0xa585ff, 12, 30, 2);
-  led.position.set(o.x, 9.5, o.z - 1);
-  const lights = [lamp, monitor, led];
-  for (const l of lights) {
-    l.visible = false;
-    scene.add(l);
-  }
-  return { lights };
+  // Night lights (off by default; set .visible for the bedroom's shots). See lighting.js.
+  const lamp = fixture([o.x - 4.2, 3.9, o.z - 9.0], { color: 0xffb066, intensity: 45, distance: 26, visible: false });
+  const monitor = fixture([o.x + 9.6, 4.8, o.z - 5.5], { color: 0x5aa8ff, intensity: 18, distance: 18, visible: false });
+  const led = fixture([o.x, 9.5, o.z - 1], { color: 0xa585ff, intensity: 12, distance: 30, visible: false });
+  return { lights: [lamp, monitor, led] };
 }
 
 // ---- the front of a school, with the street ---------------------------------------------

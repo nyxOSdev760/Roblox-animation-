@@ -1,6 +1,6 @@
 // Clothing check: every shirt/pants pair from ?items= (shirt|pants,shirt|pants,...) on its own
-// character. Still t = 2i shows pair i from the front, t = 2i + 1 from the back.
-import { createR6 } from '../src/r6.js';
+// R15 character (what videos use). Still t = 2i shows pair i from the front, t = 2i + 1 from the back.
+import { createR15 } from '../src/r15.js';
 import { BRICK, SKIN } from '../src/roblox.js';
 
 const query = typeof location !== 'undefined' ? new URLSearchParams(location.search) : new URLSearchParams();
@@ -20,8 +20,8 @@ const SPACING = 8;
 export function setup({ scene, camera, assets, faces }) {
   pairs.forEach(([shirt, pants], i) => {
     const skin = Object.values(SKIN)[i % Object.values(SKIN).length];
-    const ch = createR6({ assets, faces, face: 'neutral', shirt: shirt || undefined, pants: pants || undefined, colors: { head: skin, torso: skin, rArm: skin, lArm: skin, rLeg: skin, lLeg: skin } });
-    ch.pose({ root: { pos: [i * SPACING, 3, 0], rot: [0, 0, 0] }, rArm: [0, 0, -8], lArm: [0, 0, 8] });
+    const ch = createR15({ assets, faces, face: 'neutral', shirt: shirt || undefined, pants: pants || undefined, colors: { head: skin, torso: skin, rArm: skin, lArm: skin, rLeg: skin, lLeg: skin } });
+    ch.pose({ root: { pos: [i * SPACING, 3, 0], rot: [0, 0, 0] }, rArm: [0, 0, -8], lArm: [0, 0, 8], rElbow: [-10, 0, 0], lElbow: [-10, 0, 0] });
     scene.add(ch.root);
   });
   scene.fog = null;

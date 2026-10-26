@@ -4,6 +4,7 @@
 // Units are studs. Parts are sharp-edged boxes/cylinders/balls like Roblox parts, and their
 // material textures tile in world space (studs), not per part.
 import * as THREE from 'three';
+import { addLightPool } from './lighting.js';
 
 const TEX = '/animation/assets/rbx/textures';
 
@@ -104,7 +105,7 @@ export function robloxMaterial(assets, color, name = 'plastic', opts = {}) {
     params.normalScale = new THREE.Vector2(m === 'plastic' ? 0.15 : 0.8, m === 'plastic' ? 0.15 : 0.8);
   }
   if (m === 'glass') Object.assign(params, { transparent: true, opacity: 0.45, envMapIntensity: 1.2 });
-  if (m === 'neon') Object.assign(params, { emissive: color, emissiveIntensity: 1.2 });
+  if (m === 'neon') Object.assign(params, { emissive: color, emissiveIntensity: 2.4 }); // bright enough to bloom
   const mat = new THREE.MeshStandardMaterial({ ...params, ...opts });
   materialCache.set(key, mat);
   return mat;
@@ -175,22 +176,26 @@ export function wedge(assets, size, pos, color, material = 'Plastic', rotY = 0) 
 }
 
 /**
- * Roblox-like daytime lighting: ClockTime ~14 sun, sky ambient, crisp-but-soft shadows.
+ * Roblox "Future" lighting with realism shaders, on a sunny afternoon (ClockTime ~14): a warm
+ * sun with soft-edged shadows, sky-blue fill from above and warm bounce from the ground, a
+ * little sky reflection, and a pool of interior lights for lamps and ceiling panels (see
+ * lighting.js). Tone mapping, ambient occlusion and bloom happen in post.js.
  * Returns the sun so a scene can move its shadow camera to follow the action.
  */
 export function robloxLighting(scene, renderer, assets) {
-  renderer.toneMapping = THREE.NeutralToneMapping; // keeps BrickColors true (ACES pushes Bright yellow toward lime)
+  renderer.toneMapping = THREE.NeutralToneMapping; // without post.js; keeps BrickColors true
   renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap; // filtered by shadow.radius (PCFSoft ignores it)
 
   scene.background = assets.sky;
   scene.environment = assets.env;
-  scene.environmentIntensity = 0.12; // Roblox ambient is neutral grey, not sky blue
-  scene.fog = new THREE.Fog(0xbfdcf2, 120, 600);
+  scene.environmentIntensity = 0.16;
+  scene.fog = new THREE.Fog(0xc4dcf0, 140, 650);
 
-  scene.add(new THREE.HemisphereLight(0xf4f2ee, 0xa8a196, 1.35));
-  const sun = new THREE.DirectionalLight(0xfff4e6, 2.3);
+  // Fill: cool sky light from above, warm bounce from the ground.
+  scene.add(new THREE.HemisphereLight(0xe2ebf7, 0xb8a48a, 1.3));
+  const sun = new THREE.DirectionalLight(0xffe9cc, 2.6);
   sun.position.set(30, 60, 40);
   sun.castShadow = true;
   sun.shadow.mapSize.set(4096, 4096);
@@ -201,9 +206,10 @@ export function robloxLighting(scene, renderer, assets) {
   s.bottom = -30;
   s.near = 1;
   s.far = 200;
-  sun.shadow.bias = -0.0002;
-  sun.shadow.normalBias = 0.03;
-  sun.shadow.radius = 2.5;
+  sun.shadow.bias = -0.0003;
+  sun.shadow.normalBias = 0.04;
+  sun.shadow.radius = 3.5;
   scene.add(sun, sun.target);
+  addLightPool(scene);
   return sun;
 }

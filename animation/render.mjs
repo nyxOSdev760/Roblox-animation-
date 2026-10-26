@@ -4,6 +4,7 @@
 //   node render.mjs kick --stills 0,1.2      -> out/kick-stills/*.png (quick framing checks)
 //   node render.mjs kick --scale 0.5         -> half-resolution draft
 //   node render.mjs kick --audio-only        -> re-mix the sound onto the existing out/kick.mp4
+//   node render.mjs kick --no-post           -> skip post-processing (AO, bloom, grade): quick checks
 //
 // Long videos render in parts (10 s each) that can be resumed or redone one at a time:
 //   node render.mjs story --parts            -> out/story-parts/part_000.mp4 ... (skips done parts)
@@ -97,7 +98,8 @@ async function renderFrames() {
   await new Promise((ok) => server.listen(0, '127.0.0.1', ok));
   // --items a,b,c is passed through to scenes that take a list (e.g. wardrobe).
   const items = opt('--items') ? `&items=${encodeURIComponent(opt('--items'))}` : '';
-  const url = `http://127.0.0.1:${server.address().port}/animation/index.html?scene=${name}&frame=1&scale=${scale}${items}`;
+  const post = args.includes('--no-post') ? '&post=0' : '';
+  const url = `http://127.0.0.1:${server.address().port}/animation/index.html?scene=${name}&frame=1&scale=${scale}${items}${post}`;
 
   // Playwright's own browser, or the container's pre-installed Chromium when versions differ.
   const launchArgs = { args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] };
@@ -125,8 +127,9 @@ async function renderFrames() {
   if (stills) {
     const dir = join(outDir, `${name}-stills`);
     await mkdir(dir, { recursive: true });
+    const started = Date.now();
     for (const [i, t] of stills.entries()) await writeFile(join(dir, stillsArg === 'shots' ? `shot${String(i).padStart(2, '0')}.png` : `${t.toFixed(2)}.png`), await shoot(t, 'png'));
-    console.log('stills in', dir);
+    console.log('stills in', dir, `(${((Date.now() - started) / stills.length / 1000).toFixed(2)} s per still)`);
   } else if (args.includes('--parts')) {
     await mkdir(partsDir, { recursive: true });
     const per = PART_SECONDS * meta.fps;
