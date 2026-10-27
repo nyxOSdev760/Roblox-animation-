@@ -16,11 +16,13 @@ Rendered with three.js in headless Chromium (`animation/render.mjs`), voiced wit
   `shirt-th-denim-jacket-floral`, `shirt-grey-button-up-undershirt`, `shirt-striped-crop-top`,
   `shirt-purple-cool-crop-top`. Check any new outfit with `scenes/closet.js` stills first.
 - **Real skin tones** for every character (`SKIN` in `src/roblox.js`).
-- **Background music: "Feeling Blue" (Caleb Arredondo)**, `assets/sfx/feeling-blue.mp3` (107 s),
-  as one cue from 0 at volume 0.2 with `{ dur: END, fade: 1.2 }`. Put a **"FAHHH"**
+- **Background music: "Numbers" (TEMPOREX)**, `assets/sfx/temporex-numbers.mp3` (128 s),
+  as one cue from 0 at volume 0.14 with `{ dur: END, fade: 1.2 }` (Feeling Blue is retired). Put a **"FAHHH"**
   (`assets/sfx/fahhh.mp3`, volume ~2.2) right after every punchline.
-- Faces switch with the moment (shocked, blush, sweat, tears, anger mark, grin); the default is
-  the relaxed half-smile.
+- Faces switch with the moment using the **2D face decals only** (`assets/faces/png`: happy, grin,
+  smirk, sad, angry, neutral, suspicious); the default is the relaxed half-smile. **No 3D face
+  pieces** (no tears, crying, sweat drops, blush, anger marks or `face-*` accessories).
+- **R6 characters** (`src/r6.js`), not R15: the owner didn't like R15.
 
 ## Story style (what works on this channel)
 
@@ -72,13 +74,9 @@ a place and dip to black between places, per-character functions posing by time.
   lights), `buildSchoolFront`, `iceCreamTruck`; `src/sets.js` has older ones. New sets go in
   `rooms.js`, built from many detailed parts and `bake()`d (add shafts after baking). Make them detailed (ceilings, trim,
   posters, clutter), never bare boxes.
-- Characters: `Actor` from `src/actors.js` (`POSES`, `attach`/hold props) builds **R15**
-  characters (`src/r15.js`, Roblox's own R15 rig and clothing mapping; `src/r6.js` is only for
-  old scenes). Poses take `neck, waist, rArm/lArm` (shoulders), `rElbow/lElbow` (x < 0 bends,
-  then y swings the forearm across: right +, left -), `rWrist/lWrist`, `rLeg/lLeg`,
-  `rKnee/lKnee` (x > 0 bends), `rAnkle/lAnkle`; joints left out rest (elbows slightly bent).
-  When overriding an arm, set its elbow too, and bend knees ~85 when sitting. Check new poses
-  on `scenes/posesheet.js` stills. Pass hand props with `{ hold: [...] }` on placement (set()
+- Characters: `Actor` from `src/actors.js` (`POSES`, `attach`/hold props) builds **R6**
+  characters (`src/r6.js`; poses take `neck, rArm, lArm, rLeg, lLeg`). `src/r15.js` is kept but
+  unused. Pass hand props with `{ hold: [...] }` on placement (set()
   hides held props first); they ride on the hand and follow the forearm. Physics
   (`src/physics.js`) runs automatically: arms avoid bodies and sets, follow-through springs.
 - **Lighting** (`src/lighting.js`, `src/post.js`): realistic "Future"-style look with ambient

@@ -99,7 +99,7 @@ export const meta = {
   width: 1080,
   height: 1920,
   faces: ['neutral', 'happy', 'grin', 'smirk', 'suspicious', 'sad', 'crying', 'angry'],
-  accessories: [...new Set([...Object.values(CAST), ...CROWD].map((c) => c.hair).concat(FACES))],
+  accessories: [...new Set([...Object.values(CAST), ...CROWD].map((c) => c.hair))],
   clothing: [...new Set([...Object.values(CAST), ...CROWD].flatMap((c) => [c.shirt, c.pants]))],
   audio: [],
 };
@@ -107,7 +107,7 @@ export const meta = {
 // ---- sound -------------------------------------------------------------------------------
 const sfx = (file, at, volume = 0.8, extra = {}) => meta.audio.push({ file, at, volume, ...extra });
 sfx('../voice/fog/narration.flac', 0, 1.0);
-sfx('feeling-blue.mp3', 0, 0.2, { dur: END, fade: 1.2 });
+sfx('temporex-numbers.mp3', 0, 0.14, { dur: END, fade: 1.2 }); // "Numbers" (TEMPOREX)
 const FAH = (at) => sfx('fahhh.mp3', at, 2.2);
 sfx('synth/ambience.wav', 0, 0.18, { loop: true, dur: END, fade: 1.0, pitch: -5 });
 FAH(W(1, 'lunch') + 0.45);
@@ -332,9 +332,8 @@ export function setup({ scene, camera, assets, faces, sun }) {
   A.pell.attach('kevin', kevin, 'r', [0, 0.1, 0.3], [0, 0, 0]);
   // My legs can fade: give them their own see-through-capable materials.
   const legMats = [];
-  for (const name of ['LowerTorso', 'RightUpperLeg', 'RightLowerLeg', 'RightFoot', 'LeftUpperLeg', 'LeftLowerLeg', 'LeftFoot'])
-    // Only the part's own mesh: its frame also holds the joints below it.
-    for (const o of A.me.rig.parts[name].children) {
+  for (const leg of [A.me.r6.joints.rLeg, A.me.r6.joints.lLeg])
+    for (const o of leg.children) {
       if (!o.isMesh) continue;
       o.material = o.material.clone();
       o.material.transparent = true;
@@ -346,8 +345,14 @@ export function setup({ scene, camera, assets, faces, sun }) {
   Object.assign(black.style, { position: 'fixed', inset: '0', background: '#000', pointerEvents: 'none', opacity: '0' });
   document.body.appendChild(black);
 
-  const at = (who, x, z, { hold = [], ...opts } = {}) => {
-    who.set({ at: [O.x + x, O.z + z], ...opts });
+  // Plain 2D faces only (no 3D tears, sweat drops or other face pieces).
+  const FLAT = { 'face-eyes-shocked': 'sad', 'face-terrified': 'sad', 'face-worry-manga': 'sad', 'face-about-to-cry': 'sad', 'face-mouth-small-frown': 'sad' };
+  const flat = (f) => {
+    const list = [f].flat();
+    return list.find((n) => !n.startsWith('face-')) ?? FLAT[list[0]] ?? 'neutral';
+  };
+  const at = (who, x, z, { hold = [], face, ...opts } = {}) => {
+    who.set({ at: [O.x + x, O.z + z], face: face && flat(face), ...opts });
     for (const h of hold) who.hold(h);
   };
   const yawTo = (from, to) => (Math.atan2(to[0] - from[0], to[1] - from[1]) * 180) / Math.PI;
