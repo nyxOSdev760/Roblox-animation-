@@ -7,10 +7,14 @@ in <out dir>/lines/, so editing one paragraph only regenerates that paragraph. T
 are joined with short pauses into <out dir>/narration.flac, and <out dir>/lines.json
 records where each paragraph starts and ends. Word timings come from tools/align.py.
 
+Pronunciation: write {shown|spoken} in the script, e.g. {Theo|Thee-oh}. Captions (and
+lines.json) show the first part; the voice is sent the second.
+
 The API key is injected by the environment's proxy for api.fish.audio.
 """
 import argparse
 import hashlib
+import re
 import json
 import subprocess
 import sys
@@ -31,6 +35,17 @@ def paragraphs(md: str):
         if text and not text.startswith("#"):
             out.append(text)
     return out
+
+
+SAY = re.compile(r"\{([^|{}]+)\|([^{}]+)\}")
+
+
+def shown(text):
+    return SAY.sub(lambda m: m.group(1), text)
+
+
+def spoken(text):
+    return SAY.sub(lambda m: m.group(2), text)
 
 
 def tts(text, voice, dest: Path, retries=5):
@@ -87,11 +102,11 @@ def main() -> None:
         clean = out / "lines" / f"{key}.wav"
         if not clean.exists():
             print(f"[{i + 1}/{len(texts)}] {text[:60]}...", flush=True)
-            tts(text, a.voice, raw)
+            tts(spoken(text), a.voice, raw)
             trim(raw, clean)
             raw.unlink()
         d = duration(clean)
-        lines.append({"index": i, "text": text, "start": round(t, 3), "end": round(t + d, 3), "file": clean.name})
+        lines.append({"index": i, "text": shown(text), "start": round(t, 3), "end": round(t + d, 3), "file": clean.name})
         files.append(clean)
         t += d + a.gap
 

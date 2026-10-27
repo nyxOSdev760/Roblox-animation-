@@ -464,3 +464,21 @@ export function heightChart(a) {
   });
   return panel(a, 1.6, 8, tex, { depth: 0.05, back: BRICK.institutionalWhite });
 }
+
+/** A blocky dog facing +z (shoulder height ~1.4). userData.tail wags on its y axis. */
+export function dog(a) {
+  const g = new THREE.Group();
+  const fur = 0xc58a4a;
+  g.add(part(a, [1.0, 0.9, 2.0], [0, 1.1, 0], fur, 'Fabric'));
+  g.add(part(a, [0.9, 0.9, 0.9], [0, 1.75, 1.2], fur, 'Fabric'));
+  g.add(part(a, [0.5, 0.4, 0.5], [0, 1.6, 1.8], 0xe0b07a, 'Fabric'));
+  g.add(part(a, [0.2, 0.2, 0.12], [0, 1.75, 2.06], 0x1b1b1b, 'Plastic'));
+  for (const x of [-0.5, 0.5]) g.add(part(a, [0.25, 0.6, 0.4], [x, 2.0, 1.1], 0x7a4f2a, 'Fabric'));
+  for (const x of [-0.22, 0.22]) g.add(part(a, [0.14, 0.14, 0.05], [x, 1.95, 1.66], 0x1b1b1b, 'Plastic'));
+  for (const [x, z] of [[-0.35, 0.7], [0.35, 0.7], [-0.35, -0.7], [0.35, -0.7]]) g.add(part(a, [0.3, 0.7, 0.3], [x, 0.35, z], fur, 'Fabric'));
+  const tail = part(a, [0.18, 0.18, 0.8], [0, 1.5, -1.2], fur, 'Fabric');
+  tail.rotation.x = 0.6;
+  g.add(tail);
+  g.userData.tail = tail;
+  return g;
+}

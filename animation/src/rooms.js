@@ -1782,3 +1782,250 @@ export function buildWedding(scene, a, o, { seed = 14 } = {}) {
   scene.add(bake(g));
   return { cakeTable: [7.5, -3] };
 }
+
+// ---- a small town square at night --------------------------------------------------------
+
+/** A house facing +z (front door at z = d/2), with a porch that can vanish on its own. */
+function house(a, { w = 10, d = 9, h = 7, wall = 0xd8c4a0, roof = 0x5a3b2b, trim = 0xf2f2f2, door = 0x6b4a33, r = Math.random }) {
+  const body = new THREE.Group();
+  box(body, a, [w, 0.6, d], [0, 0.3, 0], 0x8d8f94, 'Concrete');
+  box(body, a, [w, h, d], [0, h / 2 + 0.6, 0], wall, 'WoodPlanks');
+  // Roof: two slopes and gables.
+  const pitch = 0.5;
+  const half = d / 2 + 0.8;
+  const slope = Math.hypot(half, half * pitch);
+  for (const s of [-1, 1]) {
+    const p = box(body, a, [w + 1.2, 0.5, slope], [0, h + 0.6 + (half * pitch) / 2, (s * half) / 2], roof, 'Slate');
+    p.rotation.x = s * Math.atan(pitch);
+  }
+  for (const s of [-1, 1]) {
+    const shape = new THREE.Shape([new THREE.Vector2(-d / 2, 0), new THREE.Vector2(d / 2, 0), new THREE.Vector2(0, (d / 2) * pitch)]);
+    const gable = new THREE.Mesh(new THREE.ExtrudeGeometry(shape, { depth: 0.3, bevelEnabled: false }), robloxMaterial(a, wall, 'WoodPlanks'));
+    gable.rotation.y = Math.PI / 2;
+    gable.position.set(s * (w / 2) - 0.15, h + 0.6, 0);
+    gable.castShadow = gable.receiveShadow = true;
+    body.add(gable);
+  }
+  box(body, a, [1.0, 2.6, 1.0], [w * 0.28, h + 2.2, -d * 0.15], 0x7a3b2b, 'Brick');
+  // Front: door in a frame, glowing windows with shutters, trim.
+  const doorPivot = new THREE.Group();
+  doorPivot.position.set(-0.9, 0.6, d / 2 + 0.05);
+  box(doorPivot, a, [1.8, 3.6, 0.2], [0.9, 1.8, 0], door, 'WoodPlanks');
+  box(doorPivot, a, [0.25, 0.25, 0.2], [1.5, 1.8, 0.15], BRICK.brightYellow, 'Metal', false);
+  box(body, a, [2.4, 4.0, 0.15], [0, 2.6, d / 2 + 0.01], trim, 'Plastic', false);
+  box(body, a, [1.8, 3.6, 0.1], [0, 2.4, d / 2 + 0.02], 0x2a1c12, 'Plastic', false);
+  for (const x of [-w * 0.3, w * 0.3]) {
+    box(body, a, [2.2, 2.0, 0.12], [x, 3.6, d / 2 + 0.02], 0xffc46b, 'Neon', false);
+    box(body, a, [2.5, 0.25, 0.3], [x, 4.7, d / 2 + 0.1], trim, 'Plastic', false);
+    box(body, a, [0.15, 2.0, 0.2], [x, 3.6, d / 2 + 0.1], trim, 'Plastic', false);
+    for (const s of [-1, 1]) box(body, a, [0.5, 2.2, 0.15], [x + s * 1.4, 3.6, d / 2 + 0.1], door, 'WoodPlanks', false);
+  }
+  box(body, a, [2.0, 1.0, 0.12], [0, h - 0.4, d / 2 + 0.02], 0xffc46b, 'Neon', false);
+  // Porch: deck, steps, posts, rail, roof and a lamp.
+  const porch = new THREE.Group();
+  const pd = 3.2;
+  box(porch, a, [w - 1, 0.6, pd], [0, 0.3, d / 2 + pd / 2], 0x8a5a3a, 'WoodPlanks');
+  box(porch, a, [3, 0.3, 1.0], [0, 0.15, d / 2 + pd + 0.5], 0x8a5a3a, 'WoodPlanks');
+  for (const x of [-(w - 1.6) / 2, (w - 1.6) / 2, -1.8, 1.8]) box(porch, a, [0.35, 3.8, 0.35], [x, 2.5, d / 2 + pd - 0.3], trim, 'WoodPlanks');
+  for (const s of [-1, 1]) box(porch, a, [(w - 1) / 2 - 2.0, 0.2, 0.2], [s * ((w - 1) / 4 + 1.0), 1.7, d / 2 + pd - 0.3], trim, 'WoodPlanks');
+  box(porch, a, [w - 0.6, 0.35, pd + 0.4], [0, 4.5, d / 2 + pd / 2], roof, 'Slate');
+  porch.add(ball(a, 0.25, [1.5, 3.9, d / 2 + 0.3], 0xffd9a0, 'Neon'));
+  if (r() < 0.6) {
+    const c = P.chair(a, 0xf2f2f2, 'WoodPlanks');
+    c.scale.setScalar(0.6);
+    put(porch, c, -(w - 3) / 2, 0.6, d / 2 + 1.4, 0.3);
+  }
+  plant(porch, a, (w - 3) / 2, 0.6, d / 2 + 0.9, 0.8);
+  return { body, porch, doorPivot, porchLight: [1.5, 3.9, d / 2 + 0.6], doorstep: [0, d / 2 + pd + 1.6] };
+}
+
+const cobbleDraw = (ctx, w, h) => {
+  const r = rng(31);
+  ctx.fillStyle = '#7d7a76';
+  ctx.fillRect(0, 0, w, h);
+  for (let y = 0; y < h; y += 32)
+    for (let x = (y / 32) % 2 ? -16 : 0; x < w; x += 32) {
+      const g = 110 + r() * 40;
+      ctx.fillStyle = `rgb(${g},${g - 4},${g - 10})`;
+      ctx.fillRect(x + 2, y + 2, 28, 28);
+    }
+};
+
+/**
+ * A small town around a square, at night, for the fog story. The square is x,z -16..16
+ * (cobblestones) with the Caller's crate at (0, 0) and a clock tower at (0, -14); a road
+ * rings it (|x| or |z| 16..24); houses face the square from all sides but the front (+z,
+ * where cameras stand); a picket fence rings the town at radius ~50.
+ * Returns handles: houses (by name: { group, porch, doorPivot, doorstep, at, porchLight }),
+ * lamps (by name: { group, fixture, at }), bakery { group, sign, blank }, hole (mailbox spot),
+ * crate { at, top }.
+ */
+export function buildFogTown(scene, a, o, { seed = 41 } = {}) {
+  const r = rng(seed);
+  const g = new THREE.Group();
+  box(g, a, [180, 1, 180], [0, -0.5, 0], BRICK.brightGreen, 'Grass', false);
+  put(g, texturedPlane(32, 32, 6, cobbleDraw, { rough: 0.85 }), 0, 0.02, 0);
+  // Road ring and sidewalks.
+  for (const [size, pos] of [[[48, 0.1, 8], [0, 0.03, -20]], [[48, 0.1, 8], [0, 0.03, 20]], [[8, 0.1, 32], [-20, 0.03, 0]], [[8, 0.1, 32], [20, 0.03, 0]]])
+    box(g, a, size, pos, 0x3a3a3c, 'Concrete', false);
+  for (const [size, pos] of [[[34, 0.3, 1], [0, 0.15, -16.5]], [[34, 0.3, 1], [0, 0.15, 16.5]], [[1, 0.3, 34], [-16.5, 0.15, 0]], [[1, 0.3, 34], [16.5, 0.15, 0]]])
+    box(g, a, size, pos, 0xb9b6ae, 'Concrete', false);
+  for (let k = -20; k <= 20; k += 6) {
+    box(g, a, [3, 0.05, 0.3], [k, 0.1, -20], 0xf5cd30, 'SmoothPlastic', false);
+    box(g, a, [0.3, 0.05, 3], [-20, 0.1, k], 0xf5cd30, 'SmoothPlastic', false);
+    box(g, a, [0.3, 0.05, 3], [20, 0.1, k], 0xf5cd30, 'SmoothPlastic', false);
+  }
+  // Crate (the Caller's stand), benches, planters, the clock tower.
+  box(g, a, [2.2, 1.6, 2.2], [0, 0.8, 0], 0xa8753e, 'WoodPlanks');
+  for (const y of [0.3, 1.3]) for (const s of [-1, 1]) box(g, a, [2.3, 0.2, 0.2], [0, y, s * 1.05], 0x7a5130, 'WoodPlanks', false);
+  for (const [x, z, ry] of [[-8, 6, 0], [8, 6, 0], [-11, -3, Math.PI / 2], [11, -3, -Math.PI / 2]]) {
+    const b = new THREE.Group();
+    box(b, a, [4, 0.3, 1.2], [0, 1.2, 0], 0x6b4a33, 'WoodPlanks');
+    box(b, a, [4, 1.0, 0.2], [0, 1.9, -0.55], 0x6b4a33, 'WoodPlanks');
+    for (const s of [-1, 1]) box(b, a, [0.2, 1.2, 1.0], [s * 1.8, 0.6, 0], 0x2a2a2a, 'Metal');
+    put(g, b, x, 0, z, ry);
+  }
+  for (const [x, z] of [[-13, 13], [13, 13], [-13, -13], [13, -13]]) {
+    box(g, a, [2.4, 1.2, 2.4], [x, 0.6, z], 0x8d8f94, 'Concrete');
+    g.add(ball(a, 1.1, [x, 1.8, z], BRICK.darkGreen, 'Grass'));
+    for (let k = 0; k < 4; k++) g.add(ball(a, 0.25, [x + Math.cos(k * 1.6) * 0.9, 2.2, z + Math.sin(k * 1.6) * 0.9], [0xff6fae, 0xfff3c4, 0xc4281c][k % 3], 'Fabric'));
+  }
+  const tower = new THREE.Group();
+  box(tower, a, [5, 18, 5], [0, 9, 0], 0xb59a7a, 'Brick');
+  box(tower, a, [6, 0.6, 6], [0, 18.3, 0], 0x6b4a33, 'WoodPlanks');
+  const cap = new THREE.Mesh(new THREE.ConeGeometry(4.2, 5, 4), robloxMaterial(a, 0x3b4a5a, 'Slate'));
+  cap.position.y = 21.1;
+  cap.rotation.y = Math.PI / 4;
+  cap.castShadow = true;
+  tower.add(cap);
+  const face = decal(3.6, 3.6, (ctx, w, h) => {
+    ctx.fillStyle = '#f8f1dc';
+    ctx.beginPath();
+    ctx.arc(w / 2, h / 2, w * 0.47, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#2a2a2a';
+    ctx.lineWidth = w * 0.03;
+    ctx.stroke();
+    for (let k = 0; k < 12; k++) {
+      const an = (k / 12) * Math.PI * 2;
+      ctx.fillStyle = '#2a2a2a';
+      ctx.fillRect(w / 2 + Math.sin(an) * w * 0.38 - 3, h / 2 - Math.cos(an) * h * 0.38 - 3, 6, 6);
+    }
+    ctx.lineCap = 'round';
+    ctx.lineWidth = w * 0.035;
+    ctx.beginPath();
+    ctx.moveTo(w / 2, h / 2);
+    ctx.lineTo(w / 2, h * 0.2);
+    ctx.stroke();
+    ctx.lineWidth = w * 0.05;
+    ctx.beginPath();
+    ctx.moveTo(w / 2, h / 2);
+    ctx.lineTo(w / 2, h * 0.28);
+    ctx.stroke();
+  }, { glow: 0.6, alpha: true });
+  face.position.set(0, 14.5, 2.52);
+  tower.add(face);
+  for (let y = 3; y < 12; y += 4) box(tower, a, [1.2, 2.0, 0.1], [0, y, 2.52], 0xffc46b, 'Neon', false);
+  put(g, tower, 0, 0, -14);
+  // Mailbox stub and the hole where it used to be.
+  box(g, a, [0.4, 0.5, 0.4], [9.5, 0.25, 15.4], 0x5d6066, 'Metal');
+  g.add(cylinder(a, 1.0, 0.06, [11.2, 0.05, 15.2], 0x050505, 'SmoothPlastic'));
+  g.add(cylinder(a, 1.12, 0.05, [11.2, 0.04, 15.2], 0x3a2a1a, 'Concrete'));
+  // Trees outside the houses and the picket fence at the edge of town.
+  for (let k = 0; k < 22; k++) {
+    const an = (k / 22) * Math.PI * 2 + r() * 0.2;
+    const rad = 44 + r() * 4;
+    tree(g, a, Math.cos(an) * rad, Math.sin(an) * rad, 0.9 + r() * 0.3, r);
+  }
+  for (let k = 0; k < 120; k++) {
+    const an = (k / 120) * Math.PI * 2;
+    const rad = 52;
+    const post = box(g, a, [0.3, 2.4, 0.25], [Math.cos(an) * rad, 1.2, Math.sin(an) * rad], 0xf2f2f2, 'WoodPlanks');
+    post.rotation.y = -an;
+  }
+  for (const y of [0.8, 1.8]) {
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(52, 0.1, 4, 160), robloxMaterial(a, 0xf2f2f2, 'WoodPlanks'));
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = y;
+    g.add(ring);
+  }
+  g.position.copy(o);
+  scene.add(bake(g));
+
+  // Houses (each its own baked group, so the fog can take them one at a time).
+  const W = (name, x, z, ry, opts) => {
+    const hs = house(a, { r, ...opts });
+    const bakedBody = bake(hs.body);
+    const bakedPorch = bake(hs.porch);
+    const root = new THREE.Group();
+    root.add(bakedBody, bakedPorch, hs.doorPivot);
+    root.position.set(o.x + x, 0, o.z + z);
+    root.rotation.y = ry;
+    scene.add(root);
+    const local = (p) => new THREE.Vector3(...p).applyAxisAngle(new THREE.Vector3(0, 1, 0), ry).add(new THREE.Vector3(x, 0, z));
+    const pl = local(hs.porchLight);
+    const ds = local([hs.doorstep[0], 0, hs.doorstep[1]]);
+    const light = fixture([o.x + pl.x, pl.y, o.z + pl.z], { color: 0xffc98a, intensity: 14, distance: 14 });
+    return { group: root, body: bakedBody, porch: bakedPorch, doorPivot: hs.doorPivot, light, at: [x, z], doorstep: [ds.x, ds.z], ry };
+  };
+  const houses = {
+    pell: W('pell', -32, 0, Math.PI / 2, { wall: 0xc9a27a, roof: 0x4a3426 }),
+    doris: W('doris', -32, -13, Math.PI / 2, { wall: 0xb8d0e0, roof: 0x3b4a5a, door: 0x8f1d24 }),
+    ray: W('ray', -20, -33, 0, { wall: 0xd9d9c9, roof: 0x5a3b2b }),
+    twins: W('twins', 7, -33, 0, { wall: 0xf0c8c8, roof: 0x6b3b3b, door: 0x1f4f9a }),
+    harlow: W('harlow', 32, 2, -Math.PI / 2, { wall: 0xe8dcb0, roof: 0x4a5a3a }),
+    corner: W('corner', -32, 14, Math.PI / 2, { wall: 0xc8e0c8, roof: 0x3b4a3a, w: 9 }),
+    blue: W('blue', 20, -33, 0, { wall: 0x9fb8d9, roof: 0x2f3f5a, w: 9 }),
+    green: W('green', 32, 15, -Math.PI / 2, { wall: 0xa9c9a0, roof: 0x5a3b2b, w: 9 }),
+  };
+  // The bakery: a storefront with a sign that can go blank.
+  const bk = new THREE.Group();
+  box(bk, a, [12, 8, 9], [0, 4, 0], 0xe8c9a0, 'Brick');
+  box(bk, a, [12.6, 0.6, 9.6], [0, 8.3, 0], 0x6b4a33, 'WoodPlanks');
+  box(bk, a, [12.4, 0.8, 1.6], [0, 5.2, 5.2], 0xc4281c, 'Fabric');
+  for (let k = 0; k < 6; k++) box(bk, a, [1.0, 0.82, 1.62], [-5 + k * 2, 5.2, 5.21], 0xf2f2f2, 'Fabric', false);
+  box(bk, a, [8, 3.4, 0.12], [-1, 2.6, 4.52], 0xffc46b, 'Neon', false);
+  box(bk, a, [2, 3.8, 0.2], [4.4, 1.9, 4.55], 0x6b4a33, 'WoodPlanks');
+  for (let k = 0; k < 4; k++) bk.add(ball(a, 0.35, [-4 + k * 2, 1.2, 4.7], [0xd9a86a, 0xc58a4a, 0xf5cd30, 0xe0b07a][k], 'Plastic'));
+  const bakery = bake(bk);
+  const bakeryRoot = new THREE.Group();
+  bakeryRoot.add(bakery);
+  const signTex = (text) => P.canvasTexture(512, 128, (ctx, w, h) => {
+    ctx.fillStyle = '#3b2416';
+    ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = '#f2b632';
+    ctx.lineWidth = 8;
+    ctx.strokeRect(6, 6, w - 12, h - 12);
+    if (text) P.drawText(ctx, text, w / 2, h * 0.62, w * 0.86, h * 0.56, { color: '#f2b632', font: FONT });
+  });
+  const full = signTex('SWEET ROSE BAKERY');
+  const blank = signTex('');
+  const sign = new THREE.Mesh(new THREE.PlaneGeometry(9, 2.2), new THREE.MeshStandardMaterial({ map: full, emissive: 0xffffff, emissiveMap: full, emissiveIntensity: 0.6, roughness: 0.8 }));
+  sign.position.set(0, 7.0, 4.62);
+  bakeryRoot.add(sign);
+  bakeryRoot.position.set(o.x + 32, 0, o.z - 12);
+  bakeryRoot.rotation.y = -Math.PI / 2;
+  scene.add(bakeryRoot);
+  // Named lampposts.
+  const lamp = (name, x, z) => {
+    const lg = new THREE.Group();
+    box(lg, a, [0.4, 9, 0.4], [0, 4.5, 0], 0x2a2a2a, 'Metal');
+    box(lg, a, [1.0, 0.6, 1.0], [0, 0.3, 0], 0x2a2a2a, 'Metal');
+    box(lg, a, [1.2, 0.3, 1.2], [0, 9.2, 0], 0x2a2a2a, 'Metal');
+    const bulb = ball(a, 0.5, [0, 8.7, 0], 0xffe0a0, 'Neon');
+    lg.add(bulb);
+    const plaque = P.sign(a, 1.8, 0.5, name, { bg: '#1b2a35', fg: '#f2b632', size: 120, border: '#f2b632' });
+    plaque.position.set(0, 3.2, 0.3);
+    lg.add(plaque);
+    const back = P.sign(a, 1.8, 0.5, name, { bg: '#1b2a35', fg: '#f2b632', size: 120, border: '#f2b632' });
+    back.position.set(0, 3.2, -0.3);
+    back.rotation.y = Math.PI;
+    lg.add(back);
+    lg.position.set(o.x + x, 0, o.z + z);
+    scene.add(lg);
+    return { group: lg, bulb, fixture: fixture([o.x + x, 8.2, o.z + z], { color: 0xffd08a, intensity: 32, distance: 22 }), at: [x, z] };
+  };
+  const lamps = { gus: lamp('GUS', -15, 15), gus2: lamp('GUS TWO', 15, 15), linda: lamp('LINDA', -15, -15), lamp4: lamp('BOB', 15, -15) };
+  fixture([o.x, 13, o.z - 11], { color: 0xffd9a0, intensity: 20, distance: 18 }); // clock tower glow
+  return { houses, lamps, bakery: { group: bakeryRoot, sign, blank, full }, hole: [11.2, 15.2], crate: { at: [0, 0], top: 1.6 } };
+}

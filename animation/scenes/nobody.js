@@ -277,23 +277,6 @@ function car(a, color) {
   return g;
 }
 
-function dog(a) {
-  const g = new THREE.Group();
-  const fur = 0xc58a4a;
-  g.add(part(a, [1.0, 0.9, 2.0], [0, 1.1, 0], fur, 'Fabric'));
-  g.add(part(a, [0.9, 0.9, 0.9], [0, 1.75, 1.2], fur, 'Fabric'));
-  g.add(part(a, [0.5, 0.4, 0.5], [0, 1.6, 1.8], 0xe0b07a, 'Fabric'));
-  g.add(part(a, [0.2, 0.2, 0.12], [0, 1.75, 2.06], 0x1b1b1b, 'Plastic'));
-  for (const x of [-0.5, 0.5]) g.add(part(a, [0.25, 0.6, 0.4], [x, 2.0, 1.1], 0x7a4f2a, 'Fabric'));
-  for (const x of [-0.22, 0.22]) g.add(part(a, [0.14, 0.14, 0.05], [x, 1.95, 1.66], 0x1b1b1b, 'Plastic'));
-  for (const [x, z] of [[-0.35, 0.7], [0.35, 0.7], [-0.35, -0.7], [0.35, -0.7]]) g.add(part(a, [0.3, 0.7, 0.3], [x, 0.35, z], fur, 'Fabric'));
-  const tail = part(a, [0.18, 0.18, 0.8], [0, 1.5, -1.2], fur, 'Fabric');
-  tail.rotation.x = 0.6;
-  g.add(tail);
-  g.userData.tail = tail;
-  return g;
-}
-
 function cake(a, text, tiers = 3, signW = 3.6) {
   const g = new THREE.Group();
   for (let k = 0; k < tiers; k++) {
@@ -366,7 +349,7 @@ export function setup({ scene, camera, assets, faces, sun }) {
   // Kitchen: plates for three (four seats), the birthday cake.
   const plates = [[-2.2, 2.5], [2.2, 2.5], [0, 3.9]].map(([x, z]) => add(plate(assets), K, x, kitchen.tableTop + 0.03, z));
   const bday = add(cake(assets, 'HAPPY BIRTHDAY\nGROUNDED', 1, 2.6), K, 1.9, kitchen.tableTop, 3.2, Math.PI);
-  const pup = add(dog(assets), K, 3, 0, 6);
+  const pup = add(P.dog(assets), K, 3, 0, 6);
   // Hand props.
   const license = paperSign(assets, 1.6, 1.0, "DRIVER'S\nLICENSE:\nBIG MIKE", { bg: '#cfe6ff', size: 60 });
   const drawing = paperSign(assets, 1.5, 1.1, 'ME + JAKE\nSUPERHEROES', { bg: '#fffbe6', fg: '#e53935', size: 48 });
