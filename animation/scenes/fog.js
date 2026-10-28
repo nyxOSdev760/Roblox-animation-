@@ -107,7 +107,6 @@ export const meta = {
 // ---- sound -------------------------------------------------------------------------------
 const sfx = (file, at, volume = 0.8, extra = {}) => meta.audio.push({ file, at, volume, ...extra });
 sfx('../voice/fog/narration.flac', 0, 1.0);
-sfx('temporex-numbers.mp3', 0, 0.14, { dur: END, fade: 1.2 }); // "Numbers" (TEMPOREX)
 const FAH = (at) => sfx('fahhh.mp3', at, 2.2);
 sfx('synth/ambience.wav', 0, 0.18, { loop: true, dur: END, fade: 1.0, pitch: -5 });
 FAH(W(1, 'lunch') + 0.45);

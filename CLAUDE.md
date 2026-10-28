@@ -16,8 +16,7 @@ Rendered with three.js in headless Chromium (`animation/render.mjs`), voiced wit
   `shirt-th-denim-jacket-floral`, `shirt-grey-button-up-undershirt`, `shirt-striped-crop-top`,
   `shirt-purple-cool-crop-top`. Check any new outfit with `scenes/closet.js` stills first.
 - **Real skin tones** for every character (`SKIN` in `src/roblox.js`).
-- **Background music: "Numbers" (TEMPOREX)**, `assets/sfx/temporex-numbers.mp3` (128 s),
-  as one cue from 0 at volume 0.14 with `{ dur: END, fade: 1.2 }` (Feeling Blue is retired). Put a **"FAHHH"**
+- **No background music** (the owner removed it). Put a **"FAHHH"**
   (`assets/sfx/fahhh.mp3`, volume ~2.2) right after every punchline.
 - Faces switch with the moment using the **2D face decals only** (`assets/faces/png`: happy, grin,
   smirk, sad, angry, neutral, suspicious); the default is the relaxed half-smile. **No 3D face
