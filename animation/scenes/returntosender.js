@@ -152,9 +152,9 @@ const S_DOOR = stage([20.8, 2], 0);
 const PATH_Z = 3;
 const lead = (t) => 4 + 3.2 * (t - MARCH);
 const ITEM_OFF = [0, -9, -14.5, -19];
-const whip = (k, dist = 9.5, fov = 54, lookY = 4.4) => {
-  const x = lead(ITEMS[k]) + ITEM_OFF[k];
-  return [[x, 4.8, PATH_Z + dist], [x, lookY, PATH_Z], fov];
+const whip = (k, dist = 9.5, fov = 54, lookY = 4.4, camY = 4.8, dx = 0) => {
+  const x = lead(ITEMS[k]) + ITEM_OFF[k] + dx;
+  return [[x, camY, PATH_Z + dist], [x, lookY, PATH_Z], fov];
 };
 
 // ---- cast --------------------------------------------------------------------------------
@@ -246,36 +246,36 @@ FAH(W(19, 'away') + 0.3);
 // [arrival time, place, position, look-at, fov, move seconds]; move 0 is a cut.
 const KEYS = [
   [0, T, ...S_OPEN.cam(12.5, 4.8, 3.0, 54, { u: 0.6 }), 0],
-  [BAG_BACK + 0.6, T, ...S_OPEN.cam(9.0, 4.4, 3.0, 50, { u: -1.3 }), 0.9],
+  [BAG_BACK + 0.6, T, ...S_OPEN.cam(10.5, 4.6, 2.6, 50, { u: -1.4 }), 0.9],
   [NOBODY - 0.05, T, [-5, 9.5, 19], [-27, 3, -2], 56, 0],
   [W(1, 'Ever') - 0.05, T, [-7, 8.5, 16], [-27, 3, -2], 52, 0.6],
   [GARBAGE - 0.05, T, [-14.4, 5.4, 21.4], [-15, 4.6, 15.3], 40, 0],
   [DENTIST - 0.05, T, ...S_DENT.cam(10, 4.8, 3.2, 52), 0],
-  [DRAWER - 0.25, T, ...S_DENT.cam(6.0, 4.8, 2.8, 44, { u: -1.2 }), 0.5],
+  [DRAWER - 0.25, T, ...S_DENT.cam(5.5, 6.4, 2.0, 46, { u: -1.2 }), 0.5],
   [UNCLE - 0.05, T, ...S_UNCLE.cam(8.5, 4.6, 3.6, 50, { u: 0.4 }), 0],
-  [MUSEUM - 0.05, T, ...S_MUSEUM.cam(9.5, 5.0, 4.2, 52), 0],
-  [WARM - 0.5, T, ...S_MUSEUM.cam(6.5, 5.2, 4.2, 44), 0.6],
+  [MUSEUM - 0.05, T, ...S_MUSEUM.cam(11, 5.0, 4.6, 54), 0],
+  [WARM + 0.2, T, ...S_MUSEUM.cam(6.5, 5.2, 4.2, 44), 0.7],
   [FULL - 0.05, T, [-15.5, 7.5, -25], [-27, 3.2, 6], 52, 0],
 
-  [T_HOME, K, [-5.2, 5.4, 7.6], [-6.2, 2.8, -1.8], 54, 0],
-  [COUCH - 0.2, K, [-1.4, 5.8, 8.2], [-2.4, 3.2, 0.4], 58, 0.7],
+  [T_HOME, K, [-5.0, 5.4, 4.6], [-5.0, 2.8, -3.6], 54, 0],
+  [COUCH - 0.2, K, [-6.5, 6.4, 8.4], [-2.6, 3.0, -0.6], 60, 0.7],
 
   [T_MAYOR, T, ...S_MAYOR.cam(9.5, 5.0, 3.6, 50), 0],
   [LOOPHOLE - 0.3, T, ...S_MAYOR.cam(6.5, 4.8, 4.2, 44), 0.6],
   [GIVES - 0.05, T, ...S_MAYOR.cam(6.0, 4.6, 4.0, 44, { u: -0.3 }), 0],
-  [SOFA - 0.05, T, ...S_GIFT[0].cam(11.5, 5.2, 3.2, 54, { u: 0.2 }), 0],
+  [SOFA - 0.05, T, ...S_GIFT[0].cam(11.5, 5.2, 3.2, 54, { u: 3.0, lookU: 0.2 }), 0], // clear of the planter
   [PIANO - 0.05, T, ...S_GIFT[1].cam(11.5, 5.2, 3.4, 54, { u: 0.2 }), 0],
   [FRIDGE - 0.05, T, ...S_GIFT[2].cam(13.0, 6.0, 4.6, 56, { u: 0.2 }), 0],
   [FIRE - 0.1, T, ...S_GIFT[2].cam(10.5, 7.0, 6.0, 52, { u: -0.6 }), 0.4],
   [DRAG - 0.05, T, ...S_DRAG.cam(13, 5.0, 2.8, 54), 0],
-  [FILLING - 0.05, T, [-5, 12, 19], [-28, 3, -1], 56, 0],
-  [BOAT_GIFT - 0.05, T, ...S_BOAT.cam(14, 5.6, 3.0, 56, { u: 0.2 }), 0],
-  [ACTUAL - 0.05, T, ...S_BOAT.cam(7.5, 4.6, 3.8, 46, { u: 0.4, lookU: 0.8, lookV: 1.6 }), 0],
-  [UPSTAIRS - 0.05, T, ...S_WALL.cam(13, 3.4, 6.8, 50), 0],
-  [CRASH + 0.4, T, ...S_WALL.cam(14.5, 4.0, 7.0, 52), 0.5],
+  [FILLING - 0.05, T, [-8, 13, 16], [-29, 2, -2], 54, 0],
+  [BOAT_GIFT - 0.05, T, ...S_BOAT.cam(14, 5.6, 3.0, 54, { u: 3.0, lookU: 0 }), 0], // clear of the planter
+  [ACTUAL - 0.05, T, ...S_BOAT.cam(7, 4.6, 4.2, 46, { u: 0.4, lookU: 0.4, lookV: 1.4 }), 0],
+  [UPSTAIRS - 0.05, T, ...S_WALL.cam(13, 8.5, 6.8, 50), 0],
+  [CRASH + 0.4, T, ...S_WALL.cam(14.5, 8.0, 7.0, 52), 0.5],
 
-  [T_GLIVING, G, [2.5, 6.6, 6.5], [-5.5, 2.8, -1.8], 50, 0],
-  [OWN_ROOM - 0.1, G, [-1.0, 5.6, 4.5], [-5.4, 3.0, -1.8], 46, 0.6],
+  [T_GLIVING, G, [-2.5, 9.5, 3.5], [-6.0, 2.8, -1.8], 50, 0],
+  [OWN_ROOM - 0.1, G, [4.0, 7.5, 7.5], [-5.0, 2.5, -1.8], 56, 0.6],
 
   [T_MOSTLY, T, [10, 7.5, 10], [28, 5.5, 15], 54, 0],
   [DOCTOR - 0.05, T, ...S_DOC.cam(10.5, 5.6, 4.8, 54, { u: 0.4 }), 0],
@@ -285,22 +285,22 @@ const KEYS = [
   [STATUE - 0.05, T, [3.0, 2.0, 11.5], [5.9, 9.0, 2.5], 56, 0],
   [SMILE - 0.05, T, ...S_FEST.cam(5.5, 4.6, 4.3, 42, { u: -1.1 }), 0],
   [GIFT_YOU - 0.05, T, ...S_FEST.cam(8.5, 5.0, 4.0, 50), 0],
-  [CARD - 0.05, T, ...S_FEST.cam(4.6, 4.4, 3.4, 44), 0],
+  [CARD - 0.05, T, ...S_FEST.cam(4.5, 3.6, 3.0, 46), 0],
   [LAUGH - 0.05, T, ...S_FEST.cam(5.5, 4.8, 4.3, 42, { u: 0, lookU: 1.1 }), 0],
-  [OPEN - 0.05, T, ...S_FEST.cam(5.5, 4.8, 4.3, 42, { u: 0, lookU: -1.1 }), 0],
-  [LIST - 0.05, T, null, null, 38, 0], // over the mayor's shoulder (worked out in setup)
+  [OPEN - 0.05, T, ...S_FEST.cam(6.5, 4.8, 4.3, 42, { u: -0.4, lookU: -1.1 }), 0],
+  [LIST - 0.05, T, null, null, 32, 0], // over the mayor's shoulder (worked out in setup)
   [SENDER - 0.05, T, ...S_FEST.cam(5.5, 4.8, 4.3, 42, { u: 0, lookU: 1.1 }), 0],
   [CHEER - 0.05, T, [1.5, 7.5, 22], [1.5, 4.5, 3], 58, 0],
   [MARCH - 0.05, T, [26, 6.5, -5], [6, 3, 3], 56, 0],
-  [ITEMS[0] - 0.2, T, ...whip(0), 0],
+  [ITEMS[0] - 0.2, T, ...whip(0, 11, 56, 6.0, 5.6), 0],
   [ITEMS[1] - 0.05, T, ...whip(1), 0.35],
   [ITEMS[2] - 0.05, T, ...whip(2, 10.5, 54, 5.0), 0.35],
-  [ITEMS[3] - 0.05, T, ...whip(3, 6.0, 46, 2.8), 0.35],
-  [THANK - 0.05, T, ...S_DOOR.cam(11, 5.6, 4.0, 54, { u: 0.2 }), 0],
-  [STILL - 0.05, T, ...S_DOOR.cam(12.5, 6.4, 4.6, 54, { u: -0.4 }), 0],
+  [ITEMS[3] - 0.05, T, ...whip(3, 6.0, 46, 2.8, 4.8, 1.4), 0.35],
+  [THANK - 0.05, T, ...S_DOOR.cam(11, 5.6, 4.0, 54, { u: 0.6 }), 0],
+  [STILL - 0.05, T, ...S_DOOR.cam(12.5, 6.4, 4.8, 54, { u: -0.2 }), 0],
   [NEW_MAYOR - 0.05, T, [0, 6.4, 10.4], [0, 5.6, 0], 46, 0],
-  [KEEP - 0.05, T, ...S_DOOR.cam(8.0, 5.0, 4.4, 50, { u: -0.3 }), 0],
-  [INCLUDING - 0.05, T, ...S_DOOR.cam(7.0, 7.2, 6.6, 46, { u: -1.0, lookU: -1.5 }), 0.5],
+  [KEEP - 0.05, T, ...S_DOOR.cam(7.5, 5.0, 4.2, 50, { u: 1.6 }), 0],
+  [INCLUDING - 0.05, T, ...S_DOOR.cam(8.0, 8.4, 7.6, 48, { u: 0.4, lookU: -1.4 }), 0.5],
 
   [T_GUEST, B, [4.0, 5.2, 8.2], [1.9, 3.6, -3.8], 50, 0],
 ].map(([t, o, pos, look, fov, move]) => ({ t, o, pos, look, fov, move }));
@@ -369,21 +369,25 @@ function piano(a) {
   return g;
 }
 
-function flames(a) {
+/** Fire: glowing tongues that rise, shrink and fade; call userData.at(t) every frame. */
+function flames() {
   const g = new THREE.Group();
   const bits = [];
-  for (let k = 0; k < 12; k++) {
-    const m = part(a, [0.6, 0.6, 0.6], [0, 0, 0], [0xff6a00, 0xffb300, 0xff3d00][k % 3], 'Neon', { shadows: false });
+  for (let k = 0; k < 24; k++) {
+    const color = new THREE.Color([0xff3d00, 0xff7a00, 0xffb300][k % 3]).multiplyScalar(2.2); // over 1, so it blooms
+    const m = new THREE.Mesh(new THREE.ConeGeometry(0.4, 1.1, 5), new THREE.MeshBasicMaterial({ color, transparent: true, depthWrite: false }));
     g.add(m);
     bits.push(m);
   }
   g.userData.at = (t) =>
     bits.forEach((m, k) => {
-      const ph = t * 6 + k * 1.7;
-      const rise = (ph * 0.35) % 1.6;
-      m.position.set(Math.sin(k * 2.1) * 1.0, 0.3 + rise, Math.cos(k * 1.3) * 0.8);
-      m.scale.setScalar(0.6 + 0.6 * Math.abs(Math.sin(ph)) * (1 - rise / 1.8));
-      m.rotation.set(ph, ph * 0.7, 0);
+      const life = (t * 1.6 + k * 0.137) % 1;
+      const r = 1.1 * (1 - life) * (0.55 + 0.45 * Math.sin(k * 1.9));
+      m.position.set(Math.cos(k * 2.4) * r, 0.2 + life * 2.2, Math.sin(k * 2.4) * r * 0.8);
+      const s = (1 - life) * (0.8 + 0.4 * Math.sin(t * 20 + k));
+      m.scale.set(s, s * 1.3, s);
+      m.rotation.y = t * 3 + k;
+      m.material.opacity = 0.95 * (1 - life * 0.6);
     });
   return g;
 }
@@ -522,17 +526,22 @@ function museum(a) {
 }
 
 /** Wavy lines (stink or steam) as a sprite. */
-function wavySprite(color) {
+function wavySprite(color, outline = null) {
   const tex = P.canvasTexture(64, 128, (ctx, w, h) => {
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 7;
     ctx.lineCap = 'round';
     ctx.beginPath();
-    for (let y = h - 6; y > 6; y -= 2) {
-      const x = w / 2 + Math.sin(y / 14) * w * 0.28;
-      if (y === h - 6) ctx.moveTo(x, y);
+    for (let y = h - 8; y > 8; y -= 2) {
+      const x = w / 2 + Math.sin(y / 14) * w * 0.26;
+      if (y === h - 8) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     }
+    if (outline) {
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 12;
+      ctx.stroke();
+    }
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 7;
     ctx.stroke();
   });
   const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false }));
@@ -579,8 +588,8 @@ function junkPile(a, seed, w, d, h) {
 
 function card(a) {
   const g = new THREE.Group();
-  g.add(part(a, [0.9, 0.6, 0.05], [0, 0, 0], 0xff98dc, 'SmoothPlastic', { shadows: false }));
-  g.add(part(a, [0.3, 0.3, 0.06], [0, 0, 0], 0xe53935, 'Plastic', { shadows: false }));
+  g.add(part(a, [1.3, 0.9, 0.05], [0, 0, 0], 0xff98dc, 'SmoothPlastic', { shadows: false }));
+  g.add(part(a, [0.4, 0.4, 0.06], [0, 0, 0], 0xe53935, 'Plastic', { shadows: false }));
   return g;
 }
 
@@ -649,6 +658,42 @@ function stall(a, color) {
   return g;
 }
 
+/**
+ * A seamless daytime sky (the Roblox skybox's faces don't quite match, and the seam shows when
+ * a shot looks into a corner): an equirectangular gradient with soft clouds that wrap around.
+ */
+function daySky() {
+  const tex = P.canvasTexture(2048, 1024, (ctx, w, h) => {
+    const g = ctx.createLinearGradient(0, 0, 0, h / 2);
+    g.addColorStop(0, '#3f82d0');
+    g.addColorStop(0.65, '#7fbbe8');
+    g.addColorStop(1, '#d4e9f4');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h / 2);
+    ctx.fillStyle = '#d4e9f4';
+    ctx.fillRect(0, h / 2, w, h / 2);
+    const r = rng(5);
+    ctx.filter = 'blur(5px)';
+    for (let k = 0; k < 70; k++) {
+      const y = h * (0.2 + r() * 0.26);
+      const flat = 0.25 + (y / h - 0.2) * 0.4; // flatter toward the horizon
+      const size = (1 - (y / h - 0.2) * 2.2) * (30 + r() * 70);
+      const x = r() * w;
+      const alpha = 0.45 + r() * 0.35;
+      const puffs = Array.from({ length: 6 }, () => [(r() - 0.5) * size * 2.4, (r() - 0.5) * size * flat, size * (0.5 + r() * 0.6)]);
+      for (const dx of [-w, 0, w])
+        for (const [px, py, pr] of puffs) {
+          ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+          ctx.beginPath();
+          ctx.ellipse(x + dx + px, y + py, pr, pr * flat * 1.6, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+    }
+  });
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  return tex;
+}
+
 function tv(a) {
   const g = new THREE.Group();
   box(g, a, [3.4, 1.4, 1.4], [0, 0.7, 0], 0x6b4a33, 'Wood');
@@ -661,19 +706,23 @@ function tv(a) {
 export function setup({ scene, camera, renderer, assets, faces, sun }) {
   const town = buildFogTown(scene, assets, T, { plaques: false });
   const H = town.houses;
-  town.lamps.gus2.group.visible = false; // it stands right between the camera and Grandma's
+  // Only the poster's lamppost stays: the others stand in front of the house shots.
+  for (const name of ['gus2', 'linda', 'lamp4']) town.lamps[name].group.visible = false;
   buildKitchen(scene, assets, K);
   buildKitchen(scene, assets, G, { seed: 19 });
   buildBedroom(scene, assets, B);
-  // Daytime: the houses' glowing evening windows become plain glass.
+  scene.background = daySky();
+  // Daytime: the houses' glowing evening windows become plain glass, the porch bulbs go dim.
   scene.traverse((o) => {
     const m = o.isMesh && o.material;
-    if (m && !Array.isArray(m) && m.emissive && m.emissive.getHex() === 0xffc46b) {
+    if (!m || Array.isArray(m) || !m.emissive) return;
+    if (m.emissive.getHex() === 0xffc46b) {
       m.color.setHex(0x8fb4cf);
       m.emissive.setHex(0x000000);
       m.roughness = 0.15;
       m.metalness = 0.3;
     }
+    if (m.emissive.getHex() === 0xffd9a0) m.emissiveIntensity = 0.3;
   });
   const sc = sun.shadow.camera;
   sc.left = sc.bottom = -55;
@@ -702,12 +751,12 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   // ---- town props ----
   const bag = put(trashBag(assets), T, [0, 0]);
   const stink = [0, 1, 2].map(() => put(wavySprite('#7cb342'), T, [0, 0]));
-  const steam = [0, 1, 2].map(() => put(wavySprite('#ffffff'), T, [0, 0]));
+  const steam = [0, 1, 2].map(() => put(wavySprite('#ffffff', '#7a8a99'), T, [0, 0]));
   const poster = put(P.sign(assets, 1.4, 1.6, 'MISSING:\nGARBAGE\nTRUCK', { bg: '#fffbea', fg: '#c4281c', size: 70, border: '#1b2a35' }), T, [-15, 15.28], 4.6);
   poster.scale.z = 0.2;
   const dentCab = put(cabinet(assets), T, S_DENT.p(-1.3, 0.3), 0, S_DENT.yaw(15));
   put(museum(assets), T, [-5, -7]);
-  put(P.sign(assets, 4.4, 1.0, 'MAYOR CRUMB', { bg: '#1b2a35', fg: '#f2b632', size: 110, border: '#f2b632' }), T, spot('harlow', 7.9), 5.4, facing('harlow'));
+  put(P.sign(assets, 4.4, 1.0, 'MAYOR CRUMB', { bg: '#1b2a35', fg: '#f2b632', size: 110, border: '#f2b632' }), T, spot('harlow', 7.9), 6.0, facing('harlow'));
   // Junk on every porch but the mayor's; more piles out front once the gifts start.
   const porchPiles = ['corner', 'pell', 'doris', 'ray', 'twins', 'blue', 'green'].map((name, i) =>
     put(junkPile(assets, 30 + i, 3.2, 2.2, 3.3), T, spot(name, 6.1, i % 2 ? 2.6 : -2.6), 0.6, facing(name)));
@@ -722,7 +771,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   wrap(assets, giftPiano, 4.4, 3.9, 1.6);
   const giftFridge = put(P.fridge(assets), T, [0, 0]);
   wrap(assets, giftFridge, 3.4, 7.5, 3.0);
-  const fire = put(flames(assets), T, [0, 0]);
+  const fire = put(flames(), T, [0, 0]);
   const theBoat = put(boat(assets), T, [0, 0]);
   const theTrailer = put(trailer(assets), T, [0, 0]);
   const debris = Array.from({ length: 10 }, (_, k) => put(part(assets, [0.7, 0.4, 0.3], [0, 0, 0], [0xa9c9a0, 0xf2f2f2, 0x5a3b2b][k % 3], 'WoodPlanks'), T, [0, 0]));
@@ -775,10 +824,10 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   // Our house: junk everywhere, the couch on the table, the family in the tub.
   put(junkPile(assets, 51, 5, 4, 4.5), K, [5.0, -3.0]);
   put(junkPile(assets, 52, 4, 3, 3.5), K, [7.5, 5.0]);
-  put(junkPile(assets, 53, 5, 3, 5), K, [-2.4, -6.0]);
+  put(junkPile(assets, 53, 5, 3, 5), K, [2.0, -6.0]);
   put(junkPile(assets, 54, 3, 3, 3), K, [-9.0, 6.0]);
-  put(sofa(assets, 0x4f6a8a), K, [0, 2.4], 3.2, 10); // the couch we can't get rid of, on the table
-  put(bathtub(assets), K, [-6.4, -1.4]);
+  put(sofa(assets, 0x4f6a8a), K, [0, 2.4], 3.2, -40); // the couch we can't get rid of, on the table
+  put(bathtub(assets), K, [-5.0, -3.6]);
   // Grandma's living room: TV, sofa, armchair, and a boat through the wall.
   put(tv(assets), G, [7.5, -4.5], 0, -60);
   put(sofa(assets, 0x9a6a4a), G, [6.0, 5.0], 0, 200);
@@ -846,7 +895,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   const mr = [-Math.cos(rad(MAYOR_F_YAW)), Math.sin(rad(MAYOR_F_YAW))]; // his right hand side
   const LIST_AT = [MAYOR_F[0] + mf[0] * 1.9, 4.7, MAYOR_F[1] + mf[1] * 1.9];
   const OTS = KEYS.find((k) => k.t === LIST - 0.05);
-  OTS.pos = [MAYOR_F[0] - mf[0] * 1.5 + mr[0] * 0.8, 5.5, MAYOR_F[1] - mf[1] * 1.5 + mr[1] * 0.8];
+  OTS.pos = [MAYOR_F[0] - mf[0] * 1.2 + mr[0] * 1.4, 5.8, MAYOR_F[1] - mf[1] * 1.2 + mr[1] * 1.4];
   OTS.look = LIST_AT;
 
   function shake(t) {
@@ -951,8 +1000,9 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
 
   // ---- life in town: hoarding, the poster, the dentist ----
   function hoarders(t) {
-    ['corner', 'pell', 'doris'].forEach((name, i) =>
-      at(T, crowd[i], spot(name, 10.6, i === 1 ? -1.6 : 1.6), { yaw: facing(name) + (i - 1) * 25, pose: POSES.crossArms(t, i), face: faceOf(i, ['suspicious', 'angry', 'neutral']) }));
+    if (t < GARBAGE - 0.05)
+      ['corner', 'pell', 'doris'].forEach((name, i) =>
+        at(T, crowd[i], spot(name, 10.6, i === 1 ? -1.6 : 1.6), { yaw: facing(name) + (i - 1) * 25, pose: POSES.crossArms(t, i), face: faceOf(i, ['suspicious', 'angry', 'neutral']) }));
     if (t < DENTIST - 0.05) return;
     // The dentist and his drawer of regrets.
     dentCab.userData.drawer.position.z = 1.2 * sm(seg(t, DRAWER - 0.1, DRAWER + 0.4));
@@ -1004,9 +1054,9 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   }
 
   function familyTub(t) {
-    at(K, A.me, [-8.0, -2.1], { y: -1.0, yaw: 15, pose: sitIn(t, 0), face: 'sad' });
-    at(K, A.mom, [-6.4, -2.1], { y: -1.0, yaw: 0, pose: sitIn(t, 1), face: 'neutral' });
-    at(K, A.sister, [-4.9, -2.1], { y: -0.8, yaw: -15, size: 0.8, pose: sitIn(t, 2), face: 'happy' });
+    at(K, A.me, [-6.6, -4.3], { y: -1.0, yaw: 15, pose: sitIn(t, 0), face: 'sad' });
+    at(K, A.mom, [-5.0, -4.3], { y: -1.0, yaw: 0, pose: sitIn(t, 1), face: 'neutral' });
+    at(K, A.sister, [-3.5, -4.3], { y: -0.8, yaw: -15, size: 0.8, pose: sitIn(t, 2), face: 'happy' });
   }
 
   // ---- Mayor Crumb and his gifts ----
@@ -1029,9 +1079,9 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     const S = S_GIFT[k];
     place(gift, T, S.p(-1.3, 0.3), 0, S.yaw(15));
     gift.scale.setScalar(Math.max(0.01, popIn(t, from)));
-    at(T, A.mayor, S.p(2.0, -0.3), { yaw: S.yaw(-40), pose: t < from + 0.6 ? POSES.cheer(t, 1) : POSES.point(t, 1), face: 'grin' });
+    at(T, A.mayor, S.p([2.0, 2.0, 2.5][k], -0.3), { yaw: S.yaw(-40), pose: t < from + 0.6 ? POSES.cheer(t, 1) : POSES.point(t, 1), face: 'grin' });
     const upset = t > from + 0.5;
-    at(T, crowd[3 + k], S.p(k === 2 ? 0.6 : 0, 2.2), { yaw: S.yaw(-10), pose: upset ? POSES.shocked(t, k) : POSES.idle(t, k), face: upset ? 'sad' : 'neutral' });
+    at(T, crowd[3 + k], S.p([0, 0, 1.0][k], [2.2, 2.2, 2.6][k]), { yaw: S.yaw(-10), pose: upset ? POSES.shocked(t, k) : POSES.idle(t, k), face: upset ? 'sad' : 'neutral' });
   }
 
   function gifts(t) {
@@ -1057,7 +1107,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   }
 
   function filling(t) {
-    porchPiles.forEach((p, i) => p.scale.set(1, lerp(0.55, 1, sm(seg(t, FILLING + i * 0.12, FILLING + 1.6 + i * 0.12))), 1));
+    porchPiles.forEach((p, i) => p.scale.set(1, lerp(0.85, 1, sm(seg(t, FILLING + i * 0.12, FILLING + 1.6 + i * 0.12))), 1));
     lawnPiles.forEach((p, i) => p.scale.set(1, Math.max(0.01, sm(seg(t, FILLING + 0.4 + i * 0.15, FILLING + 2.0 + i * 0.15))), 1));
     const walk = POSES.walk(t, 1);
     walk.lArm = [-170, 0, 18 + 22 * Math.sin(t * 15)];
@@ -1066,8 +1116,8 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   }
 
   // ---- Grandma's boat ----
-  const BOAT_AT = S_BOAT.p(-1.8, 0.6);
-  const bowAt = S_BOAT.p(-1.8 - 0.5, 0.6 - 0.85); // bow toward the camera, a little left
+  const BOAT_AT = S_BOAT.p(-2.2, 1.0);
+  const bowAt = S_BOAT.p(-2.2 - 0.5, 1.0 - 0.85); // bow toward the camera, a little left
   const TRAILER_YAW = bowYaw(bowAt[0] - BOAT_AT[0], bowAt[1] - BOAT_AT[1]);
   const WALL_AT = spot('green', 5.0);
   const WALL_YAW = bowYaw(-Math.sin(rad(facing('green'))), -Math.cos(rad(facing('green'))));
@@ -1104,9 +1154,9 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
       });
     }
     if (t < UPSTAIRS - 0.05) {
-      at(T, A.mayor, S_BOAT.p(2.6, -0.4), { yaw: S_BOAT.yaw(-50), pose: POSES.cheer(t, 1), face: 'grin' });
+      at(T, A.mayor, S_BOAT.p(2.4, 0), { yaw: S_BOAT.yaw(-50), pose: POSES.cheer(t, 1), face: 'grin' });
       const shocked = t > W(7, 'boat');
-      at(T, A.grandma, S_BOAT.p(1.2, 1.6), { yaw: S_BOAT.yaw(-25), pose: shocked ? POSES.shocked(t, 4) : POSES.idle(t, 4), face: shocked ? 'sad' : 'happy' });
+      at(T, A.grandma, S_BOAT.p(0.4, 1.4), { yaw: S_BOAT.yaw(-25), pose: shocked ? POSES.shocked(t, 4) : POSES.idle(t, 4), face: shocked ? 'sad' : 'happy' });
     } else if (t < CRASH) {
       // Waving from her upstairs window (her legs are behind the porch roof).
       at(T, A.grandma, spot('green', 5.1), { y: 2.2, yaw: facing('green'), pose: POSES.wave(t, 4), face: t > LAUNCH + 0.15 ? 'sad' : 'happy' });
@@ -1153,7 +1203,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
 
   // ---- the festival ----
   const ME_F = S_FEST.p(-1.1, 0);
-  const ME_START = S_FEST.p(-6.5, 1.5);
+  const ME_START = S_FEST.p(-5.5, -2.5);
   const FEST_CROWD = [[-7.0, 1.0], [-6.0, 3.6], [-4.4, 5.0], [0.8, 6.4], [2.6, 7.6], [-3.0, 8.0], [-5.6, 7.2], [7.4, 1.4], [8.6, 2.4], [5.6, -1.0]];
   function townAround(t, cheering) {
     FEST_CROWD.forEach(([u, v], k) => {
@@ -1232,22 +1282,23 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     fire.position.set(T.x + x0 + ITEM_OFF[2], 8.4, T.z + PATH_Z);
     fire.scale.setScalar(1.2);
     fire.userData.at(t);
-    place(bananaCase, T, [x0 + ITEM_OFF[3] + 1.2, PATH_Z], 1.4, 90);
+    place(bananaCase, T, [x0 + ITEM_OFF[3] + 2.0, PATH_Z], 1.4, 90);
+    // Carriers: four under the boat, the rest behind what they push or carry (clear of the camera).
     const carriers = [];
     for (let k = 0; k < 4; k++) carriers.push([[x0 - 2.8 + (k >> 1) * 4.4, PATH_Z + (k % 2 ? 1.7 : -1.7)], carryUp]);
-    carriers.push([[x0 + ITEM_OFF[1] - 1.6, PATH_Z + 2.0], push], [[x0 + ITEM_OFF[1] - 1.6, PATH_Z - 1.0], push]);
-    carriers.push([[x0 + ITEM_OFF[2], PATH_Z + 2.2], carryFront], [[x0 + ITEM_OFF[2], PATH_Z - 2.2], carryFront]);
+    carriers.push([[x0 + ITEM_OFF[1] - 1.6, PATH_Z + 1.0], push], [[x0 + ITEM_OFF[1] - 1.6, PATH_Z - 1.0], push]);
+    carriers.push([[x0 + ITEM_OFF[2] - 2.2, PATH_Z + 1.0], carryFront], [[x0 + ITEM_OFF[2] - 2.2, PATH_Z - 1.0], carryFront]);
     carriers.push([[x0 + ITEM_OFF[3], PATH_Z], carryFront]);
     carriers.forEach(([xz, pose], k) => at(T, crowd[k], xz, { yaw: 90, pose: pose(t, k), face: faceOf(k, ['grin', 'happy', 'smirk']) }));
-    at(T, A.grandma, [x0 - 7, PATH_Z + 4.2], { yaw: 90, pose: POSES.walk(t, 9, 28, 1.5), face: 'grin' });
-    at(T, A.me, [x0 - 5, PATH_Z + 4.0], { yaw: 90, pose: POSES.walk(t, 8, 30, 1.6), face: 'grin' });
+    at(T, A.grandma, [x0 - 7, PATH_Z - 4.2], { yaw: 90, pose: POSES.walk(t, 9, 28, 1.5), face: 'grin' });
+    at(T, A.me, [x0 - 5, PATH_Z - 4.0], { yaw: 90, pose: POSES.walk(t, 8, 30, 1.6), face: 'grin' });
     // The mayor runs home ahead of them.
     const m = seg(t, MARCH, MARCH + 2.6);
     at(T, A.mayor, [lerp(MAYOR_F[0], DOOR[0], m), lerp(MAYOR_F[1], DOOR[1], m)], { yaw: m < 1 ? 100 : S_DOOR.yaw(50), pose: m < 1 ? POSES.run(t, 1) : POSES.shocked(t, 1), face: 'sad' });
   }
 
   // The boat, the piano and the fridge come down on the pile, one per Thunk.
-  const DROPS = [[theBoat, [-1.0, 0.3], 3.4, 20, 0.12], [giftPiano, [-2.4, 0.6], 4.8, 110, 0.3], [giftFridge, [-0.6, 0.0], 5.2, 70, 1.2]];
+  const DROPS = [[theBoat, [-1.6, 1.4], 3.4, 20, 0.12], [giftPiano, [-3.6, 0.6], 4.4, 110, 0.3], [giftFridge, [0.4, 0.2], 4.6, 70, 1.2]];
   function piled(t) {
     DROPS.forEach(([obj, uv, y, yaw, tilt], k) => {
       const tk = THUNKS[k];
@@ -1258,8 +1309,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     });
     theBoat.userData.bow.visible = false;
     fire.visible = t > THUNKS[2] - 0.45;
-    const [fx, fz] = S_DOOR.p(-0.6, 0.0);
-    fire.position.set(T.x + fx + 2.6, giftFridge.position.y + 0.6, T.z + fz);
+    fire.position.set(giftFridge.position.x, giftFridge.position.y + 2.2, giftFridge.position.z);
     fire.scale.setScalar(1.1);
     fire.userData.at(t);
   }
@@ -1271,24 +1321,24 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     mayorPile.scale.set(1, grow, 1);
     piled(t);
     const buried = n === 3;
-    at(T, A.mayor, DOOR, { y: buried ? 1.4 : 0, yaw: S_DOOR.yaw(50), pose: buried ? POSES.wave(t, 1) : POSES.shocked(t, 1), face: 'sad' });
+    at(T, A.mayor, DOOR, { y: buried ? 2.4 : 0, yaw: S_DOOR.yaw(50), pose: buried ? POSES.wave(t, 1) : POSES.shocked(t, 1), face: 'sad' });
     // The line of thank-yous; the first one hands over a present.
     for (let k = 0; k < 7; k++) {
-      const xz = S_DOOR.p(0.9 + k * 1.7, k ? 0.5 * (k % 2) + 0.4 : 0);
+      const xz = S_DOOR.p(2.6 + k * 1.6, k ? 0.5 * (k % 2) + 0.4 : 0);
       const giving = k === 0 && t > ONE - 0.2 && t < THUNKS[0];
       at(T, crowd[k], xz, { yaw: S_DOOR.yaw(-55), pose: giving ? POSES.holdOut(t, k) : POSES.idle(t, k), face: faceOf(k, ['grin', 'happy', 'smirk']) });
     }
-    at(T, A.me, S_DOOR.p(1.4, 2.6), { yaw: S_DOOR.yaw(-30), pose: POSES.crossArms(t), face: 'smirk' });
-    at(T, A.grandma, S_DOOR.p(3.0, 2.8), { yaw: S_DOOR.yaw(-35), pose: POSES.cheer(t, 4), face: 'grin' });
+    at(T, A.me, S_DOOR.p(3.2, 2.8), { yaw: S_DOOR.yaw(-30), pose: POSES.crossArms(t), face: 'smirk' });
+    at(T, A.grandma, S_DOOR.p(4.8, 3.0), { yaw: S_DOOR.yaw(-35), pose: POSES.cheer(t, 4), face: 'grin' });
   }
 
   function aftermath(t, withCrowd = true) {
     mayorPile.visible = true;
     mayorPile.scale.set(1, 1, 1);
     piled(t);
-    at(T, A.mayor, DOOR, { y: 1.4, yaw: S_DOOR.yaw(50), pose: POSES.wave(t, 1), face: 'sad' });
+    at(T, A.mayor, DOOR, { y: 2.4, yaw: S_DOOR.yaw(50), pose: POSES.wave(t, 1), face: 'sad' });
     if (!withCrowd) return;
-    for (let k = 0; k < 4; k++) at(T, crowd[k], S_DOOR.p(1.6 + k * 1.6, 0.6 * (k % 2)), { yaw: S_DOOR.yaw(-40), pose: shrug(t, k), face: faceOf(k, ['suspicious', 'neutral', 'sad']) });
+    for (let k = 0; k < 4; k++) at(T, crowd[k], S_DOOR.p(2.8 + k * 1.6, 0.6 * (k % 2)), { yaw: S_DOOR.yaw(-40), pose: shrug(t, k), face: faceOf(k, ['suspicious', 'neutral', 'sad']) });
     if (t > PULL - 0.1) {
       const tug = POSES.strain(t, 9);
       tug.rArm = [-170, 0, 10];
@@ -1311,7 +1361,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     }
     aftermath(t, false);
     const look = t > INCLUDING;
-    at(T, A.me, S_DOOR.p(0.9, -0.6), { yaw: look ? S_DOOR.yaw(-75) : S_DOOR.yaw(-20), pose: look ? POSES.idle(t) : POSES.holdOut(t), face: look ? 'sad' : 'neutral', hold: look ? [] : ['clip'] });
+    at(T, A.me, S_DOOR.p(2.4, -1.0), { yaw: look ? S_DOOR.yaw(-75) : S_DOOR.yaw(-20), pose: look ? POSES.idle(t) : POSES.holdOut(t), face: look ? 'sad' : 'neutral', hold: look ? [] : ['clip'] });
   }
 
   // ---- my guest room ----
@@ -1321,7 +1371,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     p.lArm = [-60, 0, -10];
     at(B, A.mayor, [0.4, -5.6], { y: 0.1, yaw: 25, pose: p, face: 'grin', hold: ['bowl'] });
     mayorSash.visible = false;
-    at(B, A.me, [3.6, -2.8], { yaw: -70, pose: POSES.crossArms(t), face: t > W(19, 'I') ? 'angry' : 'suspicious' });
+    at(B, A.me, [3.6, -2.8], { yaw: -40, pose: POSES.crossArms(t), face: t > W(19, 'I') ? 'angry' : 'suspicious' });
     mySash.visible = true;
   }
 
@@ -1334,7 +1384,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     for (const o of [bag, peel, giftSofa, giftPiano, giftFridge, fire, theBoat, theTrailer, mayorPile, festival, dolly, bigList, zzz, gZzz, bananaCase, ...stink, ...steam, ...debris]) o.visible = false;
     mayorSash.visible = true;
     mySash.visible = false;
-    porchPiles.forEach((p) => p.scale.set(1, t < FILLING ? 0.55 : 1, 1));
+    porchPiles.forEach((p) => p.scale.set(1, t < FILLING ? 0.85 : 1, 1));
     lawnPiles.forEach((p) => p.scale.set(1, t < FILLING ? 0.01 : 1, 1));
     H.green.group.rotation.z = 0;
     H.green.group.position.z = T.z + HOUSES.green[1];
