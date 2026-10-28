@@ -1858,9 +1858,9 @@ const cobbleDraw = (ctx, w, h) => {
  * where cameras stand); a picket fence rings the town at radius ~50.
  * Returns handles: houses (by name: { group, porch, doorPivot, doorstep, at, porchLight }),
  * lamps (by name: { group, fixture, at }), bakery { group, sign, blank }, hole (mailbox spot),
- * crate { at, top }.
+ * crate { at, top }. `plaques: false` leaves the lampposts unnamed.
  */
-export function buildFogTown(scene, a, o, { seed = 41 } = {}) {
+export function buildFogTown(scene, a, o, { seed = 41, plaques = true } = {}) {
   const r = rng(seed);
   const g = new THREE.Group();
   box(g, a, [180, 1, 180], [0, -0.5, 0], BRICK.brightGreen, 'Grass', false);
@@ -2014,13 +2014,15 @@ export function buildFogTown(scene, a, o, { seed = 41 } = {}) {
     box(lg, a, [1.2, 0.3, 1.2], [0, 9.2, 0], 0x2a2a2a, 'Metal');
     const bulb = ball(a, 0.5, [0, 8.7, 0], 0xffe0a0, 'Neon');
     lg.add(bulb);
-    const plaque = P.sign(a, 1.8, 0.5, name, { bg: '#1b2a35', fg: '#f2b632', size: 120, border: '#f2b632' });
-    plaque.position.set(0, 3.2, 0.3);
-    lg.add(plaque);
-    const back = P.sign(a, 1.8, 0.5, name, { bg: '#1b2a35', fg: '#f2b632', size: 120, border: '#f2b632' });
-    back.position.set(0, 3.2, -0.3);
-    back.rotation.y = Math.PI;
-    lg.add(back);
+    if (plaques) {
+      const plaque = P.sign(a, 1.8, 0.5, name, { bg: '#1b2a35', fg: '#f2b632', size: 120, border: '#f2b632' });
+      plaque.position.set(0, 3.2, 0.3);
+      lg.add(plaque);
+      const back = P.sign(a, 1.8, 0.5, name, { bg: '#1b2a35', fg: '#f2b632', size: 120, border: '#f2b632' });
+      back.position.set(0, 3.2, -0.3);
+      back.rotation.y = Math.PI;
+      lg.add(back);
+    }
     lg.position.set(o.x + x, 0, o.z + z);
     scene.add(lg);
     return { group: lg, bulb, fixture: fixture([o.x + x, 8.2, o.z + z], { color: 0xffd08a, intensity: 32, distance: 22 }), at: [x, z] };

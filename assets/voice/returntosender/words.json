@@ -1,0 +1,2120 @@
+[
+{
+"word": "In",
+"start": 0.0,
+"end": 0.14,
+"line": 0
+},
+{
+"word": "this",
+"start": 0.14,
+"end": 0.26,
+"line": 0
+},
+{
+"word": "town,",
+"start": 0.26,
+"end": 0.5,
+"line": 0
+},
+{
+"word": "whatever",
+"start": 0.72,
+"end": 0.86,
+"line": 0
+},
+{
+"word": "you",
+"start": 0.86,
+"end": 1.04,
+"line": 0
+},
+{
+"word": "throw",
+"start": 1.04,
+"end": 1.2,
+"line": 0
+},
+{
+"word": "away",
+"start": 1.2,
+"end": 1.42,
+"line": 0
+},
+{
+"word": "comes",
+"start": 1.42,
+"end": 1.6,
+"line": 0
+},
+{
+"word": "back",
+"start": 1.6,
+"end": 1.82,
+"line": 0
+},
+{
+"word": "to",
+"start": 1.82,
+"end": 1.92,
+"line": 0
+},
+{
+"word": "you",
+"start": 1.92,
+"end": 2.02,
+"line": 0
+},
+{
+"word": "by",
+"start": 2.02,
+"end": 2.12,
+"line": 0
+},
+{
+"word": "morning.",
+"start": 2.12,
+"end": 2.36,
+"line": 0
+},
+{
+"word": "Same",
+"start": 2.72,
+"end": 2.86,
+"line": 0
+},
+{
+"word": "spot.",
+"start": 2.86,
+"end": 3.18,
+"line": 0
+},
+{
+"word": "Same",
+"start": 3.42,
+"end": 3.56,
+"line": 0
+},
+{
+"word": "smell.",
+"start": 3.56,
+"end": 3.86,
+"line": 0
+},
+{
+"word": "So",
+"start": 4.316,
+"end": 4.436,
+"line": 1
+},
+{
+"word": "nobody",
+"start": 4.436,
+"end": 4.656,
+"line": 1
+},
+{
+"word": "throws",
+"start": 4.656,
+"end": 4.876,
+"line": 1
+},
+{
+"word": "anything",
+"start": 4.876,
+"end": 5.136,
+"line": 1
+},
+{
+"word": "away.",
+"start": 5.136,
+"end": 5.456,
+"line": 1
+},
+{
+"word": "Ever.",
+"start": 5.696,
+"end": 5.896,
+"line": 1
+},
+{
+"word": "Garbage",
+"start": 6.216,
+"end": 6.376,
+"line": 1
+},
+{
+"word": "trucks",
+"start": 6.376,
+"end": 6.556,
+"line": 1
+},
+{
+"word": "are",
+"start": 6.556,
+"end": 6.716,
+"line": 1
+},
+{
+"word": "a",
+"start": 6.716,
+"end": 6.796,
+"line": 1
+},
+{
+"word": "myth.",
+"start": 6.796,
+"end": 6.936,
+"line": 1
+},
+{
+"word": "My",
+"start": 7.176,
+"end": 7.196,
+"line": 1
+},
+{
+"word": "dentist",
+"start": 7.196,
+"end": 7.416,
+"line": 1
+},
+{
+"word": "keeps",
+"start": 7.416,
+"end": 7.636,
+"line": 1
+},
+{
+"word": "every",
+"start": 7.636,
+"end": 7.876,
+"line": 1
+},
+{
+"word": "tooth",
+"start": 7.876,
+"end": 8.036,
+"line": 1
+},
+{
+"word": "he's",
+"start": 8.036,
+"end": 8.156,
+"line": 1
+},
+{
+"word": "ever",
+"start": 8.156,
+"end": 8.296,
+"line": 1
+},
+{
+"word": "pulled",
+"start": 8.296,
+"end": 8.456,
+"line": 1
+},
+{
+"word": "in",
+"start": 8.456,
+"end": 8.576,
+"line": 1
+},
+{
+"word": "a",
+"start": 8.576,
+"end": 8.636,
+"line": 1
+},
+{
+"word": "drawer",
+"start": 8.636,
+"end": 8.776,
+"line": 1
+},
+{
+"word": "labeled",
+"start": 8.776,
+"end": 8.996,
+"line": 1
+},
+{
+"word": "\"Regrets.\"",
+"start": 8.996,
+"end": 9.376,
+"line": 1
+},
+{
+"word": "And",
+"start": 9.576,
+"end": 9.676,
+"line": 1
+},
+{
+"word": "my",
+"start": 9.676,
+"end": 9.816,
+"line": 1
+},
+{
+"word": "uncle",
+"start": 9.816,
+"end": 9.936,
+"line": 1
+},
+{
+"word": "tried",
+"start": 9.936,
+"end": 10.196,
+"line": 1
+},
+{
+"word": "to",
+"start": 10.196,
+"end": 10.276,
+"line": 1
+},
+{
+"word": "throw",
+"start": 10.276,
+"end": 10.416,
+"line": 1
+},
+{
+"word": "out",
+"start": 10.416,
+"end": 10.536,
+"line": 1
+},
+{
+"word": "a",
+"start": 10.536,
+"end": 10.616,
+"line": 1
+},
+{
+"word": "banana",
+"start": 10.616,
+"end": 10.796,
+"line": 1
+},
+{
+"word": "peel",
+"start": 10.796,
+"end": 11.036,
+"line": 1
+},
+{
+"word": "in",
+"start": 11.036,
+"end": 11.176,
+"line": 1
+},
+{
+"word": "1998.",
+"start": 11.176,
+"end": 11.696,
+"line": 1
+},
+{
+"word": "It's",
+"start": 12.056,
+"end": 12.176,
+"line": 1
+},
+{
+"word": "now",
+"start": 12.176,
+"end": 12.296,
+"line": 1
+},
+{
+"word": "in",
+"start": 12.296,
+"end": 12.396,
+"line": 1
+},
+{
+"word": "the",
+"start": 12.396,
+"end": 12.476,
+"line": 1
+},
+{
+"word": "town",
+"start": 12.476,
+"end": 12.616,
+"line": 1
+},
+{
+"word": "museum,",
+"start": 12.616,
+"end": 12.916,
+"line": 1
+},
+{
+"word": "and",
+"start": 13.116,
+"end": 13.176,
+"line": 1
+},
+{
+"word": "it's",
+"start": 13.176,
+"end": 13.336,
+"line": 1
+},
+{
+"word": "still",
+"start": 13.336,
+"end": 13.456,
+"line": 1
+},
+{
+"word": "warm.",
+"start": 13.456,
+"end": 13.696,
+"line": 1
+},
+{
+"word": "Everyone's",
+"start": 14.143,
+"end": 14.503,
+"line": 2
+},
+{
+"word": "houses",
+"start": 14.503,
+"end": 14.643,
+"line": 2
+},
+{
+"word": "are",
+"start": 14.643,
+"end": 14.803,
+"line": 2
+},
+{
+"word": "full.",
+"start": 14.803,
+"end": 15.043,
+"line": 2
+},
+{
+"word": "My",
+"start": 15.343,
+"end": 15.443,
+"line": 2
+},
+{
+"word": "family",
+"start": 15.443,
+"end": 15.663,
+"line": 2
+},
+{
+"word": "sleeps",
+"start": 15.663,
+"end": 15.943,
+"line": 2
+},
+{
+"word": "in",
+"start": 15.943,
+"end": 16.123,
+"line": 2
+},
+{
+"word": "the",
+"start": 16.123,
+"end": 16.183,
+"line": 2
+},
+{
+"word": "bathtub",
+"start": 16.183,
+"end": 16.523,
+"line": 2
+},
+{
+"word": "because",
+"start": 16.523,
+"end": 16.743,
+"line": 2
+},
+{
+"word": "of",
+"start": 16.743,
+"end": 16.843,
+"line": 2
+},
+{
+"word": "a",
+"start": 16.843,
+"end": 16.923,
+"line": 2
+},
+{
+"word": "couch",
+"start": 16.923,
+"end": 17.063,
+"line": 2
+},
+{
+"word": "we",
+"start": 17.063,
+"end": 17.203,
+"line": 2
+},
+{
+"word": "can't",
+"start": 17.203,
+"end": 17.403,
+"line": 2
+},
+{
+"word": "get",
+"start": 17.403,
+"end": 17.483,
+"line": 2
+},
+{
+"word": "rid",
+"start": 17.483,
+"end": 17.563,
+"line": 2
+},
+{
+"word": "of.",
+"start": 17.563,
+"end": 17.743,
+"line": 2
+},
+{
+"word": "Then",
+"start": 18.093,
+"end": 18.273,
+"line": 3
+},
+{
+"word": "there's",
+"start": 18.273,
+"end": 18.493,
+"line": 3
+},
+{
+"word": "Mayor",
+"start": 18.493,
+"end": 18.633,
+"line": 3
+},
+{
+"word": "Crumb.",
+"start": 18.633,
+"end": 18.913,
+"line": 3
+},
+{
+"word": "He",
+"start": 19.133,
+"end": 19.233,
+"line": 3
+},
+{
+"word": "has",
+"start": 19.233,
+"end": 19.333,
+"line": 3
+},
+{
+"word": "never",
+"start": 19.333,
+"end": 19.513,
+"line": 3
+},
+{
+"word": "had",
+"start": 19.513,
+"end": 19.673,
+"line": 3
+},
+{
+"word": "a",
+"start": 19.673,
+"end": 19.773,
+"line": 3
+},
+{
+"word": "single",
+"start": 19.773,
+"end": 19.953,
+"line": 3
+},
+{
+"word": "thing",
+"start": 19.953,
+"end": 20.153,
+"line": 3
+},
+{
+"word": "come",
+"start": 20.153,
+"end": 20.293,
+"line": 3
+},
+{
+"word": "back",
+"start": 20.293,
+"end": 20.473,
+"line": 3
+},
+{
+"word": "to",
+"start": 20.473,
+"end": 20.573,
+"line": 3
+},
+{
+"word": "him.",
+"start": 20.573,
+"end": 20.713,
+"line": 3
+},
+{
+"word": "Because",
+"start": 20.793,
+"end": 20.973,
+"line": 3
+},
+{
+"word": "he",
+"start": 20.973,
+"end": 21.093,
+"line": 3
+},
+{
+"word": "found",
+"start": 21.093,
+"end": 21.253,
+"line": 3
+},
+{
+"word": "a",
+"start": 21.253,
+"end": 21.353,
+"line": 3
+},
+{
+"word": "loophole.",
+"start": 21.353,
+"end": 21.553,
+"line": 3
+},
+{
+"word": "He",
+"start": 22.064,
+"end": 22.164,
+"line": 4
+},
+{
+"word": "doesn't",
+"start": 22.164,
+"end": 22.384,
+"line": 4
+},
+{
+"word": "throw",
+"start": 22.384,
+"end": 22.504,
+"line": 4
+},
+{
+"word": "things",
+"start": 22.504,
+"end": 22.704,
+"line": 4
+},
+{
+"word": "away.",
+"start": 22.704,
+"end": 22.964,
+"line": 4
+},
+{
+"word": "He",
+"start": 23.244,
+"end": 23.304,
+"line": 4
+},
+{
+"word": "gives",
+"start": 23.304,
+"end": 23.444,
+"line": 4
+},
+{
+"word": "them",
+"start": 23.444,
+"end": 23.564,
+"line": 4
+},
+{
+"word": "away.",
+"start": 23.564,
+"end": 23.764,
+"line": 4
+},
+{
+"word": "\"Congratulations!",
+"start": 24.191,
+"end": 24.651,
+"line": 5
+},
+{
+"word": "A",
+"start": 24.991,
+"end": 25.091,
+"line": 5
+},
+{
+"word": "free",
+"start": 25.091,
+"end": 25.251,
+"line": 5
+},
+{
+"word": "sofa!\"",
+"start": 25.251,
+"end": 25.491,
+"line": 5
+},
+{
+"word": "\"A",
+"start": 25.851,
+"end": 25.911,
+"line": 5
+},
+{
+"word": "gift!",
+"start": 25.911,
+"end": 26.151,
+"line": 5
+},
+{
+"word": "One",
+"start": 26.411,
+"end": 26.531,
+"line": 5
+},
+{
+"word": "broken",
+"start": 26.531,
+"end": 26.771,
+"line": 5
+},
+{
+"word": "piano!\"",
+"start": 26.771,
+"end": 27.111,
+"line": 5
+},
+{
+"word": "\"Happy",
+"start": 27.511,
+"end": 27.571,
+"line": 5
+},
+{
+"word": "birthday!",
+"start": 27.571,
+"end": 27.931,
+"line": 5
+},
+{
+"word": "Here's",
+"start": 28.171,
+"end": 28.371,
+"line": 5
+},
+{
+"word": "a",
+"start": 28.371,
+"end": 28.411,
+"line": 5
+},
+{
+"word": "fridge.",
+"start": 28.411,
+"end": 28.651,
+"line": 5
+},
+{
+"word": "It's",
+"start": 28.851,
+"end": 28.991,
+"line": 5
+},
+{
+"word": "empty.",
+"start": 28.991,
+"end": 29.211,
+"line": 5
+},
+{
+"word": "It's",
+"start": 29.451,
+"end": 29.611,
+"line": 5
+},
+{
+"word": "also",
+"start": 29.611,
+"end": 29.771,
+"line": 5
+},
+{
+"word": "on",
+"start": 29.771,
+"end": 29.971,
+"line": 5
+},
+{
+"word": "fire.\"",
+"start": 29.971,
+"end": 30.171,
+"line": 5
+},
+{
+"word": "And",
+"start": 30.659,
+"end": 30.759,
+"line": 6
+},
+{
+"word": "you",
+"start": 30.759,
+"end": 30.839,
+"line": 6
+},
+{
+"word": "can't",
+"start": 30.839,
+"end": 31.059,
+"line": 6
+},
+{
+"word": "throw",
+"start": 31.059,
+"end": 31.179,
+"line": 6
+},
+{
+"word": "away",
+"start": 31.179,
+"end": 31.379,
+"line": 6
+},
+{
+"word": "a",
+"start": 31.379,
+"end": 31.499,
+"line": 6
+},
+{
+"word": "gift.",
+"start": 31.499,
+"end": 31.699,
+"line": 6
+},
+{
+"word": "It's",
+"start": 31.899,
+"end": 31.979,
+"line": 6
+},
+{
+"word": "the",
+"start": 31.979,
+"end": 32.079,
+"line": 6
+},
+{
+"word": "rule.",
+"start": 32.079,
+"end": 32.299,
+"line": 6
+},
+{
+"word": "So",
+"start": 32.599,
+"end": 32.679,
+"line": 6
+},
+{
+"word": "every",
+"start": 32.679,
+"end": 32.859,
+"line": 6
+},
+{
+"word": "house",
+"start": 32.859,
+"end": 33.039,
+"line": 6
+},
+{
+"word": "in",
+"start": 33.039,
+"end": 33.179,
+"line": 6
+},
+{
+"word": "town",
+"start": 33.179,
+"end": 33.359,
+"line": 6
+},
+{
+"word": "is",
+"start": 33.359,
+"end": 33.659,
+"line": 6
+},
+{
+"word": "slowly",
+"start": 33.659,
+"end": 33.859,
+"line": 6
+},
+{
+"word": "filling",
+"start": 33.859,
+"end": 34.119,
+"line": 6
+},
+{
+"word": "with",
+"start": 34.119,
+"end": 34.279,
+"line": 6
+},
+{
+"word": "Mayor",
+"start": 34.279,
+"end": 34.459,
+"line": 6
+},
+{
+"word": "Crumb's",
+"start": 34.459,
+"end": 34.759,
+"line": 6
+},
+{
+"word": "junk.",
+"start": 34.759,
+"end": 34.939,
+"line": 6
+},
+{
+"word": "Then",
+"start": 35.384,
+"end": 35.504,
+"line": 7
+},
+{
+"word": "he",
+"start": 35.504,
+"end": 35.584,
+"line": 7
+},
+{
+"word": "gave",
+"start": 35.584,
+"end": 35.684,
+"line": 7
+},
+{
+"word": "my",
+"start": 35.684,
+"end": 35.844,
+"line": 7
+},
+{
+"word": "grandma",
+"start": 35.844,
+"end": 36.084,
+"line": 7
+},
+{
+"word": "a",
+"start": 36.084,
+"end": 36.164,
+"line": 7
+},
+{
+"word": "boat.",
+"start": 36.164,
+"end": 36.324,
+"line": 7
+},
+{
+"word": "An",
+"start": 36.777,
+"end": 36.877,
+"line": 8
+},
+{
+"word": "actual",
+"start": 36.877,
+"end": 37.137,
+"line": 8
+},
+{
+"word": "boat.",
+"start": 37.137,
+"end": 37.397,
+"line": 8
+},
+{
+"word": "She",
+"start": 37.617,
+"end": 37.777,
+"line": 8
+},
+{
+"word": "lives",
+"start": 37.777,
+"end": 37.917,
+"line": 8
+},
+{
+"word": "on",
+"start": 37.917,
+"end": 38.057,
+"line": 8
+},
+{
+"word": "the",
+"start": 38.057,
+"end": 38.157,
+"line": 8
+},
+{
+"word": "second",
+"start": 38.157,
+"end": 38.277,
+"line": 8
+},
+{
+"word": "floor.",
+"start": 38.277,
+"end": 38.597,
+"line": 8
+},
+{
+"word": "It",
+"start": 38.857,
+"end": 38.937,
+"line": 8
+},
+{
+"word": "came",
+"start": 38.937,
+"end": 39.057,
+"line": 8
+},
+{
+"word": "through",
+"start": 39.057,
+"end": 39.217,
+"line": 8
+},
+{
+"word": "the",
+"start": 39.217,
+"end": 39.317,
+"line": 8
+},
+{
+"word": "wall.",
+"start": 39.317,
+"end": 39.537,
+"line": 8
+},
+{
+"word": "She's",
+"start": 39.877,
+"end": 39.957,
+"line": 8
+},
+{
+"word": "now",
+"start": 39.957,
+"end": 40.117,
+"line": 8
+},
+{
+"word": "sleeping",
+"start": 40.117,
+"end": 40.317,
+"line": 8
+},
+{
+"word": "in",
+"start": 40.317,
+"end": 40.497,
+"line": 8
+},
+{
+"word": "the",
+"start": 40.497,
+"end": 40.537,
+"line": 8
+},
+{
+"word": "boat.",
+"start": 40.537,
+"end": 40.757,
+"line": 8
+},
+{
+"word": "In",
+"start": 40.937,
+"end": 41.057,
+"line": 8
+},
+{
+"word": "her",
+"start": 41.057,
+"end": 41.157,
+"line": 8
+},
+{
+"word": "own",
+"start": 41.157,
+"end": 41.297,
+"line": 8
+},
+{
+"word": "living",
+"start": 41.297,
+"end": 41.437,
+"line": 8
+},
+{
+"word": "room.",
+"start": 41.437,
+"end": 41.717,
+"line": 8
+},
+{
+"word": "Because",
+"start": 41.817,
+"end": 42.057,
+"line": 8
+},
+{
+"word": "the",
+"start": 42.057,
+"end": 42.197,
+"line": 8
+},
+{
+"word": "house",
+"start": 42.197,
+"end": 42.357,
+"line": 8
+},
+{
+"word": "is",
+"start": 42.357,
+"end": 42.477,
+"line": 8
+},
+{
+"word": "mostly",
+"start": 42.477,
+"end": 42.717,
+"line": 8
+},
+{
+"word": "boat.",
+"start": 42.717,
+"end": 42.917,
+"line": 8
+},
+{
+"word": "The",
+"start": 43.363,
+"end": 43.463,
+"line": 9
+},
+{
+"word": "doctor",
+"start": 43.463,
+"end": 43.623,
+"line": 9
+},
+{
+"word": "said",
+"start": 43.623,
+"end": 43.823,
+"line": 9
+},
+{
+"word": "one",
+"start": 43.823,
+"end": 44.043,
+"line": 9
+},
+{
+"word": "more",
+"start": 44.043,
+"end": 44.223,
+"line": 9
+},
+{
+"word": "gift",
+"start": 44.223,
+"end": 44.423,
+"line": 9
+},
+{
+"word": "and",
+"start": 44.423,
+"end": 44.703,
+"line": 9
+},
+{
+"word": "the",
+"start": 44.703,
+"end": 44.783,
+"line": 9
+},
+{
+"word": "house",
+"start": 44.783,
+"end": 44.923,
+"line": 9
+},
+{
+"word": "would",
+"start": 44.923,
+"end": 45.083,
+"line": 9
+},
+{
+"word": "collapse",
+"start": 45.083,
+"end": 45.363,
+"line": 9
+},
+{
+"word": "with",
+"start": 45.363,
+"end": 45.543,
+"line": 9
+},
+{
+"word": "her",
+"start": 45.543,
+"end": 45.663,
+"line": 9
+},
+{
+"word": "in",
+"start": 45.663,
+"end": 45.763,
+"line": 9
+},
+{
+"word": "it.",
+"start": 45.763,
+"end": 45.863,
+"line": 9
+},
+{
+"word": "So",
+"start": 46.2,
+"end": 46.3,
+"line": 10
+},
+{
+"word": "at",
+"start": 46.3,
+"end": 46.4,
+"line": 10
+},
+{
+"word": "the",
+"start": 46.4,
+"end": 46.46,
+"line": 10
+},
+{
+"word": "town",
+"start": 46.46,
+"end": 46.62,
+"line": 10
+},
+{
+"word": "festival,",
+"start": 46.62,
+"end": 46.98,
+"line": 10
+},
+{
+"word": "I",
+"start": 47.28,
+"end": 47.3,
+"line": 10
+},
+{
+"word": "walked",
+"start": 47.3,
+"end": 47.48,
+"line": 10
+},
+{
+"word": "up",
+"start": 47.48,
+"end": 47.68,
+"line": 10
+},
+{
+"word": "while",
+"start": 47.68,
+"end": 47.82,
+"line": 10
+},
+{
+"word": "he",
+"start": 47.82,
+"end": 47.9,
+"line": 10
+},
+{
+"word": "was",
+"start": 47.9,
+"end": 48.0,
+"line": 10
+},
+{
+"word": "handing",
+"start": 48.0,
+"end": 48.14,
+"line": 10
+},
+{
+"word": "out",
+"start": 48.14,
+"end": 48.3,
+"line": 10
+},
+{
+"word": "a",
+"start": 48.3,
+"end": 48.4,
+"line": 10
+},
+{
+"word": "four-ton",
+"start": 48.4,
+"end": 48.624,
+"line": 10
+},
+{
+"word": "statue",
+"start": 48.68,
+"end": 49.0,
+"line": 10
+},
+{
+"word": "of",
+"start": 49.0,
+"end": 49.16,
+"line": 10
+},
+{
+"word": "himself.",
+"start": 49.16,
+"end": 49.38,
+"line": 10
+},
+{
+"word": "I",
+"start": 49.76,
+"end": 49.8,
+"line": 10
+},
+{
+"word": "smiled.",
+"start": 49.8,
+"end": 50.08,
+"line": 10
+},
+{
+"word": "\"Mayor",
+"start": 50.44,
+"end": 50.56,
+"line": 10
+},
+{
+"word": "Crumb.",
+"start": 50.56,
+"end": 50.88,
+"line": 10
+},
+{
+"word": "I",
+"start": 51.1,
+"end": 51.22,
+"line": 10
+},
+{
+"word": "have",
+"start": 51.22,
+"end": 51.34,
+"line": 10
+},
+{
+"word": "a",
+"start": 51.34,
+"end": 51.4,
+"line": 10
+},
+{
+"word": "gift",
+"start": 51.4,
+"end": 51.52,
+"line": 10
+},
+{
+"word": "for",
+"start": 51.52,
+"end": 51.7,
+"line": 10
+},
+{
+"word": "YOU.\"",
+"start": 51.7,
+"end": 51.88,
+"line": 10
+},
+{
+"word": "I",
+"start": 52.32,
+"end": 52.44,
+"line": 11
+},
+{
+"word": "gave",
+"start": 52.44,
+"end": 52.56,
+"line": 11
+},
+{
+"word": "him",
+"start": 52.56,
+"end": 52.68,
+"line": 11
+},
+{
+"word": "a",
+"start": 52.68,
+"end": 52.78,
+"line": 11
+},
+{
+"word": "thank-you",
+"start": 52.78,
+"end": 52.988,
+"line": 11
+},
+{
+"word": "card.",
+"start": 53.04,
+"end": 53.2,
+"line": 11
+},
+{
+"word": "He",
+"start": 53.664,
+"end": 53.744,
+"line": 12
+},
+{
+"word": "laughed.",
+"start": 53.744,
+"end": 54.044,
+"line": 12
+},
+{
+"word": "\"That's",
+"start": 54.364,
+"end": 54.664,
+"line": 12
+},
+{
+"word": "it?\"",
+"start": 54.664,
+"end": 54.784,
+"line": 12
+},
+{
+"word": "\"Open",
+"start": 55.183,
+"end": 55.403,
+"line": 13
+},
+{
+"word": "it.\"",
+"start": 55.403,
+"end": 55.563,
+"line": 13
+},
+{
+"word": "Inside",
+"start": 55.902,
+"end": 56.182,
+"line": 14
+},
+{
+"word": "was",
+"start": 56.182,
+"end": 56.362,
+"line": 14
+},
+{
+"word": "a",
+"start": 56.362,
+"end": 56.462,
+"line": 14
+},
+{
+"word": "list.",
+"start": 56.462,
+"end": 56.662,
+"line": 14
+},
+{
+"word": "Every",
+"start": 56.882,
+"end": 57.082,
+"line": 14
+},
+{
+"word": "single",
+"start": 57.082,
+"end": 57.282,
+"line": 14
+},
+{
+"word": "thing",
+"start": 57.282,
+"end": 57.462,
+"line": 14
+},
+{
+"word": "he'd",
+"start": 57.462,
+"end": 57.622,
+"line": 14
+},
+{
+"word": "ever",
+"start": 57.622,
+"end": 57.742,
+"line": 14
+},
+{
+"word": "given",
+"start": 57.742,
+"end": 57.922,
+"line": 14
+},
+{
+"word": "anyone.",
+"start": 57.922,
+"end": 58.242,
+"line": 14
+},
+{
+"word": "And",
+"start": 58.502,
+"end": 58.582,
+"line": 14
+},
+{
+"word": "a",
+"start": 58.582,
+"end": 58.682,
+"line": 14
+},
+{
+"word": "line",
+"start": 58.682,
+"end": 58.822,
+"line": 14
+},
+{
+"word": "at",
+"start": 58.822,
+"end": 58.942,
+"line": 14
+},
+{
+"word": "the",
+"start": 58.942,
+"end": 59.042,
+"line": 14
+},
+{
+"word": "bottom:",
+"start": 59.042,
+"end": 59.242,
+"line": 14
+},
+{
+"word": "\"Return",
+"start": 59.582,
+"end": 59.762,
+"line": 14
+},
+{
+"word": "all",
+"start": 59.762,
+"end": 60.042,
+"line": 14
+},
+{
+"word": "gifts",
+"start": 60.042,
+"end": 60.222,
+"line": 14
+},
+{
+"word": "to",
+"start": 60.222,
+"end": 60.442,
+"line": 14
+},
+{
+"word": "sender.\"",
+"start": 60.442,
+"end": 60.602,
+"line": 14
+},
+{
+"word": "The",
+"start": 61.114,
+"end": 61.234,
+"line": 15
+},
+{
+"word": "whole",
+"start": 61.234,
+"end": 61.414,
+"line": 15
+},
+{
+"word": "town",
+"start": 61.414,
+"end": 61.674,
+"line": 15
+},
+{
+"word": "cheered.",
+"start": 61.674,
+"end": 61.954,
+"line": 15
+},
+{
+"word": "Then",
+"start": 62.274,
+"end": 62.374,
+"line": 15
+},
+{
+"word": "every",
+"start": 62.374,
+"end": 62.554,
+"line": 15
+},
+{
+"word": "person",
+"start": 62.554,
+"end": 62.734,
+"line": 15
+},
+{
+"word": "in",
+"start": 62.734,
+"end": 62.894,
+"line": 15
+},
+{
+"word": "town",
+"start": 62.894,
+"end": 63.054,
+"line": 15
+},
+{
+"word": "walked",
+"start": 63.054,
+"end": 63.254,
+"line": 15
+},
+{
+"word": "to",
+"start": 63.254,
+"end": 63.394,
+"line": 15
+},
+{
+"word": "his",
+"start": 63.394,
+"end": 63.474,
+"line": 15
+},
+{
+"word": "house",
+"start": 63.474,
+"end": 63.674,
+"line": 15
+},
+{
+"word": "and",
+"start": 63.674,
+"end": 63.954,
+"line": 15
+},
+{
+"word": "handed",
+"start": 63.954,
+"end": 64.134,
+"line": 15
+},
+{
+"word": "it",
+"start": 64.134,
+"end": 64.254,
+"line": 15
+},
+{
+"word": "all",
+"start": 64.254,
+"end": 64.374,
+"line": 15
+},
+{
+"word": "back.",
+"start": 64.374,
+"end": 64.594,
+"line": 15
+},
+{
+"word": "The",
+"start": 64.794,
+"end": 64.874,
+"line": 15
+},
+{
+"word": "boat.",
+"start": 64.874,
+"end": 65.074,
+"line": 15
+},
+{
+"word": "The",
+"start": 65.334,
+"end": 65.354,
+"line": 15
+},
+{
+"word": "piano.",
+"start": 65.354,
+"end": 65.594,
+"line": 15
+},
+{
+"word": "The",
+"start": 65.954,
+"end": 65.974,
+"line": 15
+},
+{
+"word": "fridge.",
+"start": 65.974,
+"end": 66.214,
+"line": 15
+},
+{
+"word": "The",
+"start": 66.494,
+"end": 66.494,
+"line": 15
+},
+{
+"word": "banana",
+"start": 66.494,
+"end": 66.714,
+"line": 15
+},
+{
+"word": "peel.",
+"start": 66.714,
+"end": 66.914,
+"line": 15
+},
+{
+"word": "\"Thank",
+"start": 67.312,
+"end": 67.452,
+"line": 16
+},
+{
+"word": "you",
+"start": 67.452,
+"end": 67.592,
+"line": 16
+},
+{
+"word": "for",
+"start": 67.592,
+"end": 67.692,
+"line": 16
+},
+{
+"word": "the",
+"start": 67.692,
+"end": 67.772,
+"line": 16
+},
+{
+"word": "gift,\"",
+"start": 67.772,
+"end": 68.032,
+"line": 16
+},
+{
+"word": "everyone",
+"start": 68.232,
+"end": 68.392,
+"line": 16
+},
+{
+"word": "said,",
+"start": 68.392,
+"end": 68.712,
+"line": 16
+},
+{
+"word": "one",
+"start": 68.892,
+"end": 69.052,
+"line": 16
+},
+{
+"word": "at",
+"start": 69.052,
+"end": 69.132,
+"line": 16
+},
+{
+"word": "a",
+"start": 69.132,
+"end": 69.292,
+"line": 16
+},
+{
+"word": "time.",
+"start": 69.292,
+"end": 69.512,
+"line": 16
+},
+{
+"word": "Thunk.",
+"start": 69.812,
+"end": 69.912,
+"line": 16
+},
+{
+"word": "Thunk.",
+"start": 70.172,
+"end": 70.432,
+"line": 16
+},
+{
+"word": "Thunk.",
+"start": 70.632,
+"end": 70.892,
+"line": 16
+},
+{
+"word": "He's",
+"start": 71.31,
+"end": 71.53,
+"line": 17
+},
+{
+"word": "still",
+"start": 71.53,
+"end": 71.65,
+"line": 17
+},
+{
+"word": "under",
+"start": 71.65,
+"end": 71.83,
+"line": 17
+},
+{
+"word": "there.",
+"start": 71.83,
+"end": 72.07,
+"line": 17
+},
+{
+"word": "We",
+"start": 72.21,
+"end": 72.27,
+"line": 17
+},
+{
+"word": "think.",
+"start": 72.27,
+"end": 72.49,
+"line": 17
+},
+{
+"word": "Nobody",
+"start": 72.71,
+"end": 72.81,
+"line": 17
+},
+{
+"word": "can",
+"start": 72.81,
+"end": 73.03,
+"line": 17
+},
+{
+"word": "get",
+"start": 73.03,
+"end": 73.15,
+"line": 17
+},
+{
+"word": "him",
+"start": 73.15,
+"end": 73.25,
+"line": 17
+},
+{
+"word": "out.",
+"start": 73.25,
+"end": 73.43,
+"line": 17
+},
+{
+"word": "And",
+"start": 73.842,
+"end": 73.922,
+"line": 18
+},
+{
+"word": "the",
+"start": 73.922,
+"end": 74.022,
+"line": 18
+},
+{
+"word": "town",
+"start": 74.022,
+"end": 74.202,
+"line": 18
+},
+{
+"word": "made",
+"start": 74.202,
+"end": 74.382,
+"line": 18
+},
+{
+"word": "me",
+"start": 74.382,
+"end": 74.502,
+"line": 18
+},
+{
+"word": "mayor,",
+"start": 74.502,
+"end": 74.742,
+"line": 18
+},
+{
+"word": "because",
+"start": 74.742,
+"end": 75.042,
+"line": 18
+},
+{
+"word": "of",
+"start": 75.042,
+"end": 75.162,
+"line": 18
+},
+{
+"word": "what",
+"start": 75.162,
+"end": 75.242,
+"line": 18
+},
+{
+"word": "I",
+"start": 75.242,
+"end": 75.362,
+"line": 18
+},
+{
+"word": "did.",
+"start": 75.362,
+"end": 75.562,
+"line": 18
+},
+{
+"word": "The",
+"start": 75.742,
+"end": 75.842,
+"line": 18
+},
+{
+"word": "first",
+"start": 75.842,
+"end": 75.982,
+"line": 18
+},
+{
+"word": "job",
+"start": 75.982,
+"end": 76.222,
+"line": 18
+},
+{
+"word": "is",
+"start": 76.222,
+"end": 76.342,
+"line": 18
+},
+{
+"word": "that",
+"start": 76.342,
+"end": 76.442,
+"line": 18
+},
+{
+"word": "I",
+"start": 76.442,
+"end": 76.542,
+"line": 18
+},
+{
+"word": "have",
+"start": 76.542,
+"end": 76.662,
+"line": 18
+},
+{
+"word": "to",
+"start": 76.662,
+"end": 76.762,
+"line": 18
+},
+{
+"word": "keep",
+"start": 76.762,
+"end": 76.882,
+"line": 18
+},
+{
+"word": "everything.",
+"start": 76.882,
+"end": 77.202,
+"line": 18
+},
+{
+"word": "Including",
+"start": 77.442,
+"end": 77.642,
+"line": 18
+},
+{
+"word": "him.",
+"start": 77.642,
+"end": 77.942,
+"line": 18
+},
+{
+"word": "He's",
+"start": 78.399,
+"end": 78.539,
+"line": 19
+},
+{
+"word": "in",
+"start": 78.539,
+"end": 78.599,
+"line": 19
+},
+{
+"word": "my",
+"start": 78.599,
+"end": 78.699,
+"line": 19
+},
+{
+"word": "guest",
+"start": 78.699,
+"end": 78.879,
+"line": 19
+},
+{
+"word": "room.",
+"start": 78.879,
+"end": 79.059,
+"line": 19
+},
+{
+"word": "I",
+"start": 79.179,
+"end": 79.279,
+"line": 19
+},
+{
+"word": "can't",
+"start": 79.279,
+"end": 79.479,
+"line": 19
+},
+{
+"word": "throw",
+"start": 79.479,
+"end": 79.579,
+"line": 19
+},
+{
+"word": "him",
+"start": 79.579,
+"end": 79.679,
+"line": 19
+},
+{
+"word": "away.",
+"start": 79.679,
+"end": 79.899,
+"line": 19
+}
+]
