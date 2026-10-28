@@ -673,7 +673,6 @@ function daySky() {
     ctx.fillStyle = '#d4e9f4';
     ctx.fillRect(0, h / 2, w, h / 2);
     const r = rng(5);
-    ctx.filter = 'blur(5px)';
     for (let k = 0; k < 70; k++) {
       const y = h * (0.2 + r() * 0.26);
       const flat = 0.25 + (y / h - 0.2) * 0.4; // flatter toward the horizon
@@ -683,10 +682,17 @@ function daySky() {
       const puffs = Array.from({ length: 6 }, () => [(r() - 0.5) * size * 2.4, (r() - 0.5) * size * flat, size * (0.5 + r() * 0.6)]);
       for (const dx of [-w, 0, w])
         for (const [px, py, pr] of puffs) {
-          ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-          ctx.beginPath();
-          ctx.ellipse(x + dx + px, y + py, pr, pr * flat * 1.6, 0, 0, Math.PI * 2);
-          ctx.fill();
+          // A soft round puff (a radial gradient), squashed flat.
+          ctx.save();
+          ctx.translate(x + dx + px, y + py);
+          ctx.scale(1, flat * 1.6);
+          const soft = ctx.createRadialGradient(0, 0, 0, 0, 0, pr);
+          soft.addColorStop(0, `rgba(255,255,255,${alpha})`);
+          soft.addColorStop(0.6, `rgba(255,255,255,${alpha * 0.8})`);
+          soft.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.fillStyle = soft;
+          ctx.fillRect(-pr, -pr, pr * 2, pr * 2);
+          ctx.restore();
         }
     }
   });
