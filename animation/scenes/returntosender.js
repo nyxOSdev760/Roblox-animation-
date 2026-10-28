@@ -73,7 +73,7 @@ const UPSTAIRS = W(8, 'She');
 const LAUNCH = W(8, 'It');
 const CRASH = W(8, 'wall') - 0.06;
 const T_GLIVING = W(8, "She's") - 0.08;
-const OWN_ROOM = W(8, 'In');
+const OWN_ROOM = W(8, 'In', 1);
 const T_MOSTLY = W(8, 'Because') - 0.08;
 const DOCTOR = W(9, 'The');
 const COLLAPSE = W(9, 'collapse');
@@ -151,7 +151,7 @@ const S_DOOR = stage([20.8, 2], 0);
 // burning fridge and the banana peel. The whip-pan centres each one as the narrator names it.
 const PATH_Z = 3;
 const lead = (t) => 4 + 3.2 * (t - MARCH);
-const ITEM_OFF = [0, -9, -14.5, -19];
+const ITEM_OFF = [0, -9, -14.5, -22];
 const whip = (k, dist = 9.5, fov = 54, lookY = 4.4, camY = 4.8, dx = 0) => {
   const x = lead(ITEMS[k]) + ITEM_OFF[k] + dx;
   return [[x, camY, PATH_Z + dist], [x, lookY, PATH_Z], fov];
@@ -270,12 +270,12 @@ const KEYS = [
   [DRAG - 0.05, T, ...S_DRAG.cam(13, 5.0, 2.8, 54), 0],
   [FILLING - 0.05, T, [-8, 13, 16], [-29, 2, -2], 54, 0],
   [BOAT_GIFT - 0.05, T, ...S_BOAT.cam(14, 5.6, 3.0, 54, { u: 3.0, lookU: 0 }), 0], // clear of the planter
-  [ACTUAL - 0.05, T, ...S_BOAT.cam(7, 4.6, 4.2, 46, { u: 0.4, lookU: 0.4, lookV: 1.4 }), 0],
+  [ACTUAL - 0.05, T, ...S_BOAT.cam(7, 4.6, 4.2, 46, { u: 1.6, lookU: 1.2, lookV: 1.4 }), 0],
   [UPSTAIRS - 0.05, T, ...S_WALL.cam(13, 8.5, 6.8, 50), 0],
   [CRASH + 0.4, T, ...S_WALL.cam(14.5, 8.0, 7.0, 52), 0.5],
 
-  [T_GLIVING, G, [-2.5, 9.5, 3.5], [-6.0, 2.8, -1.8], 50, 0],
-  [OWN_ROOM - 0.1, G, [4.0, 7.5, 7.5], [-5.0, 2.5, -1.8], 56, 0.6],
+  [T_GLIVING, G, [-1.5, 9.5, -1.2], [-6.4, 2.6, -1.8], 46, 0], // from her feet, so her face is upright
+  [OWN_ROOM - 0.1, G, [-4.5, 7.0, 7.0], [-6.0, 2.6, -1.8], 56, 0],
 
   [T_MOSTLY, T, [10, 7.5, 10], [28, 5.5, 15], 54, 0],
   [DOCTOR - 0.05, T, ...S_DOC.cam(10.5, 5.6, 4.8, 54, { u: 0.4 }), 0],
@@ -285,21 +285,21 @@ const KEYS = [
   [STATUE - 0.05, T, [3.0, 2.0, 11.5], [5.9, 9.0, 2.5], 56, 0],
   [SMILE - 0.05, T, ...S_FEST.cam(5.5, 4.6, 4.3, 42, { u: -1.1 }), 0],
   [GIFT_YOU - 0.05, T, ...S_FEST.cam(8.5, 5.0, 4.0, 50), 0],
-  [CARD - 0.05, T, ...S_FEST.cam(4.5, 3.6, 3.0, 46), 0],
+  [CARD + 0.6, T, ...S_FEST.cam(7.0, 4.8, 4.0, 46), 1.0],
   [LAUGH - 0.05, T, ...S_FEST.cam(5.5, 4.8, 4.3, 42, { u: 0, lookU: 1.1 }), 0],
-  [OPEN - 0.05, T, ...S_FEST.cam(6.5, 4.8, 4.3, 42, { u: -0.4, lookU: -1.1 }), 0],
-  [LIST - 0.05, T, null, null, 32, 0], // over the mayor's shoulder (worked out in setup)
+  [OPEN - 0.05, T, ...S_FEST.cam(7.0, 5.0, 3.8, 42, { u: -0.4, lookU: -1.1 }), 0],
+  [LIST - 0.05, T, null, null, 36, 0], // over the mayor's shoulder (worked out in setup)
   [SENDER - 0.05, T, ...S_FEST.cam(5.5, 4.8, 4.3, 42, { u: 0, lookU: 1.1 }), 0],
   [CHEER - 0.05, T, [1.5, 7.5, 22], [1.5, 4.5, 3], 58, 0],
   [MARCH - 0.05, T, [26, 6.5, -5], [6, 3, 3], 56, 0],
   [ITEMS[0] - 0.2, T, ...whip(0, 11, 56, 6.0, 5.6), 0],
   [ITEMS[1] - 0.05, T, ...whip(1), 0.35],
   [ITEMS[2] - 0.05, T, ...whip(2, 10.5, 54, 5.0), 0.35],
-  [ITEMS[3] - 0.05, T, ...whip(3, 6.0, 46, 2.8, 4.8, 1.4), 0.35],
+  [ITEMS[3] - 0.05, T, ...whip(3, 6.0, 46, 2.8, 4.8, 2.2), 0.35],
   [THANK - 0.05, T, ...S_DOOR.cam(11, 5.6, 4.0, 54, { u: 0.6 }), 0],
   [STILL - 0.05, T, ...S_DOOR.cam(12.5, 6.4, 4.8, 54, { u: -0.2 }), 0],
   [NEW_MAYOR - 0.05, T, [0, 6.4, 10.4], [0, 5.6, 0], 46, 0],
-  [KEEP - 0.05, T, ...S_DOOR.cam(7.5, 5.0, 4.2, 50, { u: 1.6 }), 0],
+  [KEEP - 0.05, T, ...S_DOOR.cam(8.5, 5.0, 4.2, 50, { u: 1.6 }), 0],
   [INCLUDING - 0.05, T, ...S_DOOR.cam(8.0, 8.4, 7.6, 48, { u: 0.4, lookU: -1.4 }), 0.5],
 
   [T_GUEST, B, [4.0, 5.2, 8.2], [1.9, 3.6, -3.8], 50, 0],
@@ -700,6 +700,14 @@ function daySky() {
   return tex;
 }
 
+/** A white flag on a stick that runs on past the hand (down the arm's -y). */
+function whiteFlag(a) {
+  const g = new THREE.Group();
+  g.add(part(a, [0.14, 3.0, 0.14], [0, -1.5, 0], 0x6b4a33, 'Wood', { shadows: false }));
+  g.add(part(a, [1.3, 0.85, 0.05], [0.7, -2.55, 0], 0xf8f8f8, 'Fabric', { shadows: false }));
+  return g;
+}
+
 function tv(a) {
   const g = new THREE.Group();
   box(g, a, [3.4, 1.4, 1.4], [0, 0.7, 0], 0x6b4a33, 'Wood');
@@ -848,7 +856,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     plank.rotation.y = r() * 3;
     scene.add(plank);
   }
-  put(part(assets, [3.0, 0.3, 1.7], [0, 0, 0], 0xc96f8e, 'Fabric'), G, [-4.9, -1.8], 3.45);
+  put(part(assets, [2.4, 0.3, 1.7], [0, 0, 0], 0xc96f8e, 'Fabric'), G, [-3.9, -1.8], 3.45); // over her legs
   put(part(assets, [0.9, 0.4, 1.4], [0, 0, 0], 0xf4f4f0, 'Fabric'), G, [-7.4, -1.8], 2.55);
   const gZzz = textSprite('Z z z', '#cfe8ff', 384);
   scene.add(gZzz);
@@ -869,6 +877,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   A.mayor.attach('card', card(assets), 'r', [0, 0.1, 0.25], [Math.PI / 2, 0, 0]);
   A.mayor.attach('present', present(assets), 'r', [0.5, -0.5, 0.2], [0, 0, 0]);
   A.mayor.attach('bowl', bowl(assets), 'r', [0, -0.1, 0.2], [Math.PI / 2, 0, 0]);
+  A.mayor.attach('flag', whiteFlag(assets), 'l', [0, -0.1, 0]);
   A.doctor.attach('clip', clipboard(assets), 'r', [0, 0.1, 0.3], [-Math.PI / 2 + 0.3, 0, 0]);
   A.uncle.attach('peel', bananaPeel(assets, 0.6), 'r', [0, -0.2, 0], [Math.PI, 0, 0]);
   const mayorSash = sash(assets, 'MAYOR');
@@ -901,8 +910,8 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   const mr = [-Math.cos(rad(MAYOR_F_YAW)), Math.sin(rad(MAYOR_F_YAW))]; // his right hand side
   const LIST_AT = [MAYOR_F[0] + mf[0] * 1.9, 4.7, MAYOR_F[1] + mf[1] * 1.9];
   const OTS = KEYS.find((k) => k.t === LIST - 0.05);
-  OTS.pos = [MAYOR_F[0] - mf[0] * 1.2 + mr[0] * 1.4, 5.8, MAYOR_F[1] - mf[1] * 1.2 + mr[1] * 1.4];
-  OTS.look = LIST_AT;
+  OTS.pos = [MAYOR_F[0] - mf[0] * 1.2 + mr[0] * 1.8, 5.8, MAYOR_F[1] - mf[1] * 1.2 + mr[1] * 1.8];
+  OTS.look = [LIST_AT[0], LIST_AT[1] - 0.15, LIST_AT[2]];
 
   function shake(t) {
     let s = 0;
@@ -1160,9 +1169,9 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
       });
     }
     if (t < UPSTAIRS - 0.05) {
-      at(T, A.mayor, S_BOAT.p(2.4, 0), { yaw: S_BOAT.yaw(-50), pose: POSES.cheer(t, 1), face: 'grin' });
+      at(T, A.mayor, S_BOAT.p(-0.4, -0.8), { yaw: S_BOAT.yaw(-60), pose: POSES.cheer(t, 1), face: 'grin' });
       const shocked = t > W(7, 'boat');
-      at(T, A.grandma, S_BOAT.p(0.4, 1.4), { yaw: S_BOAT.yaw(-25), pose: shocked ? POSES.shocked(t, 4) : POSES.idle(t, 4), face: shocked ? 'sad' : 'happy' });
+      at(T, A.grandma, S_BOAT.p(1.2, 1.4), { yaw: S_BOAT.yaw(-25), pose: shocked ? POSES.shocked(t, 4) : POSES.idle(t, 4), face: shocked ? 'sad' : 'happy' });
     } else if (t < CRASH) {
       // Waving from her upstairs window (her legs are behind the porch roof).
       at(T, A.grandma, spot('green', 5.1), { y: 2.2, yaw: facing('green'), pose: POSES.wave(t, 4), face: t > LAUNCH + 0.15 ? 'sad' : 'happy' });
@@ -1288,7 +1297,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     fire.position.set(T.x + x0 + ITEM_OFF[2], 8.4, T.z + PATH_Z);
     fire.scale.setScalar(1.2);
     fire.userData.at(t);
-    place(bananaCase, T, [x0 + ITEM_OFF[3] + 2.0, PATH_Z], 1.4, 90);
+    place(bananaCase, T, [x0 + ITEM_OFF[3] + 2.6, PATH_Z], 1.4, 90);
     // Carriers: four under the boat, the rest behind what they push or carry (clear of the camera).
     const carriers = [];
     for (let k = 0; k < 4; k++) carriers.push([[x0 - 2.8 + (k >> 1) * 4.4, PATH_Z + (k % 2 ? 1.7 : -1.7)], carryUp]);
@@ -1304,7 +1313,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   }
 
   // The boat, the piano and the fridge come down on the pile, one per Thunk.
-  const DROPS = [[theBoat, [-1.6, 1.4], 3.4, 20, 0.12], [giftPiano, [-3.6, 0.6], 4.4, 110, 0.3], [giftFridge, [0.4, 0.2], 4.6, 70, 1.2]];
+  const DROPS = [[theBoat, [-1.6, 1.4], 3.4, 20, 0.12], [giftPiano, [-3.6, 0.6], 4.4, 110, 0.3], [giftFridge, [1.4, 0.4], 4.6, 70, 1.2]];
   function piled(t) {
     DROPS.forEach(([obj, uv, y, yaw, tilt], k) => {
       const tk = THUNKS[k];
@@ -1326,8 +1335,8 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     mayorPile.visible = true;
     mayorPile.scale.set(1, grow, 1);
     piled(t);
-    const buried = n === 3;
-    at(T, A.mayor, DOOR, { y: buried ? 2.4 : 0, yaw: S_DOOR.yaw(50), pose: buried ? POSES.wave(t, 1) : POSES.shocked(t, 1), face: 'sad' });
+    if (n === 3) buriedMayor(t);
+    else at(T, A.mayor, DOOR, { yaw: S_DOOR.yaw(50), pose: POSES.shocked(t, 1), face: 'sad' });
     // The line of thank-yous; the first one hands over a present.
     for (let k = 0; k < 7; k++) {
       const xz = S_DOOR.p(2.6 + k * 1.6, k ? 0.5 * (k % 2) + 0.4 : 0);
@@ -1338,19 +1347,24 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
     at(T, A.grandma, S_DOOR.p(4.8, 3.0), { yaw: S_DOOR.yaw(-35), pose: POSES.cheer(t, 4), face: 'grin' });
   }
 
+  // Under the pile: only his arm pokes out of the top, waving a white flag (his head stays
+  // hidden in there).
+  function buriedMayor(t) {
+    const wave = POSES.idle(t, 1);
+    wave.lArm = [-180, 0, 16 * Math.sin(t * 9)];
+    at(T, A.mayor, DOOR, { y: 2.2, yaw: S_DOOR.yaw(50), pose: wave, face: 'sad', hold: ['flag'] });
+    A.mayor.r6.joints.neck.visible = false;
+  }
+
   function aftermath(t, withCrowd = true) {
     mayorPile.visible = true;
     mayorPile.scale.set(1, 1, 1);
     piled(t);
-    at(T, A.mayor, DOOR, { y: 2.4, yaw: S_DOOR.yaw(50), pose: POSES.wave(t, 1), face: 'sad' });
+    buriedMayor(t);
     if (!withCrowd) return;
     for (let k = 0; k < 4; k++) at(T, crowd[k], S_DOOR.p(2.8 + k * 1.6, 0.6 * (k % 2)), { yaw: S_DOOR.yaw(-40), pose: shrug(t, k), face: faceOf(k, ['suspicious', 'neutral', 'sad']) });
-    if (t > PULL - 0.1) {
-      const tug = POSES.strain(t, 9);
-      tug.rArm = [-170, 0, 10];
-      tug.lArm = [-170, 0, -10];
-      at(T, crowd[9], S_DOOR.p(-0.1, -0.6), { y: 2.6, yaw: S_DOOR.yaw(-80), pose: tug, face: 'angry' });
-    }
+    // Someone at the foot of the pile tries to dig him out (clear of the flag).
+    if (t > PULL - 0.1) at(T, crowd[9], S_DOOR.p(1.9, -0.8), { yaw: S_DOOR.yaw(-75), pose: POSES.strain(t, 9), face: 'angry' });
   }
 
   function newMayor(t) {
@@ -1387,6 +1401,7 @@ export function setup({ scene, camera, renderer, assets, faces, sun }) {
   return function update(t) {
     for (const a of everyone) a.hide();
     for (const l of grandmaLegs) l.visible = true;
+    A.mayor.r6.joints.neck.visible = true;
     for (const o of [bag, peel, giftSofa, giftPiano, giftFridge, fire, theBoat, theTrailer, mayorPile, festival, dolly, bigList, zzz, gZzz, bananaCase, ...stink, ...steam, ...debris]) o.visible = false;
     mayorSash.visible = true;
     mySash.visible = false;
