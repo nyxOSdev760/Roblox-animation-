@@ -189,9 +189,10 @@ export const meta = {
   audio: [],
 };
 
-// ---- sound (no music: voice and effects) ---------------------------------------------------
+// ---- sound: voice, effects, and the owner's pick of music under it -------------------------
 const sfx = (file, at, volume = 0.8, extra = {}) => meta.audio.push({ file, at, volume, ...extra });
 sfx('../voice/returntosender/narration.flac', 0, 1.0);
+sfx('temporex-numbers-loop.mp3', 0, 0.22, { dur: END, fade: 1.0 });
 const FAH = (at) => sfx('fahhh.mp3', at, 2.2);
 for (const c of CUTS) sfx('synth/whoosh_long.wav', c - 0.2, 0.3);
 sfx('synth/ambience.wav', 0, 0.25, { loop: true, dur: T_HOME, fade: 0.3 });
