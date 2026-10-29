@@ -1,0 +1,3128 @@
+[
+{
+"word": "I",
+"start": 0.0,
+"end": 0.1,
+"line": 0
+},
+{
+"word": "accidentally",
+"start": 0.1,
+"end": 0.42,
+"line": 0
+},
+{
+"word": "hid",
+"start": 0.42,
+"end": 0.7,
+"line": 0
+},
+{
+"word": "in",
+"start": 0.7,
+"end": 0.78,
+"line": 0
+},
+{
+"word": "my",
+"start": 0.78,
+"end": 0.88,
+"line": 0
+},
+{
+"word": "crush's",
+"start": 0.88,
+"end": 1.14,
+"line": 0
+},
+{
+"word": "locker.",
+"start": 1.14,
+"end": 1.32,
+"line": 0
+},
+{
+"word": "It",
+"start": 1.806,
+"end": 1.906,
+"line": 1
+},
+{
+"word": "started",
+"start": 1.906,
+"end": 2.126,
+"line": 1
+},
+{
+"word": "in",
+"start": 2.126,
+"end": 2.286,
+"line": 1
+},
+{
+"word": "gym",
+"start": 2.286,
+"end": 2.446,
+"line": 1
+},
+{
+"word": "class.",
+"start": 2.446,
+"end": 2.746,
+"line": 1
+},
+{
+"word": "Coach",
+"start": 3.126,
+"end": 3.166,
+"line": 1
+},
+{
+"word": "Reyes",
+"start": 3.166,
+"end": 3.386,
+"line": 1
+},
+{
+"word": "announced",
+"start": 3.386,
+"end": 3.646,
+"line": 1
+},
+{
+"word": "we",
+"start": 3.646,
+"end": 3.826,
+"line": 1
+},
+{
+"word": "were",
+"start": 3.826,
+"end": 3.926,
+"line": 1
+},
+{
+"word": "running",
+"start": 3.926,
+"end": 4.066,
+"line": 1
+},
+{
+"word": "the",
+"start": 4.066,
+"end": 4.186,
+"line": 1
+},
+{
+"word": "mile.",
+"start": 4.186,
+"end": 4.406,
+"line": 1
+},
+{
+"word": "Everyone",
+"start": 4.706,
+"end": 4.946,
+"line": 1
+},
+{
+"word": "groaned.",
+"start": 4.946,
+"end": 5.366,
+"line": 1
+},
+{
+"word": "I",
+"start": 5.546,
+"end": 5.666,
+"line": 1
+},
+{
+"word": "did",
+"start": 5.666,
+"end": 5.766,
+"line": 1
+},
+{
+"word": "not",
+"start": 5.766,
+"end": 5.946,
+"line": 1
+},
+{
+"word": "groan.",
+"start": 5.946,
+"end": 6.266,
+"line": 1
+},
+{
+"word": "I",
+"start": 6.446,
+"end": 6.566,
+"line": 1
+},
+{
+"word": "just",
+"start": 6.566,
+"end": 6.706,
+"line": 1
+},
+{
+"word": "quietly",
+"start": 6.706,
+"end": 6.926,
+"line": 1
+},
+{
+"word": "took",
+"start": 6.926,
+"end": 7.146,
+"line": 1
+},
+{
+"word": "a",
+"start": 7.146,
+"end": 7.246,
+"line": 1
+},
+{
+"word": "few",
+"start": 7.246,
+"end": 7.366,
+"line": 1
+},
+{
+"word": "steps",
+"start": 7.366,
+"end": 7.566,
+"line": 1
+},
+{
+"word": "backward...",
+"start": 7.566,
+"end": 7.906,
+"line": 1
+},
+{
+"word": "and",
+"start": 8.166,
+"end": 8.246,
+"line": 1
+},
+{
+"word": "then",
+"start": 8.246,
+"end": 8.346,
+"line": 1
+},
+{
+"word": "a",
+"start": 8.346,
+"end": 8.446,
+"line": 1
+},
+{
+"word": "few",
+"start": 8.446,
+"end": 8.546,
+"line": 1
+},
+{
+"word": "more...",
+"start": 8.546,
+"end": 8.826,
+"line": 1
+},
+{
+"word": "and",
+"start": 9.006,
+"end": 9.106,
+"line": 1
+},
+{
+"word": "then",
+"start": 9.106,
+"end": 9.186,
+"line": 1
+},
+{
+"word": "I",
+"start": 9.186,
+"end": 9.306,
+"line": 1
+},
+{
+"word": "ran.",
+"start": 9.306,
+"end": 9.546,
+"line": 1
+},
+{
+"word": "Not",
+"start": 9.826,
+"end": 9.966,
+"line": 1
+},
+{
+"word": "the",
+"start": 9.966,
+"end": 10.106,
+"line": 1
+},
+{
+"word": "mile.",
+"start": 10.106,
+"end": 10.366,
+"line": 1
+},
+{
+"word": "The",
+"start": 10.526,
+"end": 10.606,
+"line": 1
+},
+{
+"word": "other",
+"start": 10.606,
+"end": 10.746,
+"line": 1
+},
+{
+"word": "way.",
+"start": 10.746,
+"end": 10.966,
+"line": 1
+},
+{
+"word": "I",
+"start": 11.369,
+"end": 11.489,
+"line": 2
+},
+{
+"word": "needed",
+"start": 11.489,
+"end": 11.629,
+"line": 2
+},
+{
+"word": "somewhere",
+"start": 11.629,
+"end": 11.889,
+"line": 2
+},
+{
+"word": "to",
+"start": 11.889,
+"end": 12.049,
+"line": 2
+},
+{
+"word": "hide.",
+"start": 12.049,
+"end": 12.249,
+"line": 2
+},
+{
+"word": "Fast.",
+"start": 12.669,
+"end": 12.689,
+"line": 2
+},
+{
+"word": "The",
+"start": 13.009,
+"end": 13.029,
+"line": 2
+},
+{
+"word": "hallway",
+"start": 13.029,
+"end": 13.229,
+"line": 2
+},
+{
+"word": "was",
+"start": 13.229,
+"end": 13.429,
+"line": 2
+},
+{
+"word": "empty,",
+"start": 13.429,
+"end": 13.649,
+"line": 2
+},
+{
+"word": "and",
+"start": 13.889,
+"end": 13.929,
+"line": 2
+},
+{
+"word": "there",
+"start": 13.929,
+"end": 14.029,
+"line": 2
+},
+{
+"word": "was",
+"start": 14.029,
+"end": 14.149,
+"line": 2
+},
+{
+"word": "one",
+"start": 14.149,
+"end": 14.309,
+"line": 2
+},
+{
+"word": "locker",
+"start": 14.309,
+"end": 14.509,
+"line": 2
+},
+{
+"word": "at",
+"start": 14.509,
+"end": 14.629,
+"line": 2
+},
+{
+"word": "the",
+"start": 14.629,
+"end": 14.749,
+"line": 2
+},
+{
+"word": "end",
+"start": 14.749,
+"end": 14.949,
+"line": 2
+},
+{
+"word": "with",
+"start": 15.089,
+"end": 15.169,
+"line": 2
+},
+{
+"word": "the",
+"start": 15.169,
+"end": 15.269,
+"line": 2
+},
+{
+"word": "door",
+"start": 15.269,
+"end": 15.409,
+"line": 2
+},
+{
+"word": "hanging",
+"start": 15.409,
+"end": 15.609,
+"line": 2
+},
+{
+"word": "open.",
+"start": 15.609,
+"end": 15.829,
+"line": 2
+},
+{
+"word": "I",
+"start": 16.209,
+"end": 16.349,
+"line": 2
+},
+{
+"word": "jumped",
+"start": 16.349,
+"end": 16.489,
+"line": 2
+},
+{
+"word": "inside",
+"start": 16.489,
+"end": 16.789,
+"line": 2
+},
+{
+"word": "and",
+"start": 16.789,
+"end": 16.969,
+"line": 2
+},
+{
+"word": "pulled",
+"start": 16.969,
+"end": 17.109,
+"line": 2
+},
+{
+"word": "it",
+"start": 17.109,
+"end": 17.209,
+"line": 2
+},
+{
+"word": "shut",
+"start": 17.209,
+"end": 17.369,
+"line": 2
+},
+{
+"word": "behind",
+"start": 17.369,
+"end": 17.589,
+"line": 2
+},
+{
+"word": "me.",
+"start": 17.589,
+"end": 17.749,
+"line": 2
+},
+{
+"word": "It",
+"start": 18.135,
+"end": 18.215,
+"line": 3
+},
+{
+"word": "was",
+"start": 18.215,
+"end": 18.315,
+"line": 3
+},
+{
+"word": "tiny.",
+"start": 18.315,
+"end": 18.535,
+"line": 3
+},
+{
+"word": "It",
+"start": 18.855,
+"end": 18.875,
+"line": 3
+},
+{
+"word": "smelled",
+"start": 18.875,
+"end": 19.035,
+"line": 3
+},
+{
+"word": "like",
+"start": 19.035,
+"end": 19.215,
+"line": 3
+},
+{
+"word": "vanilla",
+"start": 19.215,
+"end": 19.415,
+"line": 3
+},
+{
+"word": "body",
+"start": 19.415,
+"end": 19.675,
+"line": 3
+},
+{
+"word": "spray",
+"start": 19.675,
+"end": 19.935,
+"line": 3
+},
+{
+"word": "and",
+"start": 20.155,
+"end": 20.195,
+"line": 3
+},
+{
+"word": "one",
+"start": 20.195,
+"end": 20.335,
+"line": 3
+},
+{
+"word": "very",
+"start": 20.335,
+"end": 20.535,
+"line": 3
+},
+{
+"word": "old",
+"start": 20.535,
+"end": 20.755,
+"line": 3
+},
+{
+"word": "banana.",
+"start": 20.755,
+"end": 20.995,
+"line": 3
+},
+{
+"word": "My",
+"start": 21.355,
+"end": 21.455,
+"line": 3
+},
+{
+"word": "knees",
+"start": 21.455,
+"end": 21.655,
+"line": 3
+},
+{
+"word": "were",
+"start": 21.655,
+"end": 21.755,
+"line": 3
+},
+{
+"word": "up",
+"start": 21.755,
+"end": 21.875,
+"line": 3
+},
+{
+"word": "against",
+"start": 21.875,
+"end": 22.035,
+"line": 3
+},
+{
+"word": "my",
+"start": 22.035,
+"end": 22.215,
+"line": 3
+},
+{
+"word": "chest.",
+"start": 22.215,
+"end": 22.455,
+"line": 3
+},
+{
+"word": "But",
+"start": 22.735,
+"end": 22.855,
+"line": 3
+},
+{
+"word": "it",
+"start": 22.855,
+"end": 22.915,
+"line": 3
+},
+{
+"word": "was",
+"start": 22.915,
+"end": 23.035,
+"line": 3
+},
+{
+"word": "perfect.",
+"start": 23.035,
+"end": 23.295,
+"line": 3
+},
+{
+"word": "Nobody",
+"start": 23.615,
+"end": 23.715,
+"line": 3
+},
+{
+"word": "would",
+"start": 23.715,
+"end": 23.935,
+"line": 3
+},
+{
+"word": "ever",
+"start": 23.935,
+"end": 24.075,
+"line": 3
+},
+{
+"word": "find",
+"start": 24.075,
+"end": 24.295,
+"line": 3
+},
+{
+"word": "me.",
+"start": 24.295,
+"end": 24.475,
+"line": 3
+},
+{
+"word": "Then",
+"start": 24.866,
+"end": 24.986,
+"line": 4
+},
+{
+"word": "I",
+"start": 24.986,
+"end": 25.106,
+"line": 4
+},
+{
+"word": "heard",
+"start": 25.106,
+"end": 25.206,
+"line": 4
+},
+{
+"word": "footsteps.",
+"start": 25.206,
+"end": 25.526,
+"line": 4
+},
+{
+"word": "And",
+"start": 25.526,
+"end": 25.866,
+"line": 4
+},
+{
+"word": "a",
+"start": 25.866,
+"end": 25.966,
+"line": 4
+},
+{
+"word": "girl's",
+"start": 25.966,
+"end": 26.206,
+"line": 4
+},
+{
+"word": "voice.",
+"start": 26.206,
+"end": 26.386,
+"line": 4
+},
+{
+"word": "\"Wait...",
+"start": 26.853,
+"end": 27.073,
+"line": 5
+},
+{
+"word": "why",
+"start": 27.433,
+"end": 27.473,
+"line": 5
+},
+{
+"word": "is",
+"start": 27.473,
+"end": 27.573,
+"line": 5
+},
+{
+"word": "my",
+"start": 27.573,
+"end": 27.673,
+"line": 5
+},
+{
+"word": "locker",
+"start": 27.673,
+"end": 27.893,
+"line": 5
+},
+{
+"word": "unlocked?\"",
+"start": 27.893,
+"end": 28.073,
+"line": 5
+},
+{
+"word": "My",
+"start": 28.652,
+"end": 28.772,
+"line": 6
+},
+{
+"word": "blood",
+"start": 28.772,
+"end": 28.952,
+"line": 6
+},
+{
+"word": "turned",
+"start": 28.952,
+"end": 29.132,
+"line": 6
+},
+{
+"word": "to",
+"start": 29.132,
+"end": 29.252,
+"line": 6
+},
+{
+"word": "ice.",
+"start": 29.252,
+"end": 29.412,
+"line": 6
+},
+{
+"word": "I",
+"start": 29.752,
+"end": 29.792,
+"line": 6
+},
+{
+"word": "knew",
+"start": 29.792,
+"end": 29.892,
+"line": 6
+},
+{
+"word": "that",
+"start": 29.892,
+"end": 30.052,
+"line": 6
+},
+{
+"word": "voice.",
+"start": 30.052,
+"end": 30.292,
+"line": 6
+},
+{
+"word": "It",
+"start": 30.572,
+"end": 30.592,
+"line": 6
+},
+{
+"word": "was",
+"start": 30.592,
+"end": 30.712,
+"line": 6
+},
+{
+"word": "Chloe.",
+"start": 30.712,
+"end": 30.912,
+"line": 6
+},
+{
+"word": "The",
+"start": 31.232,
+"end": 31.292,
+"line": 6
+},
+{
+"word": "girl",
+"start": 31.292,
+"end": 31.432,
+"line": 6
+},
+{
+"word": "I'd",
+"start": 31.432,
+"end": 31.592,
+"line": 6
+},
+{
+"word": "had",
+"start": 31.592,
+"end": 31.672,
+"line": 6
+},
+{
+"word": "a",
+"start": 31.672,
+"end": 31.752,
+"line": 6
+},
+{
+"word": "crush",
+"start": 31.752,
+"end": 31.892,
+"line": 6
+},
+{
+"word": "on",
+"start": 31.892,
+"end": 32.092,
+"line": 6
+},
+{
+"word": "since",
+"start": 32.092,
+"end": 32.252,
+"line": 6
+},
+{
+"word": "September.",
+"start": 32.252,
+"end": 32.572,
+"line": 6
+},
+{
+"word": "The",
+"start": 32.852,
+"end": 32.932,
+"line": 6
+},
+{
+"word": "girl",
+"start": 32.932,
+"end": 33.072,
+"line": 6
+},
+{
+"word": "I",
+"start": 33.072,
+"end": 33.212,
+"line": 6
+},
+{
+"word": "had",
+"start": 33.212,
+"end": 33.292,
+"line": 6
+},
+{
+"word": "never",
+"start": 33.292,
+"end": 33.472,
+"line": 6
+},
+{
+"word": "once",
+"start": 33.472,
+"end": 33.672,
+"line": 6
+},
+{
+"word": "said",
+"start": 33.672,
+"end": 33.852,
+"line": 6
+},
+{
+"word": "a",
+"start": 33.852,
+"end": 33.952,
+"line": 6
+},
+{
+"word": "full",
+"start": 33.952,
+"end": 34.112,
+"line": 6
+},
+{
+"word": "sentence",
+"start": 34.112,
+"end": 34.352,
+"line": 6
+},
+{
+"word": "to.",
+"start": 34.352,
+"end": 34.612,
+"line": 6
+},
+{
+"word": "I",
+"start": 35.019,
+"end": 35.119,
+"line": 7
+},
+{
+"word": "stopped",
+"start": 35.119,
+"end": 35.319,
+"line": 7
+},
+{
+"word": "breathing.",
+"start": 35.319,
+"end": 35.599,
+"line": 7
+},
+{
+"word": "But",
+"start": 36.132,
+"end": 36.232,
+"line": 8
+},
+{
+"word": "she",
+"start": 36.232,
+"end": 36.352,
+"line": 8
+},
+{
+"word": "didn't",
+"start": 36.352,
+"end": 36.572,
+"line": 8
+},
+{
+"word": "open",
+"start": 36.572,
+"end": 36.692,
+"line": 8
+},
+{
+"word": "it.",
+"start": 36.692,
+"end": 36.892,
+"line": 8
+},
+{
+"word": "She",
+"start": 37.092,
+"end": 37.112,
+"line": 8
+},
+{
+"word": "just",
+"start": 37.112,
+"end": 37.252,
+"line": 8
+},
+{
+"word": "leaned",
+"start": 37.252,
+"end": 37.432,
+"line": 8
+},
+{
+"word": "against",
+"start": 37.432,
+"end": 37.632,
+"line": 8
+},
+{
+"word": "the",
+"start": 37.632,
+"end": 37.772,
+"line": 8
+},
+{
+"word": "door,",
+"start": 37.772,
+"end": 37.992,
+"line": 8
+},
+{
+"word": "right",
+"start": 38.072,
+"end": 38.212,
+"line": 8
+},
+{
+"word": "in",
+"start": 38.212,
+"end": 38.332,
+"line": 8
+},
+{
+"word": "front",
+"start": 38.332,
+"end": 38.432,
+"line": 8
+},
+{
+"word": "of",
+"start": 38.432,
+"end": 38.512,
+"line": 8
+},
+{
+"word": "me,",
+"start": 38.512,
+"end": 38.672,
+"line": 8
+},
+{
+"word": "so",
+"start": 38.832,
+"end": 38.972,
+"line": 8
+},
+{
+"word": "close",
+"start": 38.972,
+"end": 39.152,
+"line": 8
+},
+{
+"word": "I",
+"start": 39.152,
+"end": 39.312,
+"line": 8
+},
+{
+"word": "could",
+"start": 39.312,
+"end": 39.392,
+"line": 8
+},
+{
+"word": "hear",
+"start": 39.392,
+"end": 39.492,
+"line": 8
+},
+{
+"word": "her",
+"start": 39.492,
+"end": 39.612,
+"line": 8
+},
+{
+"word": "backpack",
+"start": 39.612,
+"end": 39.812,
+"line": 8
+},
+{
+"word": "zipper.",
+"start": 39.812,
+"end": 40.092,
+"line": 8
+},
+{
+"word": "And",
+"start": 40.332,
+"end": 40.432,
+"line": 8
+},
+{
+"word": "she",
+"start": 40.432,
+"end": 40.532,
+"line": 8
+},
+{
+"word": "started",
+"start": 40.532,
+"end": 40.732,
+"line": 8
+},
+{
+"word": "talking",
+"start": 40.732,
+"end": 40.952,
+"line": 8
+},
+{
+"word": "to",
+"start": 40.952,
+"end": 41.092,
+"line": 8
+},
+{
+"word": "her",
+"start": 41.092,
+"end": 41.172,
+"line": 8
+},
+{
+"word": "best",
+"start": 41.172,
+"end": 41.332,
+"line": 8
+},
+{
+"word": "friend,",
+"start": 41.332,
+"end": 41.532,
+"line": 8
+},
+{
+"word": "Mia.",
+"start": 41.652,
+"end": 41.712,
+"line": 8
+},
+{
+"word": "\"So?",
+"start": 42.2,
+"end": 42.44,
+"line": 9
+},
+{
+"word": "Who",
+"start": 42.64,
+"end": 42.76,
+"line": 9
+},
+{
+"word": "is",
+"start": 42.76,
+"end": 42.92,
+"line": 9
+},
+{
+"word": "it?\"",
+"start": 42.92,
+"end": 43.08,
+"line": 9
+},
+{
+"word": "Mia",
+"start": 43.18,
+"end": 43.28,
+"line": 9
+},
+{
+"word": "asked.",
+"start": 43.28,
+"end": 43.56,
+"line": 9
+},
+{
+"word": "\"Who",
+"start": 43.965,
+"end": 44.125,
+"line": 10
+},
+{
+"word": "is",
+"start": 44.125,
+"end": 44.285,
+"line": 10
+},
+{
+"word": "what?\"",
+"start": 44.285,
+"end": 44.525,
+"line": 10
+},
+{
+"word": "\"The",
+"start": 44.976,
+"end": 45.076,
+"line": 11
+},
+{
+"word": "guy",
+"start": 45.076,
+"end": 45.216,
+"line": 11
+},
+{
+"word": "you",
+"start": 45.216,
+"end": 45.356,
+"line": 11
+},
+{
+"word": "like.",
+"start": 45.356,
+"end": 45.576,
+"line": 11
+},
+{
+"word": "You've",
+"start": 45.796,
+"end": 45.876,
+"line": 11
+},
+{
+"word": "been",
+"start": 45.876,
+"end": 45.936,
+"line": 11
+},
+{
+"word": "smiling",
+"start": 45.936,
+"end": 46.196,
+"line": 11
+},
+{
+"word": "at",
+"start": 46.196,
+"end": 46.316,
+"line": 11
+},
+{
+"word": "your",
+"start": 46.316,
+"end": 46.436,
+"line": 11
+},
+{
+"word": "phone",
+"start": 46.436,
+"end": 46.576,
+"line": 11
+},
+{
+"word": "for",
+"start": 46.576,
+"end": 46.736,
+"line": 11
+},
+{
+"word": "a",
+"start": 46.736,
+"end": 46.856,
+"line": 11
+},
+{
+"word": "week.\"",
+"start": 46.856,
+"end": 46.996,
+"line": 11
+},
+{
+"word": "Chloe",
+"start": 47.468,
+"end": 47.648,
+"line": 12
+},
+{
+"word": "laughed.",
+"start": 47.648,
+"end": 47.968,
+"line": 12
+},
+{
+"word": "\"I'm",
+"start": 48.208,
+"end": 48.348,
+"line": 12
+},
+{
+"word": "not",
+"start": 48.348,
+"end": 48.448,
+"line": 12
+},
+{
+"word": "telling",
+"start": 48.448,
+"end": 48.628,
+"line": 12
+},
+{
+"word": "you.\"",
+"start": 48.628,
+"end": 48.828,
+"line": 12
+},
+{
+"word": "\"Is",
+"start": 49.182,
+"end": 49.302,
+"line": 13
+},
+{
+"word": "it",
+"start": 49.302,
+"end": 49.382,
+"line": 13
+},
+{
+"word": "Brandon?\"",
+"start": 49.382,
+"end": 49.542,
+"line": 13
+},
+{
+"word": "\"Brandon",
+"start": 50.083,
+"end": 50.383,
+"line": 14
+},
+{
+"word": "eats",
+"start": 50.383,
+"end": 50.623,
+"line": 14
+},
+{
+"word": "glue.\"",
+"start": 50.623,
+"end": 50.923,
+"line": 14
+},
+{
+"word": "\"Okay.",
+"start": 51.412,
+"end": 51.772,
+"line": 15
+},
+{
+"word": "Tyler?\"",
+"start": 52.052,
+"end": 52.232,
+"line": 15
+},
+{
+"word": "\"Tyler",
+"start": 52.767,
+"end": 52.967,
+"line": 16
+},
+{
+"word": "told",
+"start": 52.967,
+"end": 53.167,
+"line": 16
+},
+{
+"word": "me",
+"start": 53.167,
+"end": 53.287,
+"line": 16
+},
+{
+"word": "the",
+"start": 53.287,
+"end": 53.407,
+"line": 16
+},
+{
+"word": "Earth",
+"start": 53.407,
+"end": 53.527,
+"line": 16
+},
+{
+"word": "is",
+"start": 53.527,
+"end": 53.687,
+"line": 16
+},
+{
+"word": "flat.\"",
+"start": 53.687,
+"end": 53.907,
+"line": 16
+},
+{
+"word": "I",
+"start": 54.343,
+"end": 54.463,
+"line": 17
+},
+{
+"word": "was",
+"start": 54.463,
+"end": 54.583,
+"line": 17
+},
+{
+"word": "loving",
+"start": 54.583,
+"end": 54.803,
+"line": 17
+},
+{
+"word": "this.",
+"start": 54.803,
+"end": 55.063,
+"line": 17
+},
+{
+"word": "Then",
+"start": 55.542,
+"end": 55.682,
+"line": 18
+},
+{
+"word": "Chloe",
+"start": 55.682,
+"end": 55.862,
+"line": 18
+},
+{
+"word": "went",
+"start": 55.862,
+"end": 56.062,
+"line": 18
+},
+{
+"word": "quiet.",
+"start": 56.062,
+"end": 56.302,
+"line": 18
+},
+{
+"word": "\"It's",
+"start": 56.582,
+"end": 56.682,
+"line": 18
+},
+{
+"word": "the",
+"start": 56.682,
+"end": 56.782,
+"line": 18
+},
+{
+"word": "guy",
+"start": 56.782,
+"end": 56.902,
+"line": 18
+},
+{
+"word": "in",
+"start": 56.902,
+"end": 57.022,
+"line": 18
+},
+{
+"word": "our",
+"start": 57.022,
+"end": 57.122,
+"line": 18
+},
+{
+"word": "class.",
+"start": 57.122,
+"end": 57.362,
+"line": 18
+},
+{
+"word": "The",
+"start": 57.582,
+"end": 57.642,
+"line": 18
+},
+{
+"word": "quiet",
+"start": 57.642,
+"end": 57.842,
+"line": 18
+},
+{
+"word": "one.",
+"start": 57.842,
+"end": 58.042,
+"line": 18
+},
+{
+"word": "His",
+"start": 58.302,
+"end": 58.382,
+"line": 18
+},
+{
+"word": "hair",
+"start": 58.382,
+"end": 58.522,
+"line": 18
+},
+{
+"word": "never",
+"start": 58.522,
+"end": 58.702,
+"line": 18
+},
+{
+"word": "stays",
+"start": 58.702,
+"end": 58.942,
+"line": 18
+},
+{
+"word": "down.\"",
+"start": 58.942,
+"end": 59.202,
+"line": 18
+},
+{
+"word": "I",
+"start": 59.656,
+"end": 59.796,
+"line": 19
+},
+{
+"word": "slowly",
+"start": 59.796,
+"end": 60.016,
+"line": 19
+},
+{
+"word": "touched",
+"start": 60.016,
+"end": 60.256,
+"line": 19
+},
+{
+"word": "my",
+"start": 60.256,
+"end": 60.436,
+"line": 19
+},
+{
+"word": "hair.",
+"start": 60.436,
+"end": 60.656,
+"line": 19
+},
+{
+"word": "It",
+"start": 60.896,
+"end": 60.956,
+"line": 19
+},
+{
+"word": "was",
+"start": 60.956,
+"end": 61.036,
+"line": 19
+},
+{
+"word": "sticking",
+"start": 61.036,
+"end": 61.256,
+"line": 19
+},
+{
+"word": "straight",
+"start": 61.256,
+"end": 61.516,
+"line": 19
+},
+{
+"word": "up.",
+"start": 61.516,
+"end": 61.696,
+"line": 19
+},
+{
+"word": "Then",
+"start": 62.107,
+"end": 62.227,
+"line": 20
+},
+{
+"word": "I",
+"start": 62.227,
+"end": 62.347,
+"line": 20
+},
+{
+"word": "hit",
+"start": 62.347,
+"end": 62.427,
+"line": 20
+},
+{
+"word": "my",
+"start": 62.427,
+"end": 62.547,
+"line": 20
+},
+{
+"word": "head",
+"start": 62.547,
+"end": 62.667,
+"line": 20
+},
+{
+"word": "on",
+"start": 62.667,
+"end": 62.767,
+"line": 20
+},
+{
+"word": "the",
+"start": 62.767,
+"end": 62.867,
+"line": 20
+},
+{
+"word": "shelf.",
+"start": 62.867,
+"end": 63.127,
+"line": 20
+},
+{
+"word": "THUNK.",
+"start": 63.347,
+"end": 63.567,
+"line": 20
+},
+{
+"word": "\"...Did",
+"start": 63.897,
+"end": 63.997,
+"line": 21
+},
+{
+"word": "you",
+"start": 63.997,
+"end": 64.097,
+"line": 21
+},
+{
+"word": "hear",
+"start": 64.097,
+"end": 64.217,
+"line": 21
+},
+{
+"word": "that?\"",
+"start": 64.217,
+"end": 64.417,
+"line": 21
+},
+{
+"word": "Chloe",
+"start": 64.637,
+"end": 64.717,
+"line": 21
+},
+{
+"word": "asked.",
+"start": 64.717,
+"end": 64.957,
+"line": 21
+},
+{
+"word": "\"It's",
+"start": 65.404,
+"end": 65.564,
+"line": 22
+},
+{
+"word": "the",
+"start": 65.564,
+"end": 65.644,
+"line": 22
+},
+{
+"word": "building,\"",
+"start": 65.644,
+"end": 65.904,
+"line": 22
+},
+{
+"word": "Mia",
+"start": 66.104,
+"end": 66.184,
+"line": 22
+},
+{
+"word": "said.",
+"start": 66.184,
+"end": 66.444,
+"line": 22
+},
+{
+"word": "\"This",
+"start": 66.724,
+"end": 66.884,
+"line": 22
+},
+{
+"word": "school",
+"start": 66.884,
+"end": 67.104,
+"line": 22
+},
+{
+"word": "is",
+"start": 67.104,
+"end": 67.244,
+"line": 22
+},
+{
+"word": "haunted.\"",
+"start": 67.244,
+"end": 67.444,
+"line": 22
+},
+{
+"word": "I",
+"start": 67.959,
+"end": 68.079,
+"line": 23
+},
+{
+"word": "shut",
+"start": 68.079,
+"end": 68.239,
+"line": 23
+},
+{
+"word": "my",
+"start": 68.239,
+"end": 68.419,
+"line": 23
+},
+{
+"word": "eyes.",
+"start": 68.419,
+"end": 68.699,
+"line": 23
+},
+{
+"word": "Oh",
+"start": 68.939,
+"end": 68.979,
+"line": 23
+},
+{
+"word": "my",
+"start": 68.979,
+"end": 69.119,
+"line": 23
+},
+{
+"word": "gosh.",
+"start": 69.119,
+"end": 69.459,
+"line": 23
+},
+{
+"word": "Do",
+"start": 69.679,
+"end": 69.739,
+"line": 23
+},
+{
+"word": "not",
+"start": 69.739,
+"end": 69.919,
+"line": 23
+},
+{
+"word": "move.",
+"start": 69.919,
+"end": 70.239,
+"line": 23
+},
+{
+"word": "Do",
+"start": 70.519,
+"end": 70.599,
+"line": 23
+},
+{
+"word": "not",
+"start": 70.599,
+"end": 70.799,
+"line": 23
+},
+{
+"word": "move.",
+"start": 70.799,
+"end": 71.119,
+"line": 23
+},
+{
+"word": "Then",
+"start": 71.565,
+"end": 71.765,
+"line": 24
+},
+{
+"word": "Coach",
+"start": 71.765,
+"end": 71.945,
+"line": 24
+},
+{
+"word": "Reyes's",
+"start": 71.945,
+"end": 72.285,
+"line": 24
+},
+{
+"word": "whistle",
+"start": 72.285,
+"end": 72.525,
+"line": 24
+},
+{
+"word": "echoed",
+"start": 72.525,
+"end": 72.745,
+"line": 24
+},
+{
+"word": "down",
+"start": 72.745,
+"end": 73.005,
+"line": 24
+},
+{
+"word": "the",
+"start": 73.005,
+"end": 73.065,
+"line": 24
+},
+{
+"word": "hallway.",
+"start": 73.065,
+"end": 73.345,
+"line": 24
+},
+{
+"word": "\"Has",
+"start": 73.585,
+"end": 73.645,
+"line": 24
+},
+{
+"word": "anyone",
+"start": 73.645,
+"end": 73.825,
+"line": 24
+},
+{
+"word": "seen",
+"start": 73.825,
+"end": 74.065,
+"line": 24
+},
+{
+"word": "the",
+"start": 74.065,
+"end": 74.225,
+"line": 24
+},
+{
+"word": "kid",
+"start": 74.225,
+"end": 74.345,
+"line": 24
+},
+{
+"word": "who",
+"start": 74.345,
+"end": 74.485,
+"line": 24
+},
+{
+"word": "ran",
+"start": 74.485,
+"end": 74.625,
+"line": 24
+},
+{
+"word": "from",
+"start": 74.625,
+"end": 74.785,
+"line": 24
+},
+{
+"word": "the",
+"start": 74.785,
+"end": 74.885,
+"line": 24
+},
+{
+"word": "mile?\"",
+"start": 74.885,
+"end": 75.045,
+"line": 24
+},
+{
+"word": "\"No,",
+"start": 75.523,
+"end": 75.763,
+"line": 25
+},
+{
+"word": "Coach,\"",
+"start": 75.923,
+"end": 76.123,
+"line": 25
+},
+{
+"word": "Chloe",
+"start": 76.403,
+"end": 76.463,
+"line": 25
+},
+{
+"word": "called.",
+"start": 76.463,
+"end": 76.743,
+"line": 25
+},
+{
+"word": "\"He's",
+"start": 77.191,
+"end": 77.351,
+"line": 26
+},
+{
+"word": "probably",
+"start": 77.351,
+"end": 77.531,
+"line": 26
+},
+{
+"word": "hiding",
+"start": 77.531,
+"end": 77.791,
+"line": 26
+},
+{
+"word": "somewhere,\"",
+"start": 77.791,
+"end": 78.151,
+"line": 26
+},
+{
+"word": "Mia",
+"start": 78.391,
+"end": 78.431,
+"line": 26
+},
+{
+"word": "whispered.",
+"start": 78.431,
+"end": 78.691,
+"line": 26
+},
+{
+"word": "\"That's",
+"start": 79.051,
+"end": 79.211,
+"line": 26
+},
+{
+"word": "kind",
+"start": 79.211,
+"end": 79.311,
+"line": 26
+},
+{
+"word": "of",
+"start": 79.311,
+"end": 79.411,
+"line": 26
+},
+{
+"word": "his",
+"start": 79.411,
+"end": 79.511,
+"line": 26
+},
+{
+"word": "thing.\"",
+"start": 79.511,
+"end": 79.691,
+"line": 26
+},
+{
+"word": "\"Honestly,\"",
+"start": 80.149,
+"end": 80.569,
+"line": 27
+},
+{
+"word": "Chloe",
+"start": 80.789,
+"end": 80.909,
+"line": 27
+},
+{
+"word": "sighed,",
+"start": 80.909,
+"end": 81.209,
+"line": 27
+},
+{
+"word": "\"I",
+"start": 81.589,
+"end": 81.689,
+"line": 27
+},
+{
+"word": "wish",
+"start": 81.689,
+"end": 81.789,
+"line": 27
+},
+{
+"word": "he'd",
+"start": 81.789,
+"end": 81.969,
+"line": 27
+},
+{
+"word": "just",
+"start": 81.969,
+"end": 82.069,
+"line": 27
+},
+{
+"word": "ask",
+"start": 82.069,
+"end": 82.249,
+"line": 27
+},
+{
+"word": "me",
+"start": 82.249,
+"end": 82.409,
+"line": 27
+},
+{
+"word": "out.",
+"start": 82.409,
+"end": 82.609,
+"line": 27
+},
+{
+"word": "I've",
+"start": 82.809,
+"end": 82.929,
+"line": 27
+},
+{
+"word": "been",
+"start": 82.929,
+"end": 82.989,
+"line": 27
+},
+{
+"word": "waiting",
+"start": 82.989,
+"end": 83.149,
+"line": 27
+},
+{
+"word": "since",
+"start": 83.149,
+"end": 83.369,
+"line": 27
+},
+{
+"word": "September.",
+"start": 83.369,
+"end": 83.709,
+"line": 27
+},
+{
+"word": "I",
+"start": 84.009,
+"end": 84.109,
+"line": 27
+},
+{
+"word": "even",
+"start": 84.109,
+"end": 84.249,
+"line": 27
+},
+{
+"word": "moved",
+"start": 84.249,
+"end": 84.429,
+"line": 27
+},
+{
+"word": "my",
+"start": 84.429,
+"end": 84.589,
+"line": 27
+},
+{
+"word": "seat",
+"start": 84.589,
+"end": 84.749,
+"line": 27
+},
+{
+"word": "next",
+"start": 84.749,
+"end": 84.909,
+"line": 27
+},
+{
+"word": "to",
+"start": 84.909,
+"end": 85.049,
+"line": 27
+},
+{
+"word": "his.\"",
+"start": 85.049,
+"end": 85.169,
+"line": 27
+},
+{
+"word": "My",
+"start": 85.649,
+"end": 85.789,
+"line": 28
+},
+{
+"word": "heart",
+"start": 85.789,
+"end": 85.949,
+"line": 28
+},
+{
+"word": "did",
+"start": 85.949,
+"end": 86.089,
+"line": 28
+},
+{
+"word": "a",
+"start": 86.089,
+"end": 86.189,
+"line": 28
+},
+{
+"word": "backflip.",
+"start": 86.189,
+"end": 86.589,
+"line": 28
+},
+{
+"word": "She",
+"start": 86.889,
+"end": 86.909,
+"line": 28
+},
+{
+"word": "liked",
+"start": 86.909,
+"end": 87.089,
+"line": 28
+},
+{
+"word": "ME.",
+"start": 87.089,
+"end": 87.349,
+"line": 28
+},
+{
+"word": "Chloe",
+"start": 87.649,
+"end": 87.669,
+"line": 28
+},
+{
+"word": "liked",
+"start": 87.669,
+"end": 87.909,
+"line": 28
+},
+{
+"word": "ME.",
+"start": 87.909,
+"end": 88.189,
+"line": 28
+},
+{
+"word": "And",
+"start": 88.349,
+"end": 88.449,
+"line": 28
+},
+{
+"word": "I",
+"start": 88.449,
+"end": 88.569,
+"line": 28
+},
+{
+"word": "was",
+"start": 88.569,
+"end": 88.689,
+"line": 28
+},
+{
+"word": "sitting",
+"start": 88.689,
+"end": 88.809,
+"line": 28
+},
+{
+"word": "in",
+"start": 88.809,
+"end": 88.949,
+"line": 28
+},
+{
+"word": "her",
+"start": 88.949,
+"end": 89.029,
+"line": 28
+},
+{
+"word": "locker",
+"start": 89.029,
+"end": 89.209,
+"line": 28
+},
+{
+"word": "next",
+"start": 89.209,
+"end": 89.389,
+"line": 28
+},
+{
+"word": "to",
+"start": 89.389,
+"end": 89.549,
+"line": 28
+},
+{
+"word": "a",
+"start": 89.549,
+"end": 89.609,
+"line": 28
+},
+{
+"word": "banana.",
+"start": 89.609,
+"end": 89.769,
+"line": 28
+},
+{
+"word": "I",
+"start": 90.291,
+"end": 90.411,
+"line": 29
+},
+{
+"word": "smiled",
+"start": 90.411,
+"end": 90.651,
+"line": 29
+},
+{
+"word": "so",
+"start": 90.651,
+"end": 90.891,
+"line": 29
+},
+{
+"word": "hard",
+"start": 90.891,
+"end": 91.111,
+"line": 29
+},
+{
+"word": "that",
+"start": 91.111,
+"end": 91.231,
+"line": 29
+},
+{
+"word": "I",
+"start": 91.231,
+"end": 91.311,
+"line": 29
+},
+{
+"word": "forgot",
+"start": 91.311,
+"end": 91.511,
+"line": 29
+},
+{
+"word": "to",
+"start": 91.511,
+"end": 91.631,
+"line": 29
+},
+{
+"word": "be",
+"start": 91.631,
+"end": 91.751,
+"line": 29
+},
+{
+"word": "quiet.",
+"start": 91.751,
+"end": 92.011,
+"line": 29
+},
+{
+"word": "And",
+"start": 92.011,
+"end": 92.291,
+"line": 29
+},
+{
+"word": "I",
+"start": 92.291,
+"end": 92.411,
+"line": 29
+},
+{
+"word": "sneezed.",
+"start": 92.411,
+"end": 92.851,
+"line": 29
+},
+{
+"word": "Dead",
+"start": 93.19,
+"end": 93.41,
+"line": 30
+},
+{
+"word": "silence.",
+"start": 93.41,
+"end": 93.79,
+"line": 30
+},
+{
+"word": "Then",
+"start": 94.09,
+"end": 94.17,
+"line": 30
+},
+{
+"word": "the",
+"start": 94.17,
+"end": 94.27,
+"line": 30
+},
+{
+"word": "locker",
+"start": 94.27,
+"end": 94.43,
+"line": 30
+},
+{
+"word": "door",
+"start": 94.43,
+"end": 94.65,
+"line": 30
+},
+{
+"word": "slowly",
+"start": 94.65,
+"end": 94.91,
+"line": 30
+},
+{
+"word": "swung",
+"start": 94.91,
+"end": 95.19,
+"line": 30
+},
+{
+"word": "open.",
+"start": 95.19,
+"end": 95.41,
+"line": 30
+},
+{
+"word": "Chloe",
+"start": 95.861,
+"end": 96.041,
+"line": 31
+},
+{
+"word": "looked",
+"start": 96.041,
+"end": 96.261,
+"line": 31
+},
+{
+"word": "down",
+"start": 96.261,
+"end": 96.441,
+"line": 31
+},
+{
+"word": "at",
+"start": 96.441,
+"end": 96.541,
+"line": 31
+},
+{
+"word": "me.",
+"start": 96.541,
+"end": 96.701,
+"line": 31
+},
+{
+"word": "Mia",
+"start": 97.001,
+"end": 97.021,
+"line": 31
+},
+{
+"word": "looked",
+"start": 97.021,
+"end": 97.221,
+"line": 31
+},
+{
+"word": "down",
+"start": 97.221,
+"end": 97.421,
+"line": 31
+},
+{
+"word": "at",
+"start": 97.421,
+"end": 97.521,
+"line": 31
+},
+{
+"word": "me.",
+"start": 97.521,
+"end": 97.661,
+"line": 31
+},
+{
+"word": "\"...Hi,\"",
+"start": 98.023,
+"end": 98.343,
+"line": 32
+},
+{
+"word": "I",
+"start": 98.643,
+"end": 98.763,
+"line": 32
+},
+{
+"word": "whispered.",
+"start": 98.763,
+"end": 98.943,
+"line": 32
+},
+{
+"word": "Mia",
+"start": 99.471,
+"end": 99.651,
+"line": 33
+},
+{
+"word": "screamed.",
+"start": 99.651,
+"end": 99.991,
+"line": 33
+},
+{
+"word": "\"HE",
+"start": 100.291,
+"end": 100.371,
+"line": 33
+},
+{
+"word": "WAS",
+"start": 100.371,
+"end": 100.471,
+"line": 33
+},
+{
+"word": "IN",
+"start": 100.471,
+"end": 100.571,
+"line": 33
+},
+{
+"word": "THERE",
+"start": 100.571,
+"end": 100.691,
+"line": 33
+},
+{
+"word": "THE",
+"start": 100.691,
+"end": 100.791,
+"line": 33
+},
+{
+"word": "WHOLE",
+"start": 100.791,
+"end": 100.931,
+"line": 33
+},
+{
+"word": "TIME?!\"",
+"start": 100.931,
+"end": 101.171,
+"line": 33
+},
+{
+"word": "I",
+"start": 101.654,
+"end": 101.754,
+"line": 34
+},
+{
+"word": "wanted",
+"start": 101.754,
+"end": 101.954,
+"line": 34
+},
+{
+"word": "to",
+"start": 101.954,
+"end": 102.094,
+"line": 34
+},
+{
+"word": "disappear",
+"start": 102.094,
+"end": 102.374,
+"line": 34
+},
+{
+"word": "forever.",
+"start": 102.374,
+"end": 102.654,
+"line": 34
+},
+{
+"word": "Then",
+"start": 102.974,
+"end": 103.074,
+"line": 34
+},
+{
+"word": "a",
+"start": 103.074,
+"end": 103.174,
+"line": 34
+},
+{
+"word": "shadow",
+"start": 103.174,
+"end": 103.374,
+"line": 34
+},
+{
+"word": "fell",
+"start": 103.374,
+"end": 103.534,
+"line": 34
+},
+{
+"word": "over",
+"start": 103.534,
+"end": 103.714,
+"line": 34
+},
+{
+"word": "all",
+"start": 103.714,
+"end": 103.854,
+"line": 34
+},
+{
+"word": "of",
+"start": 103.854,
+"end": 103.954,
+"line": 34
+},
+{
+"word": "us.",
+"start": 103.954,
+"end": 104.114,
+"line": 34
+},
+{
+"word": "It",
+"start": 104.294,
+"end": 104.354,
+"line": 34
+},
+{
+"word": "was",
+"start": 104.354,
+"end": 104.474,
+"line": 34
+},
+{
+"word": "Coach",
+"start": 104.474,
+"end": 104.634,
+"line": 34
+},
+{
+"word": "Reyes.",
+"start": 104.634,
+"end": 104.874,
+"line": 34
+},
+{
+"word": "\"THERE",
+"start": 105.389,
+"end": 105.569,
+"line": 35
+},
+{
+"word": "you",
+"start": 105.569,
+"end": 105.669,
+"line": 35
+},
+{
+"word": "are.",
+"start": 105.669,
+"end": 105.949,
+"line": 35
+},
+{
+"word": "Ten",
+"start": 106.169,
+"end": 106.269,
+"line": 35
+},
+{
+"word": "laps.\"",
+"start": 106.269,
+"end": 106.489,
+"line": 35
+},
+{
+"word": "I",
+"start": 107.036,
+"end": 107.156,
+"line": 36
+},
+{
+"word": "closed",
+"start": 107.156,
+"end": 107.336,
+"line": 36
+},
+{
+"word": "my",
+"start": 107.336,
+"end": 107.536,
+"line": 36
+},
+{
+"word": "eyes.",
+"start": 107.536,
+"end": 107.836,
+"line": 36
+},
+{
+"word": "This",
+"start": 108.076,
+"end": 108.176,
+"line": 36
+},
+{
+"word": "was",
+"start": 108.176,
+"end": 108.296,
+"line": 36
+},
+{
+"word": "it.",
+"start": 108.296,
+"end": 108.536,
+"line": 36
+},
+{
+"word": "The",
+"start": 108.756,
+"end": 108.856,
+"line": 36
+},
+{
+"word": "worst",
+"start": 108.856,
+"end": 108.996,
+"line": 36
+},
+{
+"word": "day",
+"start": 108.996,
+"end": 109.196,
+"line": 36
+},
+{
+"word": "of",
+"start": 109.196,
+"end": 109.336,
+"line": 36
+},
+{
+"word": "my",
+"start": 109.336,
+"end": 109.456,
+"line": 36
+},
+{
+"word": "life.",
+"start": 109.456,
+"end": 109.676,
+"line": 36
+},
+{
+"word": "But",
+"start": 110.163,
+"end": 110.263,
+"line": 37
+},
+{
+"word": "Chloe",
+"start": 110.263,
+"end": 110.463,
+"line": 37
+},
+{
+"word": "stepped",
+"start": 110.463,
+"end": 110.663,
+"line": 37
+},
+{
+"word": "in",
+"start": 110.663,
+"end": 110.843,
+"line": 37
+},
+{
+"word": "front",
+"start": 110.843,
+"end": 110.943,
+"line": 37
+},
+{
+"word": "of",
+"start": 110.943,
+"end": 111.043,
+"line": 37
+},
+{
+"word": "me.",
+"start": 111.043,
+"end": 111.243,
+"line": 37
+},
+{
+"word": "\"Coach,",
+"start": 111.623,
+"end": 111.663,
+"line": 37
+},
+{
+"word": "I'll",
+"start": 111.863,
+"end": 111.943,
+"line": 37
+},
+{
+"word": "run",
+"start": 111.943,
+"end": 112.063,
+"line": 37
+},
+{
+"word": "with",
+"start": 112.063,
+"end": 112.183,
+"line": 37
+},
+{
+"word": "him.\"",
+"start": 112.183,
+"end": 112.303,
+"line": 37
+},
+{
+"word": "Coach",
+"start": 112.731,
+"end": 112.911,
+"line": 38
+},
+{
+"word": "blinked.",
+"start": 112.911,
+"end": 113.151,
+"line": 38
+},
+{
+"word": "\"Why?\"",
+"start": 113.351,
+"end": 113.551,
+"line": 38
+},
+{
+"word": "\"Because...\"",
+"start": 114.037,
+"end": 114.317,
+"line": 39
+},
+{
+"word": "She",
+"start": 114.317,
+"end": 114.697,
+"line": 39
+},
+{
+"word": "smiled.",
+"start": 114.697,
+"end": 114.997,
+"line": 39
+},
+{
+"word": "\"He's",
+"start": 115.257,
+"end": 115.357,
+"line": 39
+},
+{
+"word": "my...",
+"start": 115.357,
+"end": 115.577,
+"line": 39
+},
+{
+"word": "helper.\"",
+"start": 115.577,
+"end": 115.937,
+"line": 39
+},
+{
+"word": "Coach",
+"start": 116.465,
+"end": 116.625,
+"line": 40
+},
+{
+"word": "walked",
+"start": 116.625,
+"end": 116.845,
+"line": 40
+},
+{
+"word": "away,",
+"start": 116.845,
+"end": 117.125,
+"line": 40
+},
+{
+"word": "totally",
+"start": 117.345,
+"end": 117.505,
+"line": 40
+},
+{
+"word": "confused.",
+"start": 117.505,
+"end": 117.945,
+"line": 40
+},
+{
+"word": "Then",
+"start": 118.405,
+"end": 118.485,
+"line": 40
+},
+{
+"word": "Chloe",
+"start": 118.485,
+"end": 118.685,
+"line": 40
+},
+{
+"word": "turned",
+"start": 118.685,
+"end": 118.905,
+"line": 40
+},
+{
+"word": "back",
+"start": 118.905,
+"end": 119.085,
+"line": 40
+},
+{
+"word": "to",
+"start": 119.085,
+"end": 119.205,
+"line": 40
+},
+{
+"word": "me.",
+"start": 119.205,
+"end": 119.385,
+"line": 40
+},
+{
+"word": "\"So...",
+"start": 119.705,
+"end": 119.885,
+"line": 40
+},
+{
+"word": "was",
+"start": 120.025,
+"end": 120.365,
+"line": 40
+},
+{
+"word": "that",
+"start": 120.365,
+"end": 120.525,
+"line": 40
+},
+{
+"word": "a",
+"start": 120.525,
+"end": 120.625,
+"line": 40
+},
+{
+"word": "yes?\"",
+"start": 120.625,
+"end": 120.785,
+"line": 40
+},
+{
+"word": "I",
+"start": 121.349,
+"end": 121.469,
+"line": 41
+},
+{
+"word": "slowly",
+"start": 121.469,
+"end": 121.649,
+"line": 41
+},
+{
+"word": "nodded.",
+"start": 121.649,
+"end": 121.929,
+"line": 41
+},
+{
+"word": "She",
+"start": 122.395,
+"end": 122.535,
+"line": 42
+},
+{
+"word": "grinned.",
+"start": 122.535,
+"end": 122.735,
+"line": 42
+},
+{
+"word": "\"Good.\"",
+"start": 122.995,
+"end": 123.195,
+"line": 42
+},
+{
+"word": "And",
+"start": 123.435,
+"end": 123.495,
+"line": 42
+},
+{
+"word": "she",
+"start": 123.495,
+"end": 123.615,
+"line": 42
+},
+{
+"word": "held",
+"start": 123.615,
+"end": 123.735,
+"line": 42
+},
+{
+"word": "out",
+"start": 123.735,
+"end": 123.855,
+"line": 42
+},
+{
+"word": "her",
+"start": 123.855,
+"end": 123.955,
+"line": 42
+},
+{
+"word": "hand.",
+"start": 123.955,
+"end": 124.215,
+"line": 42
+},
+{
+"word": "\"Now",
+"start": 124.495,
+"end": 124.535,
+"line": 42
+},
+{
+"word": "can",
+"start": 124.535,
+"end": 124.655,
+"line": 42
+},
+{
+"word": "you",
+"start": 124.655,
+"end": 124.755,
+"line": 42
+},
+{
+"word": "get",
+"start": 124.755,
+"end": 124.855,
+"line": 42
+},
+{
+"word": "out?",
+"start": 124.855,
+"end": 125.055,
+"line": 42
+},
+{
+"word": "I",
+"start": 125.255,
+"end": 125.335,
+"line": 42
+},
+{
+"word": "need",
+"start": 125.335,
+"end": 125.435,
+"line": 42
+},
+{
+"word": "my",
+"start": 125.435,
+"end": 125.595,
+"line": 42
+},
+{
+"word": "gym",
+"start": 125.595,
+"end": 125.775,
+"line": 42
+},
+{
+"word": "shoes.\"",
+"start": 125.775,
+"end": 125.975,
+"line": 42
+}
+]

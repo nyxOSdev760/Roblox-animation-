@@ -2031,3 +2031,299 @@ export function buildFogTown(scene, a, o, { seed = 41, plaques = true } = {}) {
   fixture([o.x, 13, o.z - 11], { color: 0xffd9a0, intensity: 20, distance: 18 }); // clock tower glow
   return { houses, lamps, bakery: { group: bakeryRoot, sign, blank, full }, hole: [11.2, 15.2], crate: { at: [0, 0], top: 1.6 } };
 }
+
+// ---- a school hallway lined with lockers ------------------------------------------------
+
+/**
+ * A school hallway at `o`: interior x -23..23, z -6.2..7.2, 12 high. Fourteen lockers (2.6 wide,
+ * 3 deep, 7 tall) line the back wall (-z) with their doors facing +z; the front wall has
+ * classroom doors, bulletin boards and a run of high windows that let sun in. Double doors at
+ * both ends swing into the hall. One locker (index 12) is a hollow `hero` with a swinging door,
+ * a shelf and clutter on it. Returns { heroX, heroZ, doorZ, hero: { door, shelf, banana,
+ * can, shoes, books, padlock, light }, ends: { left: [l, r], right: [l, r] } } where door and
+ * leaf pivots rotate about y (hero door, hinged on its right edge: 0 shut, about +1.75 hanging open into the hall; a
+ * left-end leaf swings to +x with a positive angle for the first leaf and negative for the
+ * second, mirrored at the right end).
+ */
+export function buildLockerHall(scene, a, o, { seed = 33 } = {}) {
+  const r = rng(seed);
+  const g = new THREE.Group();
+  const HX = 23;
+  const Z0 = -6.2; // back wall (inner face)
+  const Z1 = 7.2; // front wall (inner face)
+  const H = 12;
+  const WALLC = 0xe9e2cc;
+  const LW = 2.6; // locker width
+  const LD = 3.0;
+  const LH = 7;
+  const doorZ = Z0 + LD; // the locker door plane
+  const lockerX = (i) => (i - 6.5) * LW;
+  const HERO = 12;
+
+  // Floor, ceiling and walls.
+  box(g, a, [48, 1, 14.4], [0, -0.5, 0.5], 0x9b9b95, 'Concrete', false);
+  put(g, texturedPlane(46, 13.4, 8, tileDraw('#e9e3d3', '#9fb3c4', 5), { rough: 0.3 }), 0, 0.01, 0.5);
+  put(g, texturedPlane(46, 13.4, 8, ceilingDraw, { up: false, rough: 0.9 }), 0, H, 0.5);
+  box(g, a, [49, 0.6, 15.6], [0, H + 0.3, 0.5], TRIM, 'Plastic');
+  box(g, a, [48, H, 1], [0, H / 2, Z0 - 0.5], WALLC, 'Plastic');
+  // End walls with a double doorway (z -2.5..3.5, 8.2 high).
+  for (const s of [-1, 1]) {
+    box(g, a, [1, H, 3.7], [s * (HX + 0.5), H / 2, -4.35], WALLC, 'Plastic');
+    box(g, a, [1, H, 3.7], [s * (HX + 0.5), H / 2, 5.35], WALLC, 'Plastic');
+    box(g, a, [1, H - 8.2, 6], [s * (HX + 0.5), 8.2 + (H - 8.2) / 2, 0.5], WALLC, 'Plastic');
+    // What lies beyond the leaves: daylight at the right end, the gym's warm light at the left.
+    const beyond = P.canvasTexture(8, 64, (ctx, w, h) => {
+      const gr = ctx.createLinearGradient(0, 0, 0, h);
+      gr.addColorStop(0, s > 0 ? '#eef6ff' : '#ffe3a8');
+      gr.addColorStop(1, s > 0 ? '#bcd8f2' : '#d9a45a');
+      ctx.fillStyle = gr;
+      ctx.fillRect(0, 0, w, h);
+    });
+    const glow = new THREE.Mesh(new THREE.PlaneGeometry(6.4, 8.4), new THREE.MeshBasicMaterial({ map: beyond }));
+    glow.position.set(s * (HX + 0.3), 4.2, 0.5);
+    glow.rotation.y = s > 0 ? -Math.PI / 2 : Math.PI / 2;
+    g.add(glow);
+  }
+  // Front wall: classroom doors below, a strip of windows above (so the sun comes in).
+  box(g, a, [48, 8.6, 1], [0, 4.3, Z1 + 0.5], WALLC, 'Plastic');
+  box(g, a, [48, 0.8, 1], [0, H - 0.4, Z1 + 0.5], WALLC, 'Plastic');
+  for (let k = 0; k < 6; k++) {
+    const x = -22.5 + k * 9;
+    box(g, a, [2.0, 2.6, 1], [x, 9.9, Z1 + 0.5], WALLC, 'Plastic');
+    if (k < 5) {
+      g.add(part(a, [7, 2.6, 0.12], [x + 4.5, 9.9, Z1 + 0.2], 0xd8eef8, 'Glass', { shadows: false, mat: { opacity: 0.18 } }));
+      box(g, a, [7.2, 0.18, 0.3], [x + 4.5, 8.7, Z1 - 0.1], FRAME, 'Metal', false);
+      box(g, a, [0.14, 2.6, 0.3], [x + 4.5, 9.9, Z1 - 0.1], FRAME, 'Metal', false);
+    }
+  }
+  // Dado rail (red) and baseboard along the front wall, above-locker trim on the back wall.
+  box(g, a, [46, 3.2, 0.1], [0, 1.6, Z1 - 0.05], 0x7d2f3a, 'Plastic', false);
+  box(g, a, [46, 0.35, 0.15], [0, 3.3, Z1 - 0.08], TRIM, 'Plastic', false);
+  box(g, a, [46, 0.4, 0.16], [0, 0.2, Z1 - 0.1], TRIM, 'Plastic', false);
+  box(g, a, [46, 0.5, 1.0], [0, LH + 0.25, Z0 + 0.5], FRAME, 'Metal', false); // lockers' top cap line
+  // Ceiling lights.
+  const panels = [];
+  for (const x of [-18, -12, -6, 0, 6, 12, 18]) {
+    box(g, a, [3.2, 0.1, 1.3], [x, H - 0.05, 0.5], 0xfdfcf2, 'Neon', false);
+    box(g, a, [3.6, 0.2, 1.7], [x, H - 0.1, 0.5], TRIM, 'Metal', false);
+    panels.push(x);
+  }
+
+  // Lockers along the back wall.
+  const doorColors = [0x1f5fa8, 0x2a6dba, 0x1a5499];
+  for (let i = 0; i < 14; i++) {
+    const x = lockerX(i);
+    if (i === HERO) continue;
+    const c = doorColors[(i * 5 + 1) % 3];
+    box(g, a, [LW, LH, LD - 0.12], [x, LH / 2, Z0 + (LD - 0.12) / 2], 0x15467f, 'Metal');
+    box(g, a, [LW - 0.12, LH - 0.16, 0.12], [x, LH / 2, doorZ - 0.06], c, 'Metal');
+    for (let k = 0; k < 4; k++) box(g, a, [1.4, 0.1, 0.06], [x, 6.2 - k * 0.28, doorZ + 0.02], BRICK.reallyBlack, 'Plastic', false);
+    for (let k = 0; k < 3; k++) box(g, a, [1.4, 0.1, 0.06], [x, 0.9 + k * 0.28, doorZ + 0.02], BRICK.reallyBlack, 'Plastic', false);
+    box(g, a, [0.16, 0.7, 0.14], [x + 0.85, 3.6, doorZ + 0.06], BRICK.mediumStoneGrey, 'Metal', false);
+    box(g, a, [0.5, 0.2, 0.1], [x + 0.65, 4.2, doorZ + 0.04], BRICK.mediumStoneGrey, 'Metal', false);
+    if (r() < 0.5) {
+      const st = decal(0.9, 0.6, (ctx, w, h) => {
+        ctx.fillStyle = ['#ffd21f', '#ff98dc', '#7fe0a0', '#ffffff'][i % 4];
+        ctx.fillRect(0, 0, w, h);
+        P.drawText(ctx, ['HI', 'ART', 'BAND', 'EAGLES', 'CHESS'][i % 5], w / 2, h * 0.55, w * 0.9, h * 0.5, { color: '#1b2a35' });
+      });
+      put(g, st, x - 0.5 + r() * 0.4, 2.4 + r() * 1.6, doorZ + 0.07);
+    }
+  }
+  // The hero locker's neighbours are boxed in by a frame so there are no gaps.
+  for (const s of [-1, 1]) box(g, a, [0.14, LH, LD], [lockerX(HERO) + s * (LW / 2 + 0.07), LH / 2, Z0 + LD / 2], 0x15467f, 'Metal').userData.noCollide = true;
+
+  // Back wall above the lockers: banners, a clock, pennants.
+  const eagles = decal(9, 2.4, signDraw(['GO EAGLES!'], '#7d2f3a', '#ffd21f', { border: '#ffd21f' }));
+  put(g, eagles, -9, 9.8, Z0 + 0.04);
+  const dance = decal(3.4, 4.2, signDraw(['SCHOOL', 'DANCE', 'FRI 7PM'], '#6225d1', '#ffffff', { stroke: '#1b2a35' }));
+  put(g, dance, 6, 9.7, Z0 + 0.04);
+  const mile = decal(4.6, 3.2, signDraw(['THE MILE', 'RUN SIGN-UP', 'TODAY!'], '#1f5fa8', '#ffd21f', { stroke: '#1b2a35' }));
+  put(g, mile, 15, 9.7, Z0 + 0.04);
+  put(g, decal(2.6, 2.6, drawClock, { ppu: 100, alpha: true }), -1.5, 10.2, Z0 + 0.06);
+  put(g, decal(5, 3.2, drawBulletin), -18.8, 9.6, Z0 + 0.04);
+  // The two ends of the locker wall: a bench and a plant.
+  for (const s of [-1, 1]) {
+    const bx = s * 20.9;
+    box(g, a, [2.2, 0.3, 4], [bx, 1.6, -3.9], 0x6b4a33, 'WoodPlanks');
+    for (const z of [-5.5, -2.3]) box(g, a, [1.9, 1.6, 0.3], [bx, 0.8, z], 0x2a2a2a, 'Metal');
+    plant(g, a, bx + s * 0.8, 1.9, -3.9, 1.4);
+  }
+
+  // The front wall: classroom doors, bulletin boards, a trophy case, posters, a fountain.
+  const DOORS = [-17, -8, 1.5, 11, 20];
+  DOORS.forEach((x, k) => {
+    box(g, a, [4.6, 8.4, 0.2], [x, 4.2, Z1 - 0.1], TRIM, 'Plastic', false);
+    box(g, a, [3.8, 7.8, 0.3], [x, 3.9, Z1 - 0.2], 0x8a5a3a, 'WoodPlanks');
+    box(g, a, [1.2, 3.0, 0.1], [x, 5.4, Z1 - 0.38], 0x9fd0ef, 'Glass', false);
+    box(g, a, [0.2, 0.5, 0.3], [x + 1.4, 3.6, Z1 - 0.45], BRICK.mediumStoneGrey, 'Metal', false);
+    put(g, decal(1.5, 0.8, signDraw([`${201 + k}`], '#1b2a35', '#ffffff')), x, 7.0, Z1 - 0.42, Math.PI);
+  });
+  put(g, decal(6, 5, drawBulletin), -12.5, 5.6, Z1 - 0.06, Math.PI);
+  put(g, decal(5.4, 4.2, drawBulletin), 6.2, 5.6, Z1 - 0.06, Math.PI);
+  put(g, decal(4, 5, drawRules), -1.8, 5.8, Z1 - 0.06, Math.PI);
+  put(g, decal(3.2, 4.4, signDraw(['LOST', 'CAT', 'REWARD'], '#fffbea', '#c4281c', { border: '#1b2a35' })), 15.4, 5.4, Z1 - 0.06, Math.PI);
+  put(g, decal(4.4, 3.2, signDraw(['PICTURE', 'DAY', 'FRIDAY!'], '#ffd21f', '#1b2a35', { border: '#7d2f3a' })), -21.3, 5.8, Z1 - 0.06, Math.PI);
+  box(g, a, [1.4, 1.0, 1.6], [4.2, 3.0, Z1 - 1.0], 0xc0c4c8, 'Metal'); // water fountain
+  box(g, a, [0.5, 2.6, 0.6], [4.2, 1.3, Z1 - 1.0], 0xc0c4c8, 'Metal');
+  box(g, a, [0.9, 0.5, 0.15], [4.2, 3.4, Z1 - 0.3], 0xc0c4c8, 'Metal', false);
+  // Odds and ends on the floor.
+  const can = new THREE.Group();
+  box(can, a, [0.9, 1.6, 0.9], [0, 0.8, 0], 0x3d5a6c, 'Metal');
+  box(can, a, [1.0, 0.2, 1.0], [0, 1.65, 0], 0x2b3f4c, 'Metal', false);
+  put(g, can, -20.2, 0, 5.6);
+  const wet = new THREE.Group();
+  box(wet, a, [1.5, 2.2, 0.12], [0, 1.1, 0.3], 0xf5cd30, 'Plastic');
+  box(wet, a, [1.5, 2.2, 0.12], [0, 1.1, -0.3], 0xf5cd30, 'Plastic');
+  box(wet, a, [1.0, 0.7, 0.08], [0, 1.4, 0.37], 0x1b2a35, 'Plastic', false);
+  put(g, wet, -9.4, 0, 4.2, 0.3);
+  backpack(g, a, -6.0, 0, 4.9, 0xc4281c, 0.7);
+  backpack(g, a, 8.5, 0, 5.2, 0x4b974b, -0.4);
+
+  g.position.copy(o);
+  scene.add(bake(g));
+
+  // The hero locker (hollow, with a swinging door), placed in world space.
+  const hx = o.x + lockerX(HERO);
+  const zc = o.z + Z0 + LD / 2;
+  const hero = new THREE.Group();
+  hero.position.set(hx, 0, zc);
+  scene.add(hero);
+  const IN = 0xb9c6d4;
+  const hb = (size, pos, c = IN, m = 'Metal', sh = true) => box(hero, a, size, pos, c, m, sh);
+  hb([LW, LH, 0.12], [0, LH / 2, -LD / 2 + 0.06], IN);
+  hb([0.12, LH, LD], [-LW / 2 + 0.06, LH / 2, 0]);
+  hb([0.12, LH, LD], [LW / 2 - 0.06, LH / 2, 0]);
+  hb([LW, 0.12, LD], [0, LH - 0.06, 0], 0x15467f);
+  hb([LW, 0.15, LD], [0, 0.08, 0], 0x8d9aa8);
+  const shelf = hb([LW - 0.24, 0.12, LD - 0.16], [0, 3.9, 0.04], 0xa9b6c4);
+  // Clutter: a mirror and photo strips on the back wall, a hook with a hoodie, the old banana,
+  // a can of vanilla body spray, a stack of books and the gym shoes.
+  put(hero, decal(0.9, 1.2, (ctx, w, h) => {
+    ctx.fillStyle = '#cfe9f5';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillRect(w * 0.1, h * 0.08, w * 0.12, h * 0.7);
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 5;
+    ctx.strokeRect(2, 2, w - 4, h - 4);
+  }), -0.45, 5.1, -LD / 2 + 0.14);
+  put(hero, decal(0.7, 1.6, (ctx, w, h) => {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, w, h);
+    for (let k = 0; k < 4; k++) {
+      ctx.fillStyle = ['#ffb3c6', '#a8d8ff', '#ffe08a', '#c8f7c5'][k];
+      ctx.fillRect(w * 0.1, h * (0.04 + k * 0.24), w * 0.8, h * 0.2);
+    }
+  }), 0.55, 5.2, -LD / 2 + 0.14);
+  hb([0.12, 0.12, 0.5], [0.0, 6.4, -LD / 2 + 0.34], 0x8d9aa8);
+  const hoodie = hb([1.4, 1.4, 0.35], [0.0, 5.6, -LD / 2 + 0.52], 0xff98dc, 'Fabric');
+  hoodie.rotation.z = 0.02;
+  const banana = new THREE.Group();
+  for (const [x, y, rz, c] of [[-0.35, 0, 0.55, 0xc9a43a], [0, 0.12, 0.1, 0xc9a43a], [0.35, 0, -0.55, 0xc9a43a]]) {
+    const seg = part(a, [0.5, 0.2, 0.22], [x, y, 0], c, 'Plastic', { shadows: false });
+    seg.rotation.z = rz;
+    banana.add(seg);
+  }
+  for (const [x, y] of [[-0.2, 0.18], [0.1, 0.24], [0.28, 0.1], [-0.4, 0.05]]) banana.add(part(a, [0.1, 0.06, 0.24], [x, y, 0], 0x5a3b22, 'Plastic', { shadows: false }));
+  banana.add(part(a, [0.12, 0.24, 0.12], [-0.68, -0.16, 0], 0x4a3a22, 'Plastic', { shadows: false }));
+  banana.position.set(-0.55, 4.12, 0.2);
+  hero.add(banana);
+  const spray = new THREE.Group();
+  spray.add(cylinder(a, 0.26, 1.0, [0, 0.5, 0], 0xff9ac8, 'SmoothPlastic'));
+  spray.add(cylinder(a, 0.2, 0.2, [0, 1.1, 0], 0xf4f4f4, 'SmoothPlastic'));
+  spray.add(cylinder(a, 0.08, 0.14, [0, 1.27, 0], 0x888888, 'Metal'));
+  spray.add(decal(0.4, 0.5, signDraw(['VANILLA'], '#ffffff', '#c2185b')));
+  spray.children.at(-1).position.set(0, 0.55, 0.265);
+  spray.position.set(0.2, 3.96, -0.3);
+  hero.add(spray);
+  const shoes = new THREE.Group();
+  for (const s of [-1, 1]) {
+    box(shoes, a, [0.62, 0.32, 1.3], [s * 0.38, 0.2, 0], 0xf6f6f6, 'SmoothPlastic');
+    box(shoes, a, [0.64, 0.12, 1.34], [s * 0.38, 0.06, 0], 0xc4281c, 'Plastic', false);
+    box(shoes, a, [0.5, 0.3, 0.5], [s * 0.38, 0.45, -0.38], 0xffffff, 'SmoothPlastic');
+  }
+  shoes.position.set(0.7, 3.96, 0.45);
+  hero.add(shoes);
+  const books = new THREE.Group();
+  [[1.1, 0.26, 0.8, 0x4b974b], [1.0, 0.22, 0.75, 0xc4281c], [1.05, 0.28, 0.8, 0x1f4f9a]].forEach(([w, h, d, c], k) =>
+    box(books, a, [w, h, d], [0, 0.13 + (k ? [0, 0.26, 0.48][k] : 0), 0], c, 'Fabric'));
+  books.position.set(-0.55, 3.96, -0.7);
+  hero.add(books);
+  // The door: hinged on the right edge, swings out into the hall (positive y rotation).
+  const door = new THREE.Group();
+  door.position.set(LW / 2, 0, LD / 2);
+  hero.add(door);
+  const DX = -LW / 2; // the door's centre, relative to its hinge
+  box(door, a, [LW - 0.04, LH - 0.12, 0.12], [DX, LH / 2, 0], 0x2a6dba, 'Metal');
+  for (let k = 0; k < 4; k++) box(door, a, [1.4, 0.1, 0.06], [DX, 6.2 - k * 0.28, 0.08], BRICK.reallyBlack, 'Plastic', false);
+  for (let k = 0; k < 3; k++) box(door, a, [1.4, 0.1, 0.06], [DX, 0.9 + k * 0.28, 0.08], BRICK.reallyBlack, 'Plastic', false);
+  box(door, a, [0.16, 0.7, 0.14], [-(LW - 0.4), 3.6, 0.12], BRICK.mediumStoneGrey, 'Metal', false);
+  box(door, a, [0.3, 0.5, 0.1], [-(LW - 0.4), 4.3, 0.1], BRICK.mediumStoneGrey, 'Metal', false);
+  const padlock = new THREE.Group();
+  padlock.position.set(-(LW - 0.4), 4.2, 0.14);
+  padlock.add(part(a, [0.34, 0.3, 0.14], [0, -0.2, 0], 0xc9a227, 'Metal', { shadows: false }));
+  padlock.add(part(a, [0.06, 0.3, 0.06], [0.1, 0.02, 0], 0xc0c4c8, 'Metal', { shadows: false }));
+  door.add(padlock);
+  const name = decal(1.7, 0.7, (ctx, w, h) => {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#ff7eb6';
+    ctx.fillRect(0, 0, w, h * 0.12);
+    ctx.fillRect(0, h * 0.88, w, h * 0.12);
+    P.drawText(ctx, 'CHLOE', w * 0.4, h * 0.52, w * 0.62, h * 0.5, { color: '#c2185b' });
+    ctx.fillStyle = '#e53935';
+    const hx0 = w * 0.84;
+    const hy = h * 0.5;
+    ctx.beginPath();
+    ctx.moveTo(hx0, hy + h * 0.2);
+    ctx.bezierCurveTo(hx0 - w * 0.2, hy - h * 0.05, hx0 - w * 0.06, hy - h * 0.35, hx0, hy - h * 0.12);
+    ctx.bezierCurveTo(hx0 + w * 0.06, hy - h * 0.35, hx0 + w * 0.2, hy - h * 0.05, hx0, hy + h * 0.2);
+    ctx.fill();
+  });
+  name.position.set(DX, 6.55, 0.1);
+  door.add(name);
+  // A mirror on the inside of the door.
+  const inner = decal(0.8, 1.1, (ctx, w, h) => {
+    ctx.fillStyle = '#cfe9f5';
+    ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 5;
+    ctx.strokeRect(2, 2, w - 4, h - 4);
+  });
+  inner.position.set(DX, 5.0, -0.075);
+  inner.rotation.y = Math.PI;
+  door.add(inner);
+  const heroLight = fixture([hx, 5.6, zc + 3.4], { color: 0xfff1de, intensity: 12, distance: 9, visible: false });
+
+  // Double doors at both ends (not baked: they swing).
+  const ends = {};
+  for (const [side, s] of [['left', 1], ['right', -1]]) {
+    ends[side] = [0, 1].map((k) => {
+      const hinge = new THREE.Group();
+      hinge.position.set(o.x - s * (HX - 0.1), 0, o.z + (k ? 3.5 : -2.5));
+      const dir = k ? -1 : 1; // the leaf extends toward the middle of the doorway
+      box(hinge, a, [0.28, 8.1, 2.95], [0, 4.05, dir * 1.5], 0x8a5a3a, 'WoodPlanks');
+      box(hinge, a, [0.32, 3.2, 1.0], [0, 5.6, dir * 1.5], 0x9fd0ef, 'Glass', false);
+      box(hinge, a, [0.34, 0.7, 2.95], [0, 0.4, dir * 1.5], 0xc0c4c8, 'Metal', false);
+      box(hinge, a, [0.3, 0.2, 2.2], [s * 0.2, 3.6, dir * 1.4], 0xc0c4c8, 'Metal', false);
+      scene.add(hinge);
+      return hinge;
+    });
+  }
+  put(scene, decal(3.4, 1.0, signDraw(['GYM  →'], '#1f5fa8', '#ffffff', { border: '#ffffff' })), o.x - HX + 0.04, 10.0, o.z + 0.5, Math.PI / 2);
+  put(scene, decal(3.4, 1.0, signDraw(['EXIT'], '#b71c1c', '#ffffff', { border: '#ffffff' }), { glow: 0.6 }), o.x + HX - 0.04, 10.0, o.z + 0.5, -Math.PI / 2);
+
+  // Lights and sunbeams through the window strip.
+  for (const x of panels) fixture([o.x + x, 11.4, o.z + 0.5], { color: 0xfff1de, intensity: 18, distance: 20 });
+  for (let k = 0; k < 5; k++) scene.add(lightShaft([o.x - 22.5 + k * 9 + 4.5, 9.9, o.z + Z1 - 0.1], [3.4, 0, 0], [0, 1.3, 0], [0.12, -0.55, -1], { length: 13, opacity: 0.16 }));
+
+  return {
+    heroX: lockerX(HERO),
+    heroZ: Z0 + LD / 2,
+    doorZ,
+    lockerX,
+    hero: { group: hero, door, shelf, banana, can: spray, shoes, books, padlock, light: heroLight },
+    ends,
+  };
+}
