@@ -1,0 +1,1424 @@
+[
+{
+"word": "In",
+"start": 0.0,
+"end": 0.1,
+"line": 0
+},
+{
+"word": "this",
+"start": 0.1,
+"end": 0.24,
+"line": 0
+},
+{
+"word": "town,",
+"start": 0.24,
+"end": 0.48,
+"line": 0
+},
+{
+"word": "if",
+"start": 0.72,
+"end": 0.76,
+"line": 0
+},
+{
+"word": "you're",
+"start": 0.76,
+"end": 0.9,
+"line": 0
+},
+{
+"word": "single",
+"start": 0.9,
+"end": 1.06,
+"line": 0
+},
+{
+"word": "at",
+"start": 1.06,
+"end": 1.24,
+"line": 0
+},
+{
+"word": "midnight,",
+"start": 1.24,
+"end": 1.48,
+"line": 0
+},
+{
+"word": "a",
+"start": 1.72,
+"end": 1.74,
+"line": 0
+},
+{
+"word": "machine",
+"start": 1.74,
+"end": 1.96,
+"line": 0
+},
+{
+"word": "picks",
+"start": 1.96,
+"end": 2.16,
+"line": 0
+},
+{
+"word": "your",
+"start": 2.16,
+"end": 2.32,
+"line": 0
+},
+{
+"word": "date.",
+"start": 2.32,
+"end": 2.54,
+"line": 0
+},
+{
+"word": "And",
+"start": 2.54,
+"end": 2.84,
+"line": 0
+},
+{
+"word": "nobody",
+"start": 2.84,
+"end": 3.02,
+"line": 0
+},
+{
+"word": "is",
+"start": 3.02,
+"end": 3.18,
+"line": 0
+},
+{
+"word": "allowed",
+"start": 3.18,
+"end": 3.36,
+"line": 0
+},
+{
+"word": "to",
+"start": 3.36,
+"end": 3.5,
+"line": 0
+},
+{
+"word": "say",
+"start": 3.5,
+"end": 3.6,
+"line": 0
+},
+{
+"word": "no.",
+"start": 3.6,
+"end": 3.84,
+"line": 0
+},
+{
+"word": "The",
+"start": 4.266,
+"end": 4.366,
+"line": 1
+},
+{
+"word": "baker",
+"start": 4.366,
+"end": 4.526,
+"line": 1
+},
+{
+"word": "got",
+"start": 4.526,
+"end": 4.726,
+"line": 1
+},
+{
+"word": "matched",
+"start": 4.726,
+"end": 4.946,
+"line": 1
+},
+{
+"word": "with",
+"start": 4.946,
+"end": 5.086,
+"line": 1
+},
+{
+"word": "the",
+"start": 5.086,
+"end": 5.186,
+"line": 1
+},
+{
+"word": "health",
+"start": 5.186,
+"end": 5.306,
+"line": 1
+},
+{
+"word": "inspector.",
+"start": 5.306,
+"end": 5.626,
+"line": 1
+},
+{
+"word": "They're",
+"start": 5.966,
+"end": 6.126,
+"line": 1
+},
+{
+"word": "married",
+"start": 6.126,
+"end": 6.326,
+"line": 1
+},
+{
+"word": "now.",
+"start": 6.326,
+"end": 6.606,
+"line": 1
+},
+{
+"word": "The",
+"start": 6.786,
+"end": 6.866,
+"line": 1
+},
+{
+"word": "bread",
+"start": 6.866,
+"end": 7.026,
+"line": 1
+},
+{
+"word": "has",
+"start": 7.026,
+"end": 7.206,
+"line": 1
+},
+{
+"word": "never",
+"start": 7.206,
+"end": 7.406,
+"line": 1
+},
+{
+"word": "been",
+"start": 7.406,
+"end": 7.566,
+"line": 1
+},
+{
+"word": "worse.",
+"start": 7.566,
+"end": 7.766,
+"line": 1
+},
+{
+"word": "Then",
+"start": 8.292,
+"end": 8.432,
+"line": 2
+},
+{
+"word": "there's",
+"start": 8.432,
+"end": 8.612,
+"line": 2
+},
+{
+"word": "Mayor",
+"start": 8.612,
+"end": 8.772,
+"line": 2
+},
+{
+"word": "Winters.",
+"start": 8.772,
+"end": 9.112,
+"line": 2
+},
+{
+"word": "He",
+"start": 9.332,
+"end": 9.452,
+"line": 2
+},
+{
+"word": "has",
+"start": 9.452,
+"end": 9.552,
+"line": 2
+},
+{
+"word": "never",
+"start": 9.552,
+"end": 9.772,
+"line": 2
+},
+{
+"word": "been",
+"start": 9.772,
+"end": 9.932,
+"line": 2
+},
+{
+"word": "matched.",
+"start": 9.932,
+"end": 10.252,
+"line": 2
+},
+{
+"word": "Because",
+"start": 10.452,
+"end": 10.612,
+"line": 2
+},
+{
+"word": "he's",
+"start": 10.612,
+"end": 10.792,
+"line": 2
+},
+{
+"word": "been",
+"start": 10.792,
+"end": 10.852,
+"line": 2
+},
+{
+"word": "engaged",
+"start": 10.852,
+"end": 11.192,
+"line": 2
+},
+{
+"word": "since",
+"start": 11.192,
+"end": 11.452,
+"line": 2
+},
+{
+"word": "2009...",
+"start": 11.452,
+"end": 12.052,
+"line": 2
+},
+{
+"word": "to",
+"start": 12.052,
+"end": 12.532,
+"line": 2
+},
+{
+"word": "a",
+"start": 12.532,
+"end": 12.632,
+"line": 2
+},
+{
+"word": "cardboard",
+"start": 12.632,
+"end": 12.932,
+"line": 2
+},
+{
+"word": "cutout",
+"start": 12.932,
+"end": 13.232,
+"line": 2
+},
+{
+"word": "of",
+"start": 13.232,
+"end": 13.332,
+"line": 2
+},
+{
+"word": "himself.",
+"start": 13.332,
+"end": 13.512,
+"line": 2
+},
+{
+"word": "And",
+"start": 14.001,
+"end": 14.081,
+"line": 3
+},
+{
+"word": "he",
+"start": 14.081,
+"end": 14.181,
+"line": 3
+},
+{
+"word": "abuses",
+"start": 14.181,
+"end": 14.401,
+"line": 3
+},
+{
+"word": "it.",
+"start": 14.401,
+"end": 14.621,
+"line": 3
+},
+{
+"word": "Anyone",
+"start": 14.961,
+"end": 14.961,
+"line": 3
+},
+{
+"word": "who",
+"start": 14.961,
+"end": 15.121,
+"line": 3
+},
+{
+"word": "complains",
+"start": 15.121,
+"end": 15.401,
+"line": 3
+},
+{
+"word": "at",
+"start": 15.401,
+"end": 15.541,
+"line": 3
+},
+{
+"word": "town",
+"start": 15.541,
+"end": 15.681,
+"line": 3
+},
+{
+"word": "hall",
+"start": 15.681,
+"end": 15.981,
+"line": 3
+},
+{
+"word": "wakes",
+"start": 15.981,
+"end": 16.281,
+"line": 3
+},
+{
+"word": "up",
+"start": 16.281,
+"end": 16.441,
+"line": 3
+},
+{
+"word": "matched",
+"start": 16.441,
+"end": 16.701,
+"line": 3
+},
+{
+"word": "with",
+"start": 16.701,
+"end": 16.881,
+"line": 3
+},
+{
+"word": "Gary.",
+"start": 16.881,
+"end": 17.061,
+"line": 3
+},
+{
+"word": "Gary",
+"start": 17.461,
+"end": 17.601,
+"line": 3
+},
+{
+"word": "lives",
+"start": 17.601,
+"end": 17.761,
+"line": 3
+},
+{
+"word": "with",
+"start": 17.761,
+"end": 17.921,
+"line": 3
+},
+{
+"word": "forty",
+"start": 17.921,
+"end": 18.141,
+"line": 3
+},
+{
+"word": "pigeons.",
+"start": 18.141,
+"end": 18.421,
+"line": 3
+},
+{
+"word": "Then",
+"start": 18.872,
+"end": 18.992,
+"line": 4
+},
+{
+"word": "my",
+"start": 18.992,
+"end": 19.132,
+"line": 4
+},
+{
+"word": "mom",
+"start": 19.132,
+"end": 19.292,
+"line": 4
+},
+{
+"word": "asked",
+"start": 19.292,
+"end": 19.552,
+"line": 4
+},
+{
+"word": "the",
+"start": 19.552,
+"end": 19.672,
+"line": 4
+},
+{
+"word": "mayor",
+"start": 19.672,
+"end": 19.792,
+"line": 4
+},
+{
+"word": "one",
+"start": 19.792,
+"end": 19.992,
+"line": 4
+},
+{
+"word": "question.",
+"start": 19.992,
+"end": 20.232,
+"line": 4
+},
+{
+"word": "So",
+"start": 20.75,
+"end": 20.89,
+"line": 5
+},
+{
+"word": "at",
+"start": 20.89,
+"end": 20.99,
+"line": 5
+},
+{
+"word": "midnight,",
+"start": 20.99,
+"end": 21.25,
+"line": 5
+},
+{
+"word": "the",
+"start": 21.53,
+"end": 21.55,
+"line": 5
+},
+{
+"word": "whole",
+"start": 21.55,
+"end": 21.71,
+"line": 5
+},
+{
+"word": "town",
+"start": 21.71,
+"end": 21.89,
+"line": 5
+},
+{
+"word": "gathered",
+"start": 21.89,
+"end": 22.13,
+"line": 5
+},
+{
+"word": "in",
+"start": 22.13,
+"end": 22.29,
+"line": 5
+},
+{
+"word": "the",
+"start": 22.29,
+"end": 22.39,
+"line": 5
+},
+{
+"word": "square.",
+"start": 22.39,
+"end": 22.61,
+"line": 5
+},
+{
+"word": "The",
+"start": 22.89,
+"end": 22.99,
+"line": 5
+},
+{
+"word": "mayor",
+"start": 22.99,
+"end": 23.13,
+"line": 5
+},
+{
+"word": "smiled",
+"start": 23.13,
+"end": 23.47,
+"line": 5
+},
+{
+"word": "and",
+"start": 23.47,
+"end": 23.69,
+"line": 5
+},
+{
+"word": "pressed",
+"start": 23.69,
+"end": 23.87,
+"line": 5
+},
+{
+"word": "the",
+"start": 23.87,
+"end": 23.99,
+"line": 5
+},
+{
+"word": "button.",
+"start": 23.99,
+"end": 24.21,
+"line": 5
+},
+{
+"word": "\"Match",
+"start": 24.57,
+"end": 24.65,
+"line": 5
+},
+{
+"word": "found.",
+"start": 24.65,
+"end": 24.95,
+"line": 5
+},
+{
+"word": "Linda...",
+"start": 25.27,
+"end": 25.43,
+"line": 5
+},
+{
+"word": "and",
+"start": 25.43,
+"end": 25.87,
+"line": 5
+},
+{
+"word": "Gary.\"",
+"start": 25.87,
+"end": 26.05,
+"line": 5
+},
+{
+"word": "My",
+"start": 26.578,
+"end": 26.718,
+"line": 6
+},
+{
+"word": "mom",
+"start": 26.718,
+"end": 26.918,
+"line": 6
+},
+{
+"word": "went",
+"start": 26.918,
+"end": 27.138,
+"line": 6
+},
+{
+"word": "pale.",
+"start": 27.138,
+"end": 27.438,
+"line": 6
+},
+{
+"word": "Forty",
+"start": 27.778,
+"end": 27.878,
+"line": 6
+},
+{
+"word": "pigeons",
+"start": 27.878,
+"end": 28.218,
+"line": 6
+},
+{
+"word": "cooed.",
+"start": 28.218,
+"end": 28.598,
+"line": 6
+},
+{
+"word": "So",
+"start": 28.958,
+"end": 29.078,
+"line": 7
+},
+{
+"word": "I",
+"start": 29.078,
+"end": 29.198,
+"line": 7
+},
+{
+"word": "stepped",
+"start": 29.198,
+"end": 29.378,
+"line": 7
+},
+{
+"word": "forward.",
+"start": 29.378,
+"end": 29.698,
+"line": 7
+},
+{
+"word": "\"Mayor",
+"start": 30.178,
+"end": 30.258,
+"line": 7
+},
+{
+"word": "Winters.",
+"start": 30.258,
+"end": 30.658,
+"line": 7
+},
+{
+"word": "I",
+"start": 31.018,
+"end": 31.038,
+"line": 7
+},
+{
+"word": "read",
+"start": 31.038,
+"end": 31.158,
+"line": 7
+},
+{
+"word": "the",
+"start": 31.158,
+"end": 31.298,
+"line": 7
+},
+{
+"word": "town",
+"start": 31.298,
+"end": 31.458,
+"line": 7
+},
+{
+"word": "charter.",
+"start": 31.458,
+"end": 31.758,
+"line": 7
+},
+{
+"word": "An",
+"start": 32.018,
+"end": 32.058,
+"line": 7
+},
+{
+"word": "engagement",
+"start": 32.058,
+"end": 32.298,
+"line": 7
+},
+{
+"word": "expires",
+"start": 32.298,
+"end": 32.698,
+"line": 7
+},
+{
+"word": "after",
+"start": 32.698,
+"end": 32.958,
+"line": 7
+},
+{
+"word": "fifteen",
+"start": 32.958,
+"end": 33.258,
+"line": 7
+},
+{
+"word": "years.",
+"start": 33.258,
+"end": 33.578,
+"line": 7
+},
+{
+"word": "Yours",
+"start": 33.878,
+"end": 34.058,
+"line": 7
+},
+{
+"word": "expired",
+"start": 34.058,
+"end": 34.318,
+"line": 7
+},
+{
+"word": "Tuesday.\"",
+"start": 34.318,
+"end": 34.538,
+"line": 7
+},
+{
+"word": "His",
+"start": 35.166,
+"end": 35.286,
+"line": 8
+},
+{
+"word": "smile",
+"start": 35.286,
+"end": 35.506,
+"line": 8
+},
+{
+"word": "fell.",
+"start": 35.506,
+"end": 35.826,
+"line": 8
+},
+{
+"word": "The",
+"start": 36.126,
+"end": 36.186,
+"line": 8
+},
+{
+"word": "clock",
+"start": 36.186,
+"end": 36.346,
+"line": 8
+},
+{
+"word": "struck",
+"start": 36.346,
+"end": 36.626,
+"line": 8
+},
+{
+"word": "twelve.",
+"start": 36.626,
+"end": 36.906,
+"line": 8
+},
+{
+"word": "The",
+"start": 37.246,
+"end": 37.326,
+"line": 8
+},
+{
+"word": "machine",
+"start": 37.326,
+"end": 37.546,
+"line": 8
+},
+{
+"word": "beeped.",
+"start": 37.546,
+"end": 38.086,
+"line": 8
+},
+{
+"word": "\"Mayor",
+"start": 38.326,
+"end": 38.486,
+"line": 8
+},
+{
+"word": "Winters",
+"start": 38.486,
+"end": 38.846,
+"line": 8
+},
+{
+"word": "is",
+"start": 38.846,
+"end": 39.006,
+"line": 8
+},
+{
+"word": "single.",
+"start": 39.006,
+"end": 39.346,
+"line": 8
+},
+{
+"word": "Searching",
+"start": 39.586,
+"end": 39.906,
+"line": 8
+},
+{
+"word": "for",
+"start": 39.906,
+"end": 40.006,
+"line": 8
+},
+{
+"word": "his",
+"start": 40.006,
+"end": 40.146,
+"line": 8
+},
+{
+"word": "perfect",
+"start": 40.146,
+"end": 40.366,
+"line": 8
+},
+{
+"word": "match.\"",
+"start": 40.366,
+"end": 40.646,
+"line": 8
+},
+{
+"word": "The",
+"start": 41.119,
+"end": 41.179,
+"line": 9
+},
+{
+"word": "whole",
+"start": 41.179,
+"end": 41.319,
+"line": 9
+},
+{
+"word": "square",
+"start": 41.319,
+"end": 41.599,
+"line": 9
+},
+{
+"word": "went",
+"start": 41.599,
+"end": 41.779,
+"line": 9
+},
+{
+"word": "silent.",
+"start": 41.779,
+"end": 42.079,
+"line": 9
+},
+{
+"word": "Ding.",
+"start": 42.519,
+"end": 42.519,
+"line": 9
+},
+{
+"word": "\"Match",
+"start": 42.959,
+"end": 43.019,
+"line": 9
+},
+{
+"word": "found.",
+"start": 43.019,
+"end": 43.299,
+"line": 9
+},
+{
+"word": "Mrs.",
+"start": 43.559,
+"end": 43.699,
+"line": 9
+},
+{
+"word": "Gable.\"",
+"start": 43.899,
+"end": 44.039,
+"line": 9
+},
+{
+"word": "Mrs.",
+"start": 44.459,
+"end": 44.659,
+"line": 10
+},
+{
+"word": "Gable",
+"start": 44.839,
+"end": 44.959,
+"line": 10
+},
+{
+"word": "is",
+"start": 44.959,
+"end": 45.059,
+"line": 10
+},
+{
+"word": "ninety-four.",
+"start": 45.059,
+"end": 45.571,
+"line": 10
+},
+{
+"word": "He",
+"start": 45.699,
+"end": 45.779,
+"line": 10
+},
+{
+"word": "fined",
+"start": 45.779,
+"end": 45.979,
+"line": 10
+},
+{
+"word": "her",
+"start": 45.979,
+"end": 46.139,
+"line": 10
+},
+{
+"word": "four",
+"start": 46.139,
+"end": 46.319,
+"line": 10
+},
+{
+"word": "hundred",
+"start": 46.319,
+"end": 46.539,
+"line": 10
+},
+{
+"word": "times",
+"start": 46.539,
+"end": 46.819,
+"line": 10
+},
+{
+"word": "for",
+"start": 46.819,
+"end": 46.959,
+"line": 10
+},
+{
+"word": "her",
+"start": 46.959,
+"end": 47.039,
+"line": 10
+},
+{
+"word": "lawn",
+"start": 47.039,
+"end": 47.199,
+"line": 10
+},
+{
+"word": "gnomes.",
+"start": 47.199,
+"end": 47.479,
+"line": 10
+},
+{
+"word": "She",
+"start": 47.799,
+"end": 47.879,
+"line": 10
+},
+{
+"word": "walked",
+"start": 47.879,
+"end": 48.019,
+"line": 10
+},
+{
+"word": "out",
+"start": 48.019,
+"end": 48.199,
+"line": 10
+},
+{
+"word": "in",
+"start": 48.199,
+"end": 48.279,
+"line": 10
+},
+{
+"word": "a",
+"start": 48.279,
+"end": 48.339,
+"line": 10
+},
+{
+"word": "wedding",
+"start": 48.339,
+"end": 48.459,
+"line": 10
+},
+{
+"word": "dress.",
+"start": 48.459,
+"end": 48.739,
+"line": 10
+},
+{
+"word": "\"I've",
+"start": 49.059,
+"end": 49.199,
+"line": 10
+},
+{
+"word": "been",
+"start": 49.199,
+"end": 49.279,
+"line": 10
+},
+{
+"word": "waiting",
+"start": 49.279,
+"end": 49.439,
+"line": 10
+},
+{
+"word": "since",
+"start": 49.439,
+"end": 49.659,
+"line": 10
+},
+{
+"word": "1962.\"",
+"start": 49.659,
+"end": 50.219,
+"line": 10
+},
+{
+"word": "The",
+"start": 50.861,
+"end": 50.961,
+"line": 11
+},
+{
+"word": "mayor",
+"start": 50.961,
+"end": 51.121,
+"line": 11
+},
+{
+"word": "can't",
+"start": 51.121,
+"end": 51.381,
+"line": 11
+},
+{
+"word": "say",
+"start": 51.381,
+"end": 51.501,
+"line": 11
+},
+{
+"word": "no.",
+"start": 51.501,
+"end": 51.741,
+"line": 11
+},
+{
+"word": "It's",
+"start": 51.901,
+"end": 52.101,
+"line": 11
+},
+{
+"word": "his",
+"start": 52.101,
+"end": 52.141,
+"line": 11
+},
+{
+"word": "own",
+"start": 52.141,
+"end": 52.281,
+"line": 11
+},
+{
+"word": "rule.",
+"start": 52.281,
+"end": 52.501,
+"line": 11
+},
+{
+"word": "My",
+"start": 52.952,
+"end": 53.092,
+"line": 12
+},
+{
+"word": "mom's",
+"start": 53.092,
+"end": 53.392,
+"line": 12
+},
+{
+"word": "match",
+"start": 53.392,
+"end": 53.552,
+"line": 12
+},
+{
+"word": "got",
+"start": 53.552,
+"end": 53.712,
+"line": 12
+},
+{
+"word": "cancelled.",
+"start": 53.712,
+"end": 54.052,
+"line": 12
+},
+{
+"word": "But",
+"start": 54.292,
+"end": 54.392,
+"line": 12
+},
+{
+"word": "the",
+"start": 54.392,
+"end": 54.472,
+"line": 12
+},
+{
+"word": "cutout",
+"start": 54.472,
+"end": 54.692,
+"line": 12
+},
+{
+"word": "was",
+"start": 54.692,
+"end": 54.832,
+"line": 12
+},
+{
+"word": "single",
+"start": 54.832,
+"end": 55.032,
+"line": 12
+},
+{
+"word": "too.",
+"start": 55.032,
+"end": 55.312,
+"line": 12
+},
+{
+"word": "And",
+"start": 55.532,
+"end": 55.612,
+"line": 12
+},
+{
+"word": "I",
+"start": 55.612,
+"end": 55.752,
+"line": 12
+},
+{
+"word": "was",
+"start": 55.752,
+"end": 55.872,
+"line": 12
+},
+{
+"word": "the",
+"start": 55.872,
+"end": 55.972,
+"line": 12
+},
+{
+"word": "last",
+"start": 55.972,
+"end": 56.112,
+"line": 12
+},
+{
+"word": "single",
+"start": 56.112,
+"end": 56.412,
+"line": 12
+},
+{
+"word": "person",
+"start": 56.412,
+"end": 56.592,
+"line": 12
+},
+{
+"word": "in",
+"start": 56.592,
+"end": 56.792,
+"line": 12
+},
+{
+"word": "town.",
+"start": 56.792,
+"end": 56.952,
+"line": 12
+},
+{
+"word": "So",
+"start": 57.471,
+"end": 57.571,
+"line": 13
+},
+{
+"word": "now",
+"start": 57.571,
+"end": 57.711,
+"line": 13
+},
+{
+"word": "I'm",
+"start": 57.711,
+"end": 57.851,
+"line": 13
+},
+{
+"word": "dating",
+"start": 57.851,
+"end": 57.991,
+"line": 13
+},
+{
+"word": "a",
+"start": 57.991,
+"end": 58.171,
+"line": 13
+},
+{
+"word": "cardboard",
+"start": 58.171,
+"end": 58.451,
+"line": 13
+},
+{
+"word": "mayor.",
+"start": 58.451,
+"end": 58.711,
+"line": 13
+},
+{
+"word": "It's",
+"start": 59.011,
+"end": 59.111,
+"line": 13
+},
+{
+"word": "flat.",
+"start": 59.111,
+"end": 59.331,
+"line": 13
+},
+{
+"word": "It",
+"start": 59.591,
+"end": 59.631,
+"line": 13
+},
+{
+"word": "never",
+"start": 59.631,
+"end": 59.811,
+"line": 13
+},
+{
+"word": "talks.",
+"start": 59.811,
+"end": 60.111,
+"line": 13
+},
+{
+"word": "Honestly?",
+"start": 60.651,
+"end": 60.651,
+"line": 13
+},
+{
+"word": "Best",
+"start": 60.931,
+"end": 61.011,
+"line": 13
+},
+{
+"word": "date",
+"start": 61.011,
+"end": 61.191,
+"line": 13
+},
+{
+"word": "I've",
+"start": 61.191,
+"end": 61.331,
+"line": 13
+},
+{
+"word": "ever",
+"start": 61.331,
+"end": 61.471,
+"line": 13
+},
+{
+"word": "had.",
+"start": 61.471,
+"end": 61.711,
+"line": 13
+}
+]
