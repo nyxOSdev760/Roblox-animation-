@@ -6,16 +6,19 @@ description: Make one Roblox story YouTube Short for the owner's channel end to 
 # Make a Roblox story Short
 
 Read `CLAUDE.md` in the repo root first: it holds the owner's rules (no agents, user-made outfits,
-no crop tops/logos, real skin tones, main character, Feeling Blue music, FAHHH, framing) and the
+no crop tops/logos, real skin tones, main character, FAHHH, framing) and the
 pipeline commands. Follow it exactly. Keep tool calls lean: the owner pays per use.
 
 ## Steps
 
 1. **Story.** If the argument names `scripts/<slug>.md`, use it. Otherwise write a new one there:
    either an "I accidentally..." cringe story (the 104K-view format, see CLAUDE.md) or the
-   "In this world, every time you X, Y happens." hook, funny examples, "Then there's me...",
-   escalation, twist punchline as the last line, ~180-200 words, never an idea already in
-   `scripts/`. Show the script to the user and wait for an OK unless they said to just go.
+   "In this town/world, every time you X, Y happens." hook with a transferring rule, a villain
+   who abuses it, a loved one at risk, a smart payback that turns the rule on him (a loophole,
+   not "do it 500 times"), a funny cost for me, ending within ~0.6 s of the punchline.
+   **~60-65 s only** (about 180-240 words): the 2-minute Locker flopped, the 1:05 Crush has 363K.
+   Never reuse an idea or the "crush hears my confession" beat from `scripts/`. The owner likes
+   girls/single/"sus" angles. Show the script to the user and wait for an OK unless they said to just go.
 2. **Setup (fresh container only).** `cd animation && npm install` if `node_modules` is missing;
    `python3 -m venv /tmp/fw && /tmp/fw/bin/pip install -q faster-whisper` if `/tmp/fw` is missing.
 3. **Voice + timings.**
@@ -26,8 +29,10 @@ pipeline commands. Follow it exactly. Keep tool calls lean: the owner pays per u
    `animation/scenes/icecream.js`: `W()` timings, `meta` (faces, accessories, clothing, audio),
    cast with `MAIN` from `src/cast.js` as "me", sets from `src/rooms.js` (add new detailed baked
    sets there when needed), camera `KEYS` gliding within a place and dipping to black between
-   places, situational faces, hand props via `{ hold: [...] }`, audio cues (Feeling Blue 0.2 from
-   0, FAHHH ~2.2 after punchlines, sound effects), `END = last word end + 0.6`.
+   places, situational faces, hand props via `{ hold: [...] }`, audio cues (TEMPOREX
+   `temporex-numbers-loop.mp3` 0.22 from 0 (owner's chosen song), FAHHH ~2.2 after punchlines,
+   sound effects), `END = last word end + 0.6`. `W(line, word, n)` takes the first match, so pass `n` for repeated
+   words like "The" (cues fired early otherwise).
    Validate: `node -e "import('./scenes/<slug>.js').then(m=>console.log(m.meta.duration))"` in animation/.
 5. **Check framing.** `node render.mjs <slug> --scale 0.4 --stills <~14 times across the video>`,
    tile them (ffmpeg `tile=7x2`) and look. Fix: camera inside/behind someone, faces under the
@@ -39,6 +44,11 @@ pipeline commands. Follow it exactly. Keep tool calls lean: the owner pays per u
 7. **Save.** Commit and push to master (the MP4 is gitignored).
 8. **Deliver.** SendUserFile the MP4 with, in the message: Title (with emoji), Description
    (2 lines + question + `#roblox #robloxstory #robloxshorts #funny #storytime #shorts`), and a
-   pinned-comment question. Music is already in the video.
+   pinned comment. Music is already in the video (tell the owner TEMPOREX is in it).
+   - Description: SEO-friendly, hook line with the searchable premise, never retell the story or
+     spoil the twist.
+   - Pinned comment: a funny either/or built from the video's two funniest details (e.g. "date
+     the cardboard mayor or get matched with Gary's 40 pigeons? Pick one, no skipping"), easy to
+     answer in one line. Not a generic "who would you pair with" question.
 
 If something fails, send what exists and say exactly what failed.
