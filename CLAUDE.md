@@ -23,6 +23,13 @@ Rendered with three.js in headless Chromium (`animation/render.mjs`), voiced wit
   pieces** (no tears, crying, sweat drops, blush, anger marks or `face-*` accessories).
 - **R6 characters** (`src/r6.js`), not R15: the owner didn't like R15.
 
+## Owner feedback (look and premise)
+
+- Likes the **"In this town / city / country / world" hook with something crazy** (e.g. "in this
+  world we live underwater"): vary the world and rule each time.
+- Wants a **Roblox-style look, not an exact Roblox copy**: exact copying makes the animation
+  lazy. Give each world its own detailed look, lots of motion, and **pay attention to detail**.
+
 ## Story style (what works on this channel)
 
 - **Best performer: "I accidentally..." cringe stories.** `scripts/crush.md` ("I Accidentally

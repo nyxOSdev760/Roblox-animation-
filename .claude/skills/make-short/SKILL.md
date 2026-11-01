@@ -9,6 +9,16 @@ Read `CLAUDE.md` in the repo root first: it holds the owner's rules (no agents, 
 no crop tops/logos, real skin tones, main character, FAHHH, framing) and the
 pipeline commands. Follow it exactly. Keep tool calls lean: the owner pays per use.
 
+## What the owner wants (feedback, always apply)
+
+- **Premise:** "In this town / city / country / world, ..." with something genuinely **crazy**
+  and visual, e.g. "in this world we live underwater". Vary the setting and the rule each time;
+  the world itself should look different (its own set, colours, props), not the same square.
+- **Look:** Roblox-*style*, not an exact Roblox copy. Exact copying makes the animation lazy.
+  Build a distinct, detailed world around the premise and keep everything moving: acting poses
+  per beat, camera moves, props, crowds reacting, ambient motion, face changes. Pay attention to
+  detail everywhere (set dressing, clutter, lighting, expressions, timing of cues).
+
 ## Steps
 
 1. **Story.** If the argument names `scripts/<slug>.md`, use it. Otherwise write a new one there:
